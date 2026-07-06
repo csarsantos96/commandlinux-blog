@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;500;700;800&display=swap');
+
+:root {
+  --bg: #080808;
+  --bg2: #0d0d0d;
+  --surface: #161616;
+  --surface2: #1c1c1c;
+  --border: #282828;
+  --border2: #3a3a3a;
+  --accent: #ffffff;
+  --accent-hover: #00d4ff;
+  --muted: #c8c8c8;
+  --text: #f5f5f5;
+  --text2: #888888;
+  --text3: #4a4a4a;
+  --green: #22c55e;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Syne', sans-serif;
+
+  /* category colors — same palette family as cesarsantos.dev */
+  --c-kubernetes: #00d4ff;
+  --c-docker: #fbbf24;
+  --c-terraform: #a78bfa;
+  --c-linux: #22c55e;
+  --c-cicd: #f472b6;
+  --c-sysdesign: #6366f1;
+  --c-cloud: #f97316;   /* laranja AWS, cobre AWS/GCP/Azure via tags */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* grid background — same signature as the portfolio */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+a { text-decoration: none; color: inherit; }
+
+.section-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+}
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.section-tag::before { content: '// '; color: var(--text3); }
+
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .section-wrap { padding: 1.5rem 1.25rem 3rem; }
+}
