@@ -1,0 +1,44 @@
+.share-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.share-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.share-icons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.share-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.share-icon:hover {
+  color: var(--accent-hover);
+  border-color: var(--border2);
+}
+
+.share-copy {
+  font-size: 14px;
+}

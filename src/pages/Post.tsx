@@ -4,6 +4,7 @@ import type { CSSProperties } from 'react'
 import { getPost, categoryColors, formatDate } from '../lib/posts'
 import { renderMarkdown } from '../lib/markdown'
 import NotFound from './NotFound'
+import ShareButtons from '../components/ShareButtons'
 import './Post.css'
 
 export default function PostPage() {
@@ -16,6 +17,8 @@ export default function PostPage() {
   )
 
   if (!post) return <NotFound />
+
+  const postUrl = `${window.location.origin}/post/${post.slug}`
 
   return (
     <article
@@ -39,10 +42,13 @@ export default function PostPage() {
         </div>
       </header>
 
+
       <div
         className="post-body"
         dangerouslySetInnerHTML={{ __html: html }}
       />
+
+      <ShareButtons title={post.title} url={postUrl} />
     </article>
   )
 }
