@@ -1,5 +1,5 @@
 ---
-title: Multi-stage builds - imagens Docker 10x menores
+title: Multi-stage builds — imagens Docker muito menores
 description: Como usar multi-stage builds para separar build de runtime e reduzir drasticamente o tamanho das suas imagens.
 date: 2026-06-24
 category: DOCKER
@@ -17,7 +17,13 @@ Quando você instala compiladores, ferramentas de build e dependências de desen
 ```dockerfile
 # stage 1: build
 FROM python:3.12-slim AS builder
+
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
 RUN pip install --user --no-cache-dir -r requirements.txt
 
