@@ -1,57 +1,57 @@
 # commandlinux.dev
 
-Blog técnico sobre DevOps e Cloud Native — Kubernetes, Docker, Terraform, Linux, CI/CD e system design. Construído com a mesma identidade visual do [cesarsantos.dev](https://cesarsantos.dev): React 19 + TypeScript + Vite, tema dark com estética de terminal.
+Technical blog about DevOps and Cloud Native — Kubernetes, Docker, Terraform, Linux, CI/CD and system design. Built with the same visual identity as [cesarsantos.dev](https://cesarsantos.dev): React 19 + TypeScript + Vite, dark theme with a terminal aesthetic.
 
-## Rodando localmente
+## Running locally
 
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # gera dist/ para produção
+npm run build    # generates dist/ for production
 ```
 
-## Escrevendo um post
+## Writing a post
 
-Basta criar um arquivo `.md` em `src/posts/`. O nome do arquivo vira o slug da URL (`src/posts/meu-post.md` → `/post/meu-post`). Nenhum outro passo é necessário — o Vite carrega tudo em build time via `import.meta.glob`.
+Just create a `.md` file in `src/posts/`. The file name becomes the URL slug (`src/posts/my-post.md` → `/post/my-post`). No other step is needed — Vite loads everything at build time via `import.meta.glob`.
 
-Frontmatter obrigatório:
+Required frontmatter:
 
 ```markdown
 ---
-title: Título do post
-description: Resumo curto que aparece no card.
+title: Post title
+description: Short summary that appears on the card.
 date: 2026-07-06
 category: KUBERNETES
 tags: [pods, kubectl, CKA]
 ---
 
-Conteúdo em Markdown aqui...
+Markdown content here...
 ```
 
-Categorias disponíveis (cada uma com sua cor no card e flag no filtro):
+Available categories (each with its own color on the card and flag in the filter):
 `KUBERNETES`, `DOCKER`, `TERRAFORM`, `LINUX`, `CI/CD`, `SYSTEM DESIGN`, `CLOUD`.
 
-Para adicionar uma categoria nova: edite `Category`, `categoryColors` e `categoryFlags` em `src/lib/posts.ts`, adicione a cor em `src/styles/global.css` e inclua na `CATEGORY_ORDER` de `src/pages/Home.tsx`.
+To add a new category: edit `Category`, `categoryColors` and `categoryFlags` in `src/lib/posts.ts`, add the color in `src/styles/global.css` and include it in `CATEGORY_ORDER` in `src/pages/Home.tsx`.
 
-## Funcionalidades
+## Features
 
-- **Filtro por categoria** — chips estilo flags de CLI (`--kubernetes`, `--docker`...)
-- **Busca** — campo estilo `grep` que filtra por título, descrição e tags
-- **Syntax highlighting** — bash, yaml, dockerfile, json e python via highlight.js
-- **Tempo de leitura** calculado automaticamente
-- **Zero backend** — site estático, posts compilados no build
+- **Category filter** — CLI-flag-style chips (`--kubernetes`, `--docker`...)
+- **Search** — `grep`-style field that filters by title, description and tags
+- **Syntax highlighting** — bash, yaml, dockerfile, json and python via highlight.js
+- **Reading time** calculated automatically
+- **Zero backend** — static site, posts compiled at build time
 
-## Deploy na Vercel
+## Deploying to Vercel
 
-O `vercel.json` já inclui o rewrite de SPA. Basta importar o repositório na Vercel (framework: Vite) e apontar o domínio `commandlinux.dev`.
+`vercel.json` already includes the SPA rewrite. Just import the repository into Vercel (framework: Vite) and point the `commandlinux.dev` domain to it.
 
-## Estrutura
+## Structure
 
 ```
 src/
 ├── components/   Navbar, Footer, FilterBar, PostCard
-├── pages/        Home (lista + filtros), Post (leitura), NotFound
+├── pages/        Home (list + filters), Post (reading), NotFound
 ├── lib/          posts.ts (loader + frontmatter), markdown.ts (renderer)
-├── posts/        seus artigos em .md
-└── styles/       global.css (design tokens do cesarsantos.dev)
+├── posts/        your articles in .md
+└── styles/       global.css (design tokens from cesarsantos.dev)
 ```
