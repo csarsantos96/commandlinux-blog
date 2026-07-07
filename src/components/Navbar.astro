@@ -1,13 +1,75 @@
 ---
+export interface Props {
+  language?: 'pt' | 'en';
+  ptHref?: string;
+  enHref?: string;
+}
+
+const {
+  language = 'pt',
+  ptHref = '/',
+  enHref,
+} = Astro.props;
 ---
+
 <nav class="navbar">
   <a href="/" class="nav-logo">
     <span class="nav-prefix">~/ </span>
     <span class="nav-icon">&gt;_ </span>
     commandlinux.dev<span class="nav-cursor"></span>
   </a>
-  <ul class="nav-links">
-    <li><a href="https://cesarsantos.dev" target="_blank" rel="noreferrer">portfolio ↗</a></li>
-    <li><a href="https://github.com/csarsantos96" target="_blank" rel="noreferrer">github ↗</a></li>
-  </ul>
+
+  <div class="nav-actions">
+    <ul class="nav-links">
+      <li>
+        <a
+          href="https://cesarsantos.dev"
+          target="_blank"
+          rel="noreferrer"
+        >
+          portfolio ↗
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="https://github.com/csarsantos96"
+          target="_blank"
+          rel="noreferrer"
+        >
+          github ↗
+        </a>
+      </li>
+    </ul>
+
+    <div class="lang-switcher" aria-label="Selecionar idioma">
+      <a
+        href={ptHref}
+        class:list={['lang-btn', { active: language === 'pt' }]}
+        aria-current={language === 'pt' ? 'page' : undefined}
+      >
+        PT
+      </a>
+
+      {
+        enHref ? (
+          <a
+            href={enHref}
+            class:list={['lang-btn', { active: language === 'en' }]}
+            aria-current={language === 'en' ? 'page' : undefined}
+          >
+            EN
+          </a>
+        ) : (
+          <span
+            class="lang-btn disabled"
+            aria-disabled="true"
+            title="English version coming soon"
+          >
+            EN
+          </span>
+        )
+      }
+    </div>
+  </div>
 </nav>
