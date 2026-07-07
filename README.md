@@ -1,3 +1,5 @@
+![CI](https://github.com/csarsantos96/commandlinux-blog/actions/workflows/ci.yml/badge.svg)
+
 # commandlinux.dev
 
 Technical blog about DevOps and Cloud Native — Kubernetes, Docker, Terraform, Linux, CI/CD and system design. Built with the same visual identity as [cesarsantos.dev](https://cesarsantos.dev): React 19 + TypeScript + Vite, dark theme with a terminal aesthetic.
