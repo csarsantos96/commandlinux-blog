@@ -1,15 +1,5 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [
-        { "type": "host", "value": "commandlinux-blog.vercel.app" }
-      ],
-      "destination": "https://www.commandlinux.dev/:path*",
-      "permanent": true
-    }
   ]
 }
