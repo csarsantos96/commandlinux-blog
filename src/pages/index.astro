@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import PostFilter from '../components/PostFilter.tsx';
+
+const raw = await getCollection('posts', ({ data }) => !data.draft);
+
+const posts = raw
+  .map((p) => {
+    const words = p.body.split(/\s+/).filter(Boolean).length;
+    return {
+      id: p.id,
+      title: p.data.title,
+      description: p.data.description,
+      date: p.data.date.toISOString().slice(0, 10),
+      category: p.data.category.toUpperCase(),
+      tags: p.data.tags,
+      readingMinutes: Math.max(1, Math.round(words / 200)),
+    };
+  })
+  .sort((a, b) => b.date.localeCompare(a.date));
+---
+<BaseLayout
+  title="CommandLinux — DevOps, Cloud Native e o que roda por baixo"
+  description="Kubernetes, Docker, Terraform, Linux e system design — anotações de campo de quem está construindo o caminho até o CKA.">
+  <Navbar />
+  <section class="section-wrap">
+    <header class="home-hero">
+      <div class="hero-status">
+        <span class="status-dot"></span>
+        NOVOS POSTS TODA SEMANA
+      </div>
+      <div class="section-tag">blog</div>
+      <h1 class="section-title">DevOps, Cloud Native<br />e o que roda por baixo.</h1>
+      <p class="home-sub">
+        Kubernetes, Docker, Terraform, Linux e system design — anotações de
+        campo de quem está construindo o caminho até o CKA.
+      </p>
+    </header>
+
+    <PostFilter client:load posts={posts} />
+  </section>
+</BaseLayout>

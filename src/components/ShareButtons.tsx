@@ -1,16 +1,15 @@
-import { useState } from 'react'
-import './ShareButtons.css'
+import { useState, useEffect } from 'react';
 
-type ShareButtonsProps = {
-  title: string
-  url: string
-}
+export default function ShareButtons({ title }: { title: string }) {
+  const [copied, setCopied] = useState(false);
+  const [url, setUrl] = useState('');
 
-export default function ShareButtons({ title, url }: ShareButtonsProps) {
-  const [copied, setCopied] = useState(false)
+  useEffect(() => {
+    setUrl(window.location.href);
+  }, []);
 
-  const encodedUrl = encodeURIComponent(url)
-  const encodedTitle = encodeURIComponent(title)
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
 
   const shareLinks = [
     {
@@ -40,40 +39,30 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
         </svg>
       ),
     },
-  ]
+  ];
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(url)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="share-buttons">
       <span className="share-label">compartilhar</span>
       <div className="share-icons">
         {shareLinks.map((s) => (
-            <a
-              key={s.name}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="share-icon"
-              aria-label={`Compartilhar no ${s.name}`}
-              title={`Compartilhar no ${s.name}`}
-            >           
-              {s.icon}
-            </a>
-          ))}
-        <button
-          onClick={handleCopy}
-          className="share-icon share-copy"
-          aria-label="Copiar link"
-          title="Copiar link"
-        >
+          <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer"
+            className="share-icon" aria-label={`Compartilhar no ${s.name}`}
+            title={`Compartilhar no ${s.name}`}>
+            {s.icon}
+          </a>
+        ))}
+        <button onClick={handleCopy} className="share-icon share-copy"
+          aria-label="Copiar link" title="Copiar link">
           {copied ? '✓' : '🔗'}
         </button>
       </div>
     </div>
-  )
+  );
 }

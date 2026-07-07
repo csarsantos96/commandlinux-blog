@@ -1,31 +1,24 @@
-# Logs
-logs
-*.log
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-# Dependências e build
-node_modules
-dist
-dist-ssr
-*.local
 
-# Cache incremental do TypeScript
-*.tsbuildinfo
+# environment variables
+.env
+.env.production
 
-# Editor
-.vscode/*
-!.vscode/extensions.json
-.idea
+# macOS-specific files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
 
-# Vercel (se um dia rodar `vercel` CLI localmente)
-.vercel
+# jetbrains setting folder
+.idea/

@@ -1,59 +1,43 @@
-![CI](https://github.com/csarsantos96/commandlinux-blog/actions/workflows/ci.yml/badge.svg)
+# Astro Starter Kit: Minimal
 
-# commandlinux.dev
-
-Technical blog about DevOps and Cloud Native — Kubernetes, Docker, Terraform, Linux, CI/CD and system design. Built with the same visual identity as [cesarsantos.dev](https://cesarsantos.dev): React 19 + TypeScript + Vite, dark theme with a terminal aesthetic.
-
-## Running locally
-
-```bash
-npm install
-npm run dev      # http://localhost:5173
-npm run build    # generates dist/ for production
+```sh
+npm create astro@latest -- --template minimal
 ```
 
-## Writing a post
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-Just create a `.md` file in `src/posts/`. The file name becomes the URL slug (`src/posts/my-post.md` → `/post/my-post`). No other step is needed — Vite loads everything at build time via `import.meta.glob`.
+## 🚀 Project Structure
 
-Required frontmatter:
+Inside of your Astro project, you'll see the following folders and files:
 
-```markdown
----
-title: Post title
-description: Short summary that appears on the card.
-date: 2026-07-06
-category: KUBERNETES
-tags: [pods, kubectl, CKA]
----
-
-Markdown content here...
+```text
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
 ```
 
-Available categories (each with its own color on the card and flag in the filter):
-`KUBERNETES`, `DOCKER`, `TERRAFORM`, `LINUX`, `CI/CD`, `SYSTEM DESIGN`, `CLOUD`.
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-To add a new category: edit `Category`, `categoryColors` and `categoryFlags` in `src/lib/posts.ts`, add the color in `src/styles/global.css` and include it in `CATEGORY_ORDER` in `src/pages/Home.tsx`.
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-## Features
+Any static assets, like images, can be placed in the `public/` directory.
 
-- **Category filter** — CLI-flag-style chips (`--kubernetes`, `--docker`...)
-- **Search** — `grep`-style field that filters by title, description and tags
-- **Syntax highlighting** — bash, yaml, dockerfile, json and python via highlight.js
-- **Reading time** calculated automatically
-- **Zero backend** — static site, posts compiled at build time
+## 🧞 Commands
 
-## Deploying to Vercel
+All commands are run from the root of the project, from a terminal:
 
-`vercel.json` already includes the SPA rewrite. Just import the repository into Vercel (framework: Vite) and point the `commandlinux.dev` domain to it.
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## Structure
+## 👀 Want to learn more?
 
-```
-src/
-├── components/   Navbar, Footer, FilterBar, PostCard
-├── pages/        Home (list + filters), Post (reading), NotFound
-├── lib/          posts.ts (loader + frontmatter), markdown.ts (renderer)
-├── posts/        your articles in .md
-└── styles/       global.css (design tokens from cesarsantos.dev)
-```
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

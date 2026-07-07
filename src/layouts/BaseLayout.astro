@@ -1,0 +1,84 @@
+---
+import '../styles/global.css';
+import '../styles/navbar.css';
+import '../styles/filterbar.css';
+import '../styles/home.css';
+import '../styles/postcard.css';
+import '../styles/post.css';
+import '../styles/sharebuttons.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  type?: 'website' | 'article';
+  publishedDate?: Date;
+  tags?: string[];
+}
+
+const {
+  title,
+  description,
+  type = 'website',
+  publishedDate,
+  tags = [],
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const siteName = 'CommandLinux';
+
+const jsonLd =
+  type === 'article'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: title,
+        description,
+        url: canonical,
+        datePublished: publishedDate?.toISOString(),
+        keywords: tags.join(', '),
+        author: { '@type': 'Person', name: 'Cesar Santos' },
+        publisher: { '@type': 'Person', name: 'Cesar Santos' },
+      }
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: siteName,
+        url: Astro.site?.href,
+      };
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="pt_BR" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={siteName}
+      href={new URL('rss.xml', Astro.site)}
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
