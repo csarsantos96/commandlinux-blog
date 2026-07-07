@@ -14,8 +14,10 @@ export default defineConfig({
   ],
 
   markdown: {
+    // 'pre-mermaid' NÃO usa Playwright: apenas prepara os blocos no build.
+    // A renderização vira SVG no browser via o script no BaseLayout.
     rehypePlugins: [
-      [rehypeMermaid, { strategy: 'img-svg', dark: true }],
+      [rehypeMermaid, { strategy: 'pre-mermaid' }],
     ],
     syntaxHighlight: {
       type: 'shiki',
