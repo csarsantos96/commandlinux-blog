@@ -20,15 +20,44 @@ hljs.registerLanguage('hcl', plaintext)
 hljs.registerLanguage('terraform', plaintext)
 hljs.registerLanguage('plaintext', plaintext)
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;')
+}
+
 const marked = new Marked(
   markedHighlight({
     langPrefix: 'hljs language-',
+
     highlight(code, lang) {
+      // Mermaid não pode passar pelo highlight.js
+      if (lang === 'mermaid') {
+        return code
+      }
+
       const language = hljs.getLanguage(lang) ? lang : 'plaintext'
+
       return hljs.highlight(code, { language }).value
     },
   })
 )
+
+marked.use({
+  renderer: {
+    code({ text, lang }) {
+      if (lang === 'mermaid') {
+        return `<pre class="mermaid">${escapeHtml(text)}</pre>`
+      }
+
+      // Deixa os outros blocos continuarem com o render padrão
+      return false
+    },
+  },
+})
 
 export function renderMarkdown(md: string): string {
   return marked.parse(md, { async: false }) as string
