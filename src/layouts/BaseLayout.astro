@@ -8,12 +8,15 @@ import '../styles/post.css';
 import '../styles/sharebuttons.css';
 import '../styles/postextras.css';
 
+import Mermaid from '../components/Mermaid.astro';
+
 export interface Props {
   title: string;
   description: string;
   type?: 'website' | 'article';
   publishedDate?: Date;
   tags?: string[];
+  lang?: 'pt-BR' | 'en';
 }
 
 const {
@@ -22,13 +25,14 @@ const {
   type = 'website',
   publishedDate,
   tags = [],
+  lang = 'pt-BR',
 } = Astro.props;
 
-import Mermaid from '../components/Mermaid.astro';
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-
 const ogImage = new URL('/og-default.png', Astro.site).href;
 const siteName = 'CommandLinux';
+
+const ogLocale = lang === 'en' ? 'en_US' : 'pt_BR';
 
 const jsonLd =
   type === 'article'
@@ -40,8 +44,14 @@ const jsonLd =
         url: canonical,
         datePublished: publishedDate?.toISOString(),
         keywords: tags.join(', '),
-        author: { '@type': 'Person', name: 'Cesar Santos' },
-        publisher: { '@type': 'Person', name: 'Cesar Santos' },
+        author: {
+          '@type': 'Person',
+          name: 'Cesar Santos',
+        },
+        publisher: {
+          '@type': 'Person',
+          name: 'Cesar Santos',
+        },
       }
     : {
         '@context': 'https://schema.org',
@@ -52,7 +62,7 @@ const jsonLd =
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -68,7 +78,7 @@ const jsonLd =
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content={siteName} />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content={ogLocale} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
@@ -84,6 +94,7 @@ const jsonLd =
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
+
   <body>
     <slot />
     <Mermaid />

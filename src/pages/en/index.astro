@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Navbar from '../components/Navbar.astro';
-import PostFilter from '../components/PostFilter.tsx';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import PostFilter from '../../components/PostFilter.tsx';
 
 const raw = await getCollection(
   'posts',
-  ({ data }) => !data.draft && data.language === 'pt',
+  ({ data }) => !data.draft && data.language === 'en',
 );
 
 const posts = raw
@@ -16,7 +16,7 @@ const posts = raw
 
     return {
       id: post.id,
-      slug: post.id,
+      slug: post.id.replace(/^en\//, ''),
       title: post.data.title,
       description: post.data.description,
       date: post.data.date.toISOString().slice(0, 10),
@@ -29,37 +29,37 @@ const posts = raw
 ---
 
 <BaseLayout
-  lang="pt-BR"
-  title="CommandLinux — DevOps, Cloud Native e o que roda por baixo"
-  description="Kubernetes, Docker, Terraform, Linux e system design — anotações de campo de quem está construindo o caminho até o CKA."
+  lang="en"
+  title="CommandLinux — DevOps, Cloud Native, and What Runs Underneath"
+  description="Kubernetes, Docker, Terraform, Linux, and system design — field notes from someone working toward the CKA."
 >
-  <Navbar language="pt" ptHref="/" enHref="/en/" />
+  <Navbar language="en" ptHref="/" enHref="/en/" />
 
   <section class="section-wrap">
     <header class="home-hero">
       <div class="hero-status">
         <span class="status-dot"></span>
-        NOVOS POSTS TODA SEMANA
+        NEW POSTS EVERY WEEK
       </div>
 
       <div class="section-tag">blog</div>
 
       <h1 class="section-title">
         DevOps, Cloud Native<br />
-        e o que roda por baixo.
+        and what runs underneath.
       </h1>
 
       <p class="home-sub">
-        Kubernetes, Docker, Terraform, Linux e system design — anotações de
-        campo de quem está construindo o caminho até o CKA.
+        Kubernetes, Docker, Terraform, Linux, and system design — field notes
+        from someone working toward the CKA.
       </p>
     </header>
 
     <PostFilter
       client:load
       posts={posts}
-      locale="pt"
-      postBasePath="/posts"
+      locale="en"
+      postBasePath="/en/posts"
     />
   </section>
 </BaseLayout>

@@ -1,0 +1,131 @@
+---
+import { getCollection, render } from 'astro:content';
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import ShareButtons from '../../../components/ShareButtons.tsx';
+import CopyCode from '../../../components/CopyCode.astro';
+
+const catColor: Record<string, string> = {
+  KUBERNETES: 'var(--c-kubernetes)',
+  DOCKER: 'var(--c-docker)',
+  TERRAFORM: 'var(--c-terraform)',
+  LINUX: 'var(--c-linux)',
+  'CI/CD': 'var(--c-cicd)',
+  'SYSTEM DESIGN': 'var(--c-sysdesign)',
+  CLOUD: 'var(--c-cloud)',
+};
+
+export async function getStaticPaths() {
+  const posts = await getCollection(
+    'posts',
+    ({ data }) => !data.draft && data.language === 'en',
+  );
+
+  return posts.map((post) => ({
+    params: {
+      slug: post.id.replace(/^en\//, ''),
+    },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const englishSlug = post.id.replace(/^en\//, '');
+const color = catColor[post.data.category] ?? 'var(--accent-hover)';
+
+const formattedDate = post.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const ptHref = post.data.translationOf
+  ? `/posts/${post.data.translationOf}/`
+  : '/';
+
+const all = (await getCollection(
+  'posts',
+  ({ data }) => !data.draft && data.language === 'en',
+))
+  .filter((item) => item.id !== post.id)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const sameCategory = all.filter(
+  (item) => item.data.category === post.data.category,
+);
+
+const remainingPosts = all.filter(
+  (item) => item.data.category !== post.data.category,
+);
+
+const related = [...sameCategory, ...remainingPosts].slice(0, 3);
+---
+
+<BaseLayout
+  lang="en"
+  title={`${post.data.title} — CommandLinux`}
+  description={post.data.description}
+  type="article"
+  publishedDate={post.data.date}
+  tags={post.data.tags}
+>
+  <Navbar
+    language="en"
+    ptHref={ptHref}
+    enHref={`/en/posts/${englishSlug}/`}
+  />
+
+  <div class="section-wrap post-page" style={`--post-color:${color}`}>
+    <a class="post-back" href="/en/">cd ..</a>
+
+    <header class="post-header">
+      <span
+        class="post-type"
+        style={`color:${color};border:1px solid ${color}`}
+      >
+        {post.data.category}
+      </span>
+
+      <h1 class="post-title">{post.data.title}</h1>
+
+      <div class="post-meta">
+        <time datetime={post.data.date.toISOString()}>
+          {formattedDate}
+        </time>
+      </div>
+    </header>
+
+    <div class="post-body">
+      <Content />
+    </div>
+
+    <ShareButtons client:load title={post.data.title} />
+    <CopyCode />
+
+    {
+      related.length > 0 && (
+        <section class="related">
+          <p class="related-label">// keep reading</p>
+
+          <div class="related-grid">
+            {related.map((item) => (
+              <a
+                class="related-card"
+                href={`/en/posts/${item.id.replace(/^en\//, '')}/`}
+                style={`--post-color:${
+                  catColor[item.data.category] ?? 'var(--accent-hover)'
+                }`}
+              >
+                <span class="related-cat">{item.data.category}</span>
+                <span class="related-title">{item.data.title}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
