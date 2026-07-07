@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+---
+<BaseLayout
+  title="404 — CommandLinux"
+  description="Página não encontrada.">
+  <Navbar />
+  <section class="section-wrap notfound">
+    <div class="nf-terminal">
+      <p class="nf-line"><span class="nf-prompt">$</span> cd /404</p>
+      <p class="nf-line nf-err">bash: cd: /404: No such file or directory</p>
+      <p class="nf-line"><span class="nf-prompt">$</span> <span class="nf-cursor"></span></p>
+    </div>
+    <h1 class="nf-title">Página não encontrada</h1>
+    <p class="nf-sub">O caminho que você tentou acessar não existe (ou foi movido).</p>
+    <a class="nf-back" href="/">$ cd ~ &nbsp;— voltar ao início</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-top: 4rem;
+  }
+  .nf-terminal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+  }
+  .nf-line { margin: 0.35rem 0; color: var(--text); }
+  .nf-prompt { color: var(--green); margin-right: 8px; }
+  .nf-err { color: #f472b6; }
+  .nf-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: var(--accent);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .nf-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .nf-sub { color: var(--text2); font-size: 0.95rem; }
+  .nf-back {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent-hover);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 10px 16px;
+    width: fit-content;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .nf-back:hover { border-color: var(--accent-hover); }
+</style>

@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.tsx';
+import CopyCode from '../../components/CopyCode.astro';
 
 const catColor = {
   KUBERNETES: 'var(--c-kubernetes)', DOCKER: 'var(--c-docker)',
@@ -21,6 +22,14 @@ const color = catColor[post.data.category] ?? 'var(--accent-hover)';
 const formattedDate = post.data.date.toLocaleDateString('pt-BR', {
   year: 'numeric', month: 'long', day: 'numeric',
 });
+
+// relacionados: mesma categoria primeiro, completa com recentes; máx 3
+const all = (await getCollection('posts', ({ data }) => !data.draft))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const sameCat = all.filter((p) => p.data.category === post.data.category);
+const rest = all.filter((p) => p.data.category !== post.data.category);
+const related = [...sameCat, ...rest].slice(0, 3);
 ---
 <BaseLayout title={`${post.data.title} — CommandLinux`}
   description={post.data.description} type="article"
@@ -34,9 +43,26 @@ const formattedDate = post.data.date.toLocaleDateString('pt-BR', {
         <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
       </div>
     </header>
+
     <div class="post-body">
       <Content />
     </div>
     <ShareButtons client:load title={post.data.title} />
+    <CopyCode />
+
+    {related.length > 0 && (
+      <section class="related">
+        <p class="related-label">// continue lendo</p>
+        <div class="related-grid">
+          {related.map((p) => (
+            <a class="related-card" href={`/posts/${p.id}/`}
+               style={`--post-color:${catColor[p.data.category] ?? 'var(--accent-hover)'}`}>
+              <span class="related-cat">{p.data.category}</span>
+              <span class="related-title">{p.data.title}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
   </div>
 </BaseLayout>
