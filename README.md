@@ -1,43 +1,136 @@
-# Astro Starter Kit: Minimal
+# CommandLinux
 
-```sh
-npm create astro@latest -- --template minimal
+> A personal technical blog where I document what I am learning about Linux, Docker, Kubernetes, Terraform, Cloud Native, and DevOps.
+
+🌐 **Live site:** [commandlinux.dev](https://www.commandlinux.dev)
+
+## About
+
+CommandLinux is a personal space for publishing technical notes, practical explanations, diagrams, and study insights.
+
+The goal is simple: learn in public, organize knowledge, and share content that may help other people who are studying the same technologies.
+
+Topics currently covered include:
+
+* Linux
+* Docker
+* Kubernetes
+* Terraform
+* Cloud Native
+* DevOps
+
+## Tech Stack
+
+* [Astro](https://astro.build/)
+* TypeScript
+* React
+* Markdown and MDX
+* Mermaid diagrams
+* Astro Content Collections
+* RSS Feed
+* Sitemap generation
+
+## Features
+
+* Posts written in Markdown
+* Categories and tags
+* Syntax highlighting for code blocks
+* Mermaid diagrams for technical explanations
+* SEO metadata and Open Graph support
+* RSS feed and sitemap generation
+* Responsive layout
+
+## Getting Started
+
+### Requirements
+
+* Node.js `>= 22.12.0`
+* npm
+
+### Installation
+
+```bash
+git clone https://github.com/csarsantos96/commandlinux-blog.git
+cd commandlinux-blog
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Run locally
 
-## 🚀 Project Structure
+```bash
+npm run dev
+```
 
-Inside of your Astro project, you'll see the following folders and files:
+The development server will be available at:
 
 ```text
-/
-├── public/
+http://localhost:4321
+```
+
+## Available Commands
+
+| Command                   | Description                                  |
+| ------------------------- | -------------------------------------------- |
+| `npm run dev`             | Starts the local development server          |
+| `npm run build`           | Builds the production version of the website |
+| `npm run preview`         | Previews the production build locally        |
+| `npm run astro -- check`  | Runs Astro checks                            |
+| `npm run astro -- --help` | Shows Astro CLI help                         |
+
+## Creating a New Post
+
+Create a new Markdown file inside:
+
+```text
+src/content/posts/
+```
+
+Example:
+
+```md
+---
+title: Understanding Linux Namespaces
+description: A practical introduction to Linux namespaces and container isolation.
+date: 2026-07-07
+category: LINUX
+tags: [linux, containers, namespaces]
+draft: false
+---
+
+Your post content goes here.
+```
+
+Posts support standard Markdown syntax, code blocks, images, links, and Mermaid diagrams.
+
+### Mermaid Example
+
+```mermaid
+flowchart LR
+    A[Host Machine] --> B[Docker Engine]
+    B --> C[Container]
+```
+
+## Project Structure
+
+```text
+.
+├── public/              # Static files such as images and favicons
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── components/      # Reusable UI components
+│   ├── content/
+│   │   └── posts/       # Blog posts written in Markdown
+│   ├── layouts/         # Page layouts
+│   ├── pages/           # Astro routes and pages
+│   ├── styles/          # Global and component styles
+│   └── content.config.ts
+├── astro.config.mjs
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Author
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Created and maintained by [César Santos](https://github.com/csarsantos96).
 
-Any static assets, like images, can be placed in the `public/` directory.
+---
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Built as a personal learning journal for technology, infrastructure, and cloud-native studies.
