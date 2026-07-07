@@ -23,6 +23,7 @@ const {
   tags = [],
 } = Astro.props;
 
+import Mermaid from '../components/Mermaid.astro';
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const siteName = 'CommandLinux';
 
@@ -80,9 +81,6 @@ const jsonLd =
   </head>
   <body>
     <slot />
-    <script type="module">
-      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-      mermaid.initialize({ startOnLoad: true, theme: "dark" });
-    </script>
+    <Mermaid />
   </body>
 </html>

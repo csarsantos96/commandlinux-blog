@@ -1,0 +1,12 @@
+---
+---
+<script>
+  import mermaid from 'mermaid';
+  mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+  const run = async () => {
+    const nodes = document.querySelectorAll('pre.mermaid');
+    if (nodes.length) await mermaid.run({ nodes: Array.from(nodes) });
+  };
+  run();
+  document.addEventListener('astro:after-swap', run);
+</script>
