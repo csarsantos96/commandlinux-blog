@@ -30,6 +30,12 @@ Topics currently covered include:
 * RSS Feed
 * Sitemap generation
 
+## How This Project Was Built
+
+The frontend was built with [Astro](https://astro.build/), and AI tools were used along the way to help with styling, layout, and content.
+
+The automation side — the GitHub Actions workflow and script that automatically translate posts from Portuguese to English using the Gemini API — was designed and implemented by me. You can check it out at [`.github/workflows/translate-posts.yml`](.github/workflows/translate-posts.yml) and [`scripts/translate-posts.mjs`](scripts/translate-posts.mjs).
+
 ## Features
 
 * Posts written in Markdown
@@ -39,6 +45,7 @@ Topics currently covered include:
 * SEO metadata and Open Graph support
 * RSS feed and sitemap generation
 * Responsive layout
+* Automatic post translation (PT → EN) via GitHub Actions and the Gemini API
 
 ## Getting Started
 
@@ -114,7 +121,10 @@ flowchart LR
 
 ```text
 .
+├── .github/
+│   └── workflows/       # GitHub Actions workflows (post translation)
 ├── public/              # Static files such as images and favicons
+├── scripts/             # Automation scripts (post translation)
 ├── src/
 │   ├── components/      # Reusable UI components
 │   ├── content/
