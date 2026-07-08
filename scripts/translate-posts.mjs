@@ -10,6 +10,9 @@ const ENGLISH_DIR = path.join(POSTS_DIR, 'en');
 const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const API_KEY = process.env.GEMINI_API_KEY;
 
+// Changing this forces old generated translations to be regenerated.
+const TRANSLATOR_VERSION = '2';
+
 if (!API_KEY) {
   console.error('GEMINI_API_KEY is missing.');
   process.exit(1);
@@ -38,7 +41,9 @@ const translationSchema = {
 };
 
 function sourceHash(content) {
-  return createHash('sha256').update(content).digest('hex');
+  return createHash('sha256')
+    .update(`${TRANSLATOR_VERSION}\n${content}`)
+    .digest('hex');
 }
 
 function normalizeDate(value) {
@@ -102,7 +107,44 @@ function parseModelJson(text) {
   return JSON.parse(json);
 }
 
+function protectFencedCodeBlocks(markdown) {
+  const blocks = [];
+
+  const text = markdown.replace(/```[\s\S]*?```/g, (block) => {
+    const token = `@@CODE_BLOCK_${blocks.length}@@`;
+
+    blocks.push({
+      token,
+      block,
+    });
+
+    return token;
+  });
+
+  return { text, blocks };
+}
+
+function restoreFencedCodeBlocks(markdown, blocks, sourceFile) {
+  let restored = markdown;
+
+  for (const { token, block } of blocks) {
+    const occurrences = restored.split(token).length - 1;
+
+    if (occurrences !== 1) {
+      throw new Error(
+        `Code block placeholder ${token} was changed or removed in ${sourceFile}.`,
+      );
+    }
+
+    restored = restored.replace(token, block);
+  }
+
+  return restored;
+}
+
 async function requestTranslation({ title, description, body, sourceFile }) {
+  const { text: protectedBody, blocks } = protectFencedCodeBlocks(body);
+
   const prompt = `
 Translate this Brazilian Portuguese technical blog post into natural English.
 
@@ -116,15 +158,15 @@ Return only one valid JSON object with exactly these keys:
 
 Rules:
 - All three keys are mandatory and must contain non-empty strings.
-- Translate the title, description, headings, paragraphs, lists, tables, and image alt text.
+- Translate titles, descriptions, headings, paragraphs, lists, tables, and image alt text.
 - Preserve Markdown structure.
 - Do not add frontmatter.
 - Do not add explanations, notes, apologies, or text outside the JSON object.
-- Do not translate fenced code blocks.
-- Do not translate inline code.
-- Do not change shell commands, file paths, URLs, identifiers, API names, YAML keys, JSON keys, Dockerfiles, Kubernetes manifests, Mermaid code, or code comments.
+- Placeholder tokens such as @@CODE_BLOCK_0@@ represent protected code blocks.
+- Copy every placeholder exactly once, unchanged, and do not wrap it in backticks.
+- Do not translate fenced code blocks, inline code, commands, file paths, URLs, identifiers, API names, YAML keys, JSON keys, Dockerfiles, Kubernetes manifests, Mermaid code, or code comments.
 - Keep technical terms such as Docker, Kubernetes, Pod, cgroup, namespace, inode, Terraform, Linux, GitHub Actions, and CI/CD when appropriate.
-- Keep the author's tone practical and direct.
+- Keep the author's practical and direct tone.
 
 Source file: ${sourceFile}
 
@@ -135,7 +177,7 @@ Description:
 ${description}
 
 Markdown body:
-${body}
+${protectedBody}
 `.trim();
 
   let lastError;
@@ -154,8 +196,13 @@ ${body}
 
       const translation = parseModelJson(response.output_text);
 
-      // Agora uma resposta incompleta também entra no retry.
       validateTranslation(translation, sourceFile);
+
+      translation.body = restoreFencedCodeBlocks(
+        translation.body,
+        blocks,
+        sourceFile,
+      );
 
       return translation;
     } catch (error) {
