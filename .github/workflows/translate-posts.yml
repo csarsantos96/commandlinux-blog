@@ -1,0 +1,57 @@
+name: Translate posts to English
+
+on:
+  workflow_dispatch:
+
+  push:
+    paths:
+      - 'src/content/posts/*.md'
+      - 'scripts/translate-posts.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/translate-posts.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Translate Portuguese posts
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-2.5-flash
+        run: npm run translate:posts
+
+      - name: Validate production build
+        run: npm run build
+
+      - name: Commit generated translations
+        run: |
+          if [[ -z "$(git status --porcelain -- src/content/posts/en)" ]]; then
+            echo "No translation changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/content/posts/en
+          git commit -m "chore: translate posts to English"
+          git push

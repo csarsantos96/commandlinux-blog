@@ -9,18 +9,21 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "translate:posts": "node scripts/translate-posts.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",
     "@astrojs/react": "^6.0.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
+    "@google/genai": "^2.10.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "astro": "^7.0.6",
     "astro-og-canvas": "^0.13.0",
     "canvaskit-wasm": "^0.41.1",
+    "gray-matter": "^4.0.3",
     "mermaid": "^11.16.0",
     "playwright": "^1.61.1",
     "react": "^19.2.7",
