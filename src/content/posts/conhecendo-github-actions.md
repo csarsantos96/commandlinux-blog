@@ -6,7 +6,7 @@ category: GITHUB ACTIONS
 tags: [github-actions, ci-cd, workflows, automacao, devops, github]
 --- 
 
-# Conhecendo o  ****GitHub Actions** ?  
+# Conhecendo o  **GitHub Actions**  
 Na prática, o **GitHub Actions** serve para criar pipelines de **CI/CD** dentro do próprio GitHub.  
 
 Ou seja, em vez de fazer tudo manualmente toda vez que alteramos o código, podemos configurar o GitHub para executar alguns comandos automaticos quando alguma coisa acontecer no repositório.  
