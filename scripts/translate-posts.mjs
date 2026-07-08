@@ -34,6 +34,7 @@ const translationSchema = {
     },
   },
   required: ['title', 'description', 'body'],
+  additionalProperties: false,
 };
 
 function sourceHash(content) {
@@ -58,13 +59,24 @@ async function fileExists(filePath) {
 }
 
 function validateTranslation(data, sourceFile) {
-  if (
-    !data ||
-    typeof data.title !== 'string' ||
-    typeof data.description !== 'string' ||
-    typeof data.body !== 'string'
-  ) {
-    throw new Error(`Invalid translation response for ${sourceFile}.`);
+  const isValid =
+    data &&
+    typeof data.title === 'string' &&
+    data.title.trim() &&
+    typeof data.description === 'string' &&
+    data.description.trim() &&
+    typeof data.body === 'string' &&
+    data.body.trim();
+
+  if (!isValid) {
+    const keys =
+      data && typeof data === 'object'
+        ? Object.keys(data).join(', ') || 'none'
+        : typeof data;
+
+    throw new Error(
+      `Invalid translation response for ${sourceFile}. Received keys: ${keys}`,
+    );
   }
 }
 
@@ -94,12 +106,20 @@ async function requestTranslation({ title, description, body, sourceFile }) {
   const prompt = `
 Translate this Brazilian Portuguese technical blog post into natural English.
 
-Return only the JSON requested by the schema.
+Return only one valid JSON object with exactly these keys:
+
+{
+  "title": "translated title",
+  "description": "translated description",
+  "body": "translated Markdown body"
+}
 
 Rules:
+- All three keys are mandatory and must contain non-empty strings.
 - Translate the title, description, headings, paragraphs, lists, tables, and image alt text.
 - Preserve Markdown structure.
-- Do not add explanations, notes, apologies, or frontmatter.
+- Do not add frontmatter.
+- Do not add explanations, notes, apologies, or text outside the JSON object.
 - Do not translate fenced code blocks.
 - Do not translate inline code.
 - Do not change shell commands, file paths, URLs, identifiers, API names, YAML keys, JSON keys, Dockerfiles, Kubernetes manifests, Mermaid code, or code comments.
@@ -132,9 +152,18 @@ ${body}
         },
       });
 
-      return parseModelJson(response.output_text);
+      const translation = parseModelJson(response.output_text);
+
+      // Agora uma resposta incompleta também entra no retry.
+      validateTranslation(translation, sourceFile);
+
+      return translation;
     } catch (error) {
       lastError = error;
+
+      console.log(
+        `Attempt ${attempt}/3 failed for ${sourceFile}: ${error.message}`,
+      );
 
       if (attempt < 3) {
         const waitMs = attempt * 2000;
@@ -202,8 +231,6 @@ async function main() {
       body: source.content,
       sourceFile: entry.name,
     });
-
-    validateTranslation(translation, entry.name);
 
     const sourceSlug = entry.name.replace(/\.md$/, '');
 
