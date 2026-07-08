@@ -1,7 +1,7 @@
 ---
 title: Como os containers funcionam por baixo do capô
 description: Entenda como Docker e o kernel Linux usam cgroups e namespaces para isolar processos, rede, usuários, sistema de arquivos e recursos dentro de containers.
-date: 2026-07-07
+date: 2026-01-15
 category: DOCKER
 tags: [docker, containers, linux, cgroups, namespaces, kernel]
 ---
