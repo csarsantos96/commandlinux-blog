@@ -15,12 +15,14 @@ tags:
 draft: false
 language: en
 translationOf: Entendendo-Control-Plane
-sourceHash: 296f08e1ef39dcb917dffbc7dc43e717ce0d08d628afda511d8168a3fa1bbd4d
+sourceHash: 731c2a8e5574d2917ac30c62bc9ddbdaeddabc713163df38c285cd8cce875c6f
 ---
 In `Kubernetes`, the cluster is basically divided into two parts:
 
-### **Control Plane** = Cluster Brain
+### **Control Plane** = The cluster's brain
 ### **Workers** = Machines that do the heavy lifting.
+
+<br>
 
 
 # **Control Plane**
@@ -34,7 +36,7 @@ flowchart LR
     subgraph CP["Control Plane - Node"]
         direction TB
 
-        ETCD[("etcd<br/>Cluster state")]
+        ETCD[("etcd<br/>Estado do cluster")]
         API["kube-apiserver"]
         SCHED["kube-scheduler"]
         CM["kube-controller-manager"]
@@ -54,20 +56,30 @@ flowchart LR
     API <--> KUBELET
 ```
 
-## **etcd** -> It stores all information. The entire real state of the `cluster`. It only communicates with the `kube API SERVER`.
+## **etcd**
+It stores all information. The entire real state of the `cluster`. It only communicates with the `kube API SERVER`.
 
-## **kube API SERVER** -> Only it has the default permission to communicate with `etcd`. Its function is to retrieve the status of the `cluster` as a whole. It communicates with everyone. All `cluster` communication happens through the `kube API SERVER`.
+## **kube API SERVER**
+Only it has default permission to communicate with etcd. Its function is to retrieve the status of the `cluster` as a whole. It will communicate with everyone. All `cluster` communication happens through the `kube API SERVER`.
 
-## **kube-scheduler** -> It is responsible for managing where each container will run; it is the controller responsible for where new containers go, and it knows the capacity of the nodes.
+## **kube scheduler**
+It is responsible for managing where each of the containers will run; it is the controller responsible for new containers, and it knows the capacity of the nodes.
 
-## **kube-controller-manager** -> It is the manager of all controllers; it ensures the state of the `cluster`. It is the `cluster` controller.
+## **kube controller manager**
+It is the manager of all controllers; it ensures the state of the `cluster`. It is the `cluster`'s controller.
+  
+<br>
 
 
 # **Workers**
 
-## **kubelet** -> It is the `Kubernetes` agent within the `node`, and any `Kubernetes node` will have a `kubelet`. It checks if everything is okay and communicates with the `kube APISERVER`, receiving the `Pod` specifications for that `node` and reporting the status back.
+## **kubelet**
+It is the Kubernetes agent within the node, and every `Kubernetes` node will have a `kubelet`. It checks if everything is okay and communicates with the `kube APISERVER`, receiving the Pod specifications for that node and reporting the status back.
 
-## **kube-proxy** -> Every `node` will have a `kube-proxy`. It handles the communication of `Pods` with the rest of the world; it observes `cluster` resources and configures network rules on the `node`.
+## **kube proxy**
+Every node will have a `kube proxy`. It enables communication between `pods` and the outside world; it observes cluster resources and configures network rules on the node.
+
+<br>
 
 
 # **Ports Used by Kubernetes Components**
@@ -76,7 +88,7 @@ flowchart LR
 ## Ports Used by Kubernetes Components
 
 | Component | Default Port | Protocol |
-|---:|---:|---:|
+|---|---:|---|
 | kube-apiserver | 6443 | TCP |
 | etcd | 2379–2380 | TCP |
 | kube-scheduler | 10259 | TCP |
@@ -87,5 +99,7 @@ flowchart LR
 ## Application Exposure Ports
 
 | Resource | Default Port | Protocol |
-|---:|---:|---:|
-| `NodePort` type Service | 30000–32767 | TCP or UDP |
+|---|---:|---|
+| NodePort Service | 30000–32767 | TCP or UDP |
+
+<br>
