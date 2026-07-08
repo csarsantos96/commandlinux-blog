@@ -34,7 +34,7 @@ flowchart LR
     subgraph CP["Control Plane - Node"]
         direction TB
 
-        ETCD[("etcd<br/>Estado do cluster") safeguard ]
+        ETCD[("etcd<br/>Cluster state")]
         API["kube-apiserver"]
         SCHED["kube-scheduler"]
         CM["kube-controller-manager"]

@@ -10,8 +10,7 @@ const ENGLISH_DIR = path.join(POSTS_DIR, 'en');
 const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const API_KEY = process.env.GEMINI_API_KEY;
 
-// Changing this forces old generated translations to be regenerated.
-const TRANSLATOR_VERSION = '2';
+
 
 if (!API_KEY) {
   console.error('GEMINI_API_KEY is missing.');
@@ -41,9 +40,7 @@ const translationSchema = {
 };
 
 function sourceHash(content) {
-  return createHash('sha256')
-    .update(`${TRANSLATOR_VERSION}\n${content}`)
-    .digest('hex');
+  return createHash('sha256').update(content).digest('hex');
 }
 
 function normalizeDate(value) {
