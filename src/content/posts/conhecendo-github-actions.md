@@ -2,7 +2,7 @@
 title: Conhecendo o GitHub Actions
 description: Entenda o que é o GitHub Actions, como ele funciona e como usar workflows para automatizar tarefas como testes, builds e deploys direto no GitHub.
 date: 2026-05-30
-category: GITHUB ACTIONS
+category: CI/CD
 tags: [github-actions, ci-cd, workflows, automacao, devops, github]
 --- 
 
