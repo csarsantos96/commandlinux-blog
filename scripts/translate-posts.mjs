@@ -68,6 +68,28 @@ function validateTranslation(data, sourceFile) {
   }
 }
 
+function parseModelJson(text) {
+  if (typeof text !== 'string' || !text.trim()) {
+    throw new Error('Gemini returned an empty response.');
+  }
+
+  const cleaned = text
+    .trim()
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim();
+
+  const firstBrace = cleaned.indexOf('{');
+  const lastBrace = cleaned.lastIndexOf('}');
+
+  const json =
+    firstBrace !== -1 && lastBrace !== -1
+      ? cleaned.slice(firstBrace, lastBrace + 1)
+      : cleaned;
+
+  return JSON.parse(json);
+}
+
 async function requestTranslation({ title, description, body, sourceFile }) {
   const prompt = `
 Translate this Brazilian Portuguese technical blog post into natural English.
@@ -110,13 +132,17 @@ ${body}
         },
       });
 
-      return JSON.parse(response.output_text);
+      return parseModelJson(response.output_text);
     } catch (error) {
       lastError = error;
 
       if (attempt < 3) {
         const waitMs = attempt * 2000;
-        console.log(`Retrying ${sourceFile} in ${waitMs / 1000}s...`);
+
+        console.log(
+          `Retrying ${sourceFile} in ${waitMs / 1000}s...`,
+        );
+
         await new Promise((resolve) => setTimeout(resolve, waitMs));
       }
     }
@@ -128,7 +154,9 @@ ${body}
 async function main() {
   await fs.mkdir(ENGLISH_DIR, { recursive: true });
 
-  const entries = await fs.readdir(POSTS_DIR, { withFileTypes: true });
+  const entries = await fs.readdir(POSTS_DIR, {
+    withFileTypes: true,
+  });
 
   const sourceFiles = entries.filter(
     (entry) => entry.isFile() && entry.name.endsWith('.md'),
