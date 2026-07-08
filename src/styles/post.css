@@ -51,7 +51,11 @@
   margin: 1.75rem 0 0.5rem;
 }
 
-.post-body p { margin: 0.9rem 0; }
+.post-body p {
+  margin: 0.9rem 0;
+  line-height: 1.8;
+  overflow-wrap: break-word;
+}
 
 .post-body a {
   color: var(--accent-hover);
@@ -65,7 +69,7 @@
 }
 .post-body li { margin: 0.35rem 0; }
 
-.post-body code {
+.post-body :not(pre) > code {
   font-family: var(--mono);
   font-size: 0.85em;
   background: var(--surface);
@@ -73,6 +77,10 @@
   border-radius: 6px;
   padding: 2px 6px;
   color: var(--text);
+
+  white-space: nowrap;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .post-body pre {
