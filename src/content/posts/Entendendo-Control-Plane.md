@@ -45,22 +45,28 @@ flowchart LR
     API <--> KUBELET
 ```
 
-## **etcd** -> Ele guarda todas as informações. Todo o estado real do `cluster`. Ele só conversa com o `kube API SERVER`.  
+## **etcd**    
+Ele guarda todas as informações. Todo o estado real do `cluster`. Ele só conversa com o `kube API SERVER`.  
 
-## **kube API SERVER** -> Só ele tem a permissão por default de conversar com o etcd. A função dele é pegar o status do `cluster`como um todo. ELe que vai conversar com todo mundo. Toda a comunicação do `cluster`acontece através do `kube API SERVER`.  
+## **kube API SERVER**    
+Só ele tem a permissão por default de conversar com o etcd. A função dele é pegar o status do `cluster`como um todo. ELe que vai conversar com todo mundo. Toda a comunicação do `cluster`acontece através do `kube API SERVER`.  
 
-## **kube shedule** -> Ele é o responsável por fazer o gerenciamento de onde vai rodar cada um dos contrainers, ele é o controler responsável onde que vai os novos containers, é ele que saber da capacidade dos nós(nodes).  
+## **kube shedule**    
+Ele é o responsável por fazer o gerenciamento de onde vai rodar cada um dos contrainers, ele é o controler responsável onde que vai os novos containers, é ele que saber da capacidade dos nós(nodes).  
 
-## **kube control manager** -> É o gerente de todos os controllers, ele que vai garantir o estado do `cluster`. Ele é o controlador do `cluster`.  
+## **kube control manager**  
+ É o gerente de todos os controllers, ele que vai garantir o estado do `cluster`. Ele é o controlador do `cluster`.  
   
 <br> 
 
 
 # **Workers**  
 
-## **kubelet** -> Ele é o agente o kubernets dentro do nó(node), e qualquer nó(node) do `kubernetes` vai ter um `kubelet`. É ele que vê se tudo está ok e que conversa com o `kube APISERVER`, recebendo a especificação dos Pods daquele node e reportando o estado de volta.  
+## **kubelet**   
+Ele é o agente o kubernets dentro do nó(node), e qualquer nó(node) do `kubernetes` vai ter um `kubelet`. É ele que vê se tudo está ok e que conversa com o `kube APISERVER`, recebendo a especificação dos Pods daquele node e reportando o estado de volta.  
 
-## **kube proxy** -> Todo nó (node) vai ter um `kube proxy`. É ele que vai fazer a comunicação dos `pods` com o resto do mundo, ele observa recursos do cluster e configura as regras de rede no nó (node).  
+## **kube proxy**  
+Todo nó (node) vai ter um `kube proxy`. É ele que vai fazer a comunicação dos `pods` com o resto do mundo, ele observa recursos do cluster e configura as regras de rede no nó (node).  
 
 <br>  
 
