@@ -14,41 +14,57 @@ tags:
 draft: false
 language: en
 translationOf: explicando-docker-como-uma-franquia
-sourceHash: 0c737c78aaf5cb35ed0703cab99c94bb9dcb8c4cf2cfb3af3f77c0e8c0771e81
+sourceHash: ac316c4114b4de1b02d1fa8f80d34bde68e27173b3cde8c835c76a0733eed5b7
 ---
-Imagine you've opened a restaurant franchise.
+Imagine you open a restaurant franchise, and within that franchise, there's a strict standard to follow. The exact same thing happens with Docker.
 
-For all units to operate identically, you need a standard: the same menu, the same food preparation method, the same equipment, and the same service process.
+### **Dockerfile: The Franchise Manual**
 
-In Docker, the idea is similar.
+When we think of a manual, we remember someone created a step-by-step guide that must be followed precisely. The Dockerfile defines this entire roadmap: it determines how the image should be created, built, and run.
 
-You create a standard environment for your application. This standard defines what needs to be installed, which files will be copied, which command will be executed, and how the application should start.
+Join The Writer's Circle event
+Example guidelines:
 
-That's where four important concepts come in:
+- Which base to use (e.g., Ubuntu);
+- Which tools to install (e.g., Nginx);
+- What should run on startup.  
+  
+**Dockerfile**  
 
-- `Dockerfile`
-- image
-- container
-- configurations
-
-Let's think of this as a franchise.
-
-## Dockerfile: The Franchise Manual
-
-Every franchise needs a manual.
-
-This manual explains how to set up the unit, what tools to use, what processes to follow, and what should happen when everything is ready to operate.
-
-In Docker, this manual is the `Dockerfile`.
-
-It describes the step-by-step process required to create the application's environment.
-
-A simple example:
-
-```dockerfile
+``` 
 FROM ubuntu:20.04
-
 RUN apt update && apt install -y nginx
-
 CMD ["nginx", "-g", "daemon off;"]
-```
+O Docker lê esse manual, executa o passo a passo e gera uma Imagem.  
+``` 
+
+### **Image: The Standard Model**  
+
+The image is the ready-made franchise model; it's the standard that all "units" will follow. Like any franchise standard, the image is **immutable**. It serves as the base for creating containers, ensuring that all start exactly the same.
+
+### **Containers: The Franchise Units** 
+
+The container is the restaurant operating in practice. Each container is an instance of the image. You can have multiple containers running simultaneously:
+
+- Unit in neighborhood A;
+- Unit in neighborhood B;
+- Unit in neighborhood C.  
+
+All follow the same standard, but operate **independently**.
+
+### **Configurations: Local Adaptations**  
+
+Although they follow the standard, each franchise can have particularities:
+
+- Different prices;
+- Specific promotions;
+- Distinct environments.  
+
+In Docker, these are the **configurations**:
+
+- Environment variables;
+- Volumes (storage);
+- Ports;
+- Configuration files.  
+
+In other words: we have the same base, but with adapted behaviors.
