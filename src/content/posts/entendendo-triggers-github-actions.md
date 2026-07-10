@@ -2,7 +2,7 @@
 title: Entendendo os triggers do GitHub Actions
 description: Aprenda como os eventos push, pull_request, workflow_dispatch, schedule, create, delete e branch_protection_rule iniciam workflows no GitHub Actions.
 date: 2026-06-27
-category: GITHUB ACTIONS
+category: CI/CD
 tags: [github-actions, triggers, workflows, yaml, ci-cd, devops]
 ---
 

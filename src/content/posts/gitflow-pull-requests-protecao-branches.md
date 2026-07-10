@@ -2,7 +2,7 @@
 title: Entendendo GitFlow, Pull Requests e proteção de branches
 description: Aprenda como organizar o desenvolvimento com GitFlow, criar Pull Requests, proteger branches importantes e definir revisores com CODEOWNERS.
 date: 2026-06-22
-category: GIT
+category: CI/CD
 tags: [git, github, gitflow, pull-request, branch-protection, codeowners]
 ---
 
