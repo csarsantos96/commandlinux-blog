@@ -2,9 +2,9 @@
 title: Understanding GitHub Actions Triggers
 description: >-
   Learn how the push, pull_request, workflow_dispatch, schedule, create, delete,
-  and branch_protection_rule events initiate workflows in GitHub Actions.
+  and branch_protection_rule events start workflows in GitHub Actions.
 date: '2026-06-27'
-category: GITHUB ACTIONS
+category: CI/CD
 tags:
   - github-actions
   - triggers
@@ -15,7 +15,7 @@ tags:
 draft: false
 language: en
 translationOf: entendendo-triggers-github-actions
-sourceHash: 387d43bfbe733a8e99df21ad19b0e84e4d6b6672436fd87a44d520b43dbd3173
+sourceHash: d289866bbeb9c2cf939ce6610a4981119dceed015c8614cf4460626aa47df159
 ---
 A GitHub Actions workflow needs to know when to run.
 
@@ -26,8 +26,8 @@ It can start when:
 - a branch is created;
 - a tag is deleted;
 - a scheduled time arrives;
-- someone manually runs the workflow;
-- a protection rule is changed.
+- someone runs the workflow manually;
+- a branch protection rule is changed.
 
 The events that start a workflow are called **triggers**.
 
@@ -104,7 +104,7 @@ git push origin main
 
 After the push, GitHub looks for workflows configured with this event.
 
-# Running only on a specific branch
+# Running Only on a Specific Branch
 
 We can limit the workflow to a specific branch:
 
@@ -115,7 +115,7 @@ on:
       - main
 ```
 
-Now the workflow will run only when there is a push to `main`.
+Now the workflow will only run when there is a push to `main`.
 
 We can also monitor multiple branches:
 
@@ -127,7 +127,7 @@ on:
       - develop
 ```
 
-# Using branch patterns
+# Using Branch Patterns
 
 We can use patterns to monitor groups of branches:
 
@@ -149,7 +149,7 @@ feature/pagamento/pix
 
 When using characters like `*`, it is recommended to enclose the value in quotes.
 
-# Ignoring branches
+# Ignoring Branches
 
 We can also define branches that should not start the workflow:
 
@@ -161,9 +161,9 @@ on:
       - "feature/**"
 ```
 
-In this case, pushes to `develop` or `feature` branches will be ignored.
+In this case, pushes made to `develop` or `feature` branches will be ignored.
 
-# Running workflows with tags
+# Running Workflows with Tags
 
 The `push` event can also monitor tags:
 
@@ -219,7 +219,7 @@ jobs:
         run: echo "Publicando a versão ${{ github.ref_name }}"
 ```
 
-# Filtering files with `paths`
+# File Filters with `paths`
 
 Not every change needs to run all pipelines.
 
@@ -249,7 +249,7 @@ on:
 
 The workflow will run when:
 
-1. the push happens to `main`;
+1. the push occurs on `main`;
 2. any file in `backend` or `.github/workflows` is modified.
 
 ```mermaid
@@ -261,7 +261,7 @@ flowchart TD
     D -- Sim --> E[Workflow executa]
 ```
 
-# Ignoring files
+# Ignoring Files
 
 We can also use `paths-ignore`:
 
@@ -291,7 +291,7 @@ It is widely used for:
 - checking formatting;
 - running linters;
 - finding vulnerabilities;
-- preventing broken code from merging.
+- preventing the merge of broken code.
 
 Example:
 
@@ -313,7 +313,7 @@ jobs:
         run: echo "Executando testes do Pull Request"
 ```
 
-# Pull Request for a specific branch
+# Pull Request to a Specific Branch
 
 We can run the workflow only when the target branch is `main`:
 
@@ -344,7 +344,7 @@ main
 
 In the `pull_request` event, the `branches` filter considers the target branch.
 
-# Pull Request activity types
+# Pull Request Activity Types
 
 We can control which activities will start the workflow:
 
@@ -361,9 +361,9 @@ In this example, the workflow will start when the Pull Request is:
 
 - opened;
 - updated with new commits;
-- re-opened.
+- reopened.
 
-Full example:
+Complete example:
 
 ```yaml
 name: Testes do Pull Request
@@ -389,7 +389,7 @@ jobs:
         run: echo "Validando o Pull Request"
 ```
 
-# Filtering files in the Pull Request
+# Filtering Files in the Pull Request
 
 We can also use `paths`:
 
@@ -416,12 +416,12 @@ on:
   workflow_dispatch:
 ```
 
-With it, the workflow can be started from the GitHub Actions tab.
+With it, the workflow can be started from the Actions tab on GitHub.
 
 This trigger is useful for:
 
 - performing manual deploys;
-- executing maintenance;
+- running maintenance tasks;
 - generating reports;
 - cleaning up resources;
 - testing an automation;
@@ -444,9 +444,9 @@ jobs:
         run: echo "O workflow foi iniciado manualmente"
 ```
 
-# Receiving parameters manually
+# Receiving Parameters Manually
 
-The `workflow_dispatch` can also receive user-provided values.
+The `workflow_dispatch` can also receive values provided by the user.
 
 ```yaml
 name: Executar imagem Docker
@@ -480,7 +480,7 @@ on:
     - cron: "0 9 * * 1-5"
 ```
 
-In this example, the workflow will run Monday through Friday at 09:00 UTC.
+In this example, the workflow will run from Monday to Friday, at 09:00 UTC.
 
 A cron expression has five positions:
 
@@ -510,8 +510,6 @@ mês: qualquer
 dia da semana: segunda a sexta
 ```
 
-Times configured in `schedule` use UTC.
-
 Example:
 
 ```yaml
@@ -532,6 +530,8 @@ jobs:
       - name: Executar testes
         run: echo "Executando testes agendados"
 ```
+
+Times configured in the `schedule` use UTC.
 
 # `create` Trigger
 
@@ -601,7 +601,7 @@ This trigger can be used for:
 - sending notifications;
 - removing temporary environments;
 - deleting resources linked to a feature;
-- maintaining repository auditing.
+- maintaining repository audit trails.
 
 Example:
 
@@ -624,7 +624,7 @@ jobs:
 
 # `branch_protection_rule` Trigger
 
-The `branch_protection_rule` event starts a workflow when a protection rule is created, changed, or deleted.
+The `branch_protection_rule` event starts a workflow when a protection rule is created, changed, or removed.
 
 ```yaml
 on:
@@ -655,7 +655,7 @@ deleted
 └── regra removida
 ```
 
-This event can help with repository auditing.
+This event can assist in repository auditing.
 
 Example:
 
@@ -680,7 +680,7 @@ jobs:
           echo "Ação: ${{ github.event.action }}"
 ```
 
-# Combining multiple triggers
+# Combining Multiple Triggers
 
 A workflow can have more than one trigger.
 
@@ -720,7 +720,7 @@ por um Pull Request para a main
 manualmente
 ```
 
-# Identifying the event that started the workflow
+# Identifying the Event that Started the Workflow
 
 We can find out which trigger started the workflow using:
 
@@ -761,7 +761,7 @@ pull_request
 workflow_dispatch
 ```
 
-# Executing steps based on the trigger
+# Running Steps Based on the Trigger
 
 We can also use conditions:
 
@@ -800,7 +800,7 @@ In this example:
 - tests are run on all events;
 - deploy is run only when the event is `push`.
 
-# Complete pipeline example
+# Complete Pipeline Example
 
 ```yaml
 name: Pipeline da aplicação
@@ -865,19 +865,19 @@ flowchart TD
     E -- Sim --> G[Executar deploy]
 ```
 
-# Summary of key triggers
+# Summary of Key Triggers
 
 | Trigger | When it runs |
 |---|---|
 | `push` | When commits or tags are pushed |
-| `pull_request` | When an activity occurs in a Pull Request |
+| `pull_request` | When an activity occurs on a Pull Request |
 | `workflow_dispatch` | When the workflow is manually started |
 | `schedule` | When a scheduled time arrives |
 | `create` | When a branch or tag is created |
 | `delete` | When a branch or tag is deleted |
 | `branch_protection_rule` | When a protection rule is changed |
 
-# Best practices
+# Best Practices
 
 Avoid running all workflows on every change.
 
@@ -930,11 +930,11 @@ This way, each pipeline will run only when truly necessary.
 
 Triggers define when a GitHub Actions workflow should run.
 
-The `push` trigger reacts to pushing commits or tags. The `pull_request` trigger allows validating changes before merging. The `workflow_dispatch` trigger offers manual execution, while `schedule` allows creating scheduled automations.
+The `push` trigger reacts to commits or tags being pushed. The `pull_request` allows validating changes before merging. The `workflow_dispatch` offers manual execution, while the `schedule` allows creating scheduled automations.
 
 Events like `create`, `delete`, and `branch_protection_rule` can also be used for repository auditing, security, and management.
 
-With branch and path filters, we can control exactly when the workflow should run:
+With branch and path filters, we can precisely control when the workflow should run:
 
 ```yaml
 on:
@@ -945,4 +945,4 @@ on:
       - "backend/**"
 ```
 
-Thus, the pipeline stops running for every change and starts responding only to events important to the project.
+Thus, the pipeline stops running for every change and only responds to events important to the project.

@@ -4,7 +4,7 @@ description: >-
   Learn how to organize development with GitFlow, create Pull Requests, protect
   important branches, and define reviewers with CODEOWNERS.
 date: '2026-06-22'
-category: GIT
+category: CI/CD
 tags:
   - git
   - github
@@ -15,11 +15,11 @@ tags:
 draft: false
 language: en
 translationOf: gitflow-pull-requests-protecao-branches
-sourceHash: cceb0c6934e02bd9a30fbcc51d0e46af23896111f0c94788d8ab91532786ef37
+sourceHash: ea21ba89eec86700641a1947063322b6e2df4bd17b282668aaa9b89d5576b616
 ---
 When working alone on a small project, it's common to make all changes directly to the main branch.
 
-The flow usually looks like this:
+The workflow usually looks like this:
 
 ```bash
 git add .
@@ -27,7 +27,7 @@ git commit -m "adiciona nova funcionalidade"
 git push origin main
 ```
 
-This process might work for personal projects, but it starts to present problems when multiple people work on the same repository.
+This process might work for personal projects, but it starts to cause problems when multiple people work on the same repository.
 
 Imagine a team where:
 
@@ -36,7 +36,7 @@ Imagine a team where:
 - another handles infrastructure;
 - another configures GitHub Actions workflows.
 
-If everyone sends changes directly to the `main`, the chances of conflicts, failures, and unreviewed code reaching production increase.
+If everyone pushes changes directly to `main`, the chances of conflicts, failures, and unreviewed code reaching production increase.
 
 To organize this process, we can use:
 
@@ -68,7 +68,7 @@ Each one has a different responsibility.
 
 The `main` branch represents the stable code of the project.
 
-Typically, it contains the version that is ready for production or is already published.
+Normally, it contains the version that is ready for production or is already published.
 
 ```text
 main
@@ -77,7 +77,7 @@ main
 
 For this reason, it is not recommended to develop features directly on it.
 
-The `main` branch should only receive changes that have already been:
+The `main` should only receive changes that have already been:
 
 - developed;
 - reviewed;
@@ -86,7 +86,7 @@ The `main` branch should only receive changes that have already been:
 
 # `develop` Branch
 
-The `develop` branch gathers the features being prepared for the next version.
+The `develop` branch gathers features being prepared for the next version.
 
 ```text
 develop
@@ -95,7 +95,7 @@ develop
 
 Different feature branches are integrated into `develop`.
 
-When the next version is stable, it can proceed to a `release` branch or be integrated into `main`, depending on the project's adopted workflow.
+When the next version is stable, it can proceed to a release branch or be integrated into `main`, depending on the project's adopted workflow.
 
 # `feature` Branches
 
@@ -119,16 +119,16 @@ Each feature is developed in isolation.
 
 This allows one person to work on the login screen while another develops the registration, without one change directly interfering with the other.
 
-A common flow would be:
+A common workflow would be:
 
 ```text
 develop
    └── feature/login
 ```
 
-After the feature is ready, it returns to `develop` via a Pull Request.
+Once the feature is ready, it returns to `develop` via a Pull Request.
 
-# Creating a Feature Branch
+# Creating a feature branch
 
 First, we access the development branch:
 
@@ -148,7 +148,7 @@ Then, we create the new branch:
 git checkout -b feature/login
 ```
 
-We can also use the more recent command:
+We can also use the newer command:
 
 ```bash
 git switch -c feature/login
@@ -184,21 +184,21 @@ Example:
 release/1.2.0
 ```
 
-At this stage, major features are typically not added.
+At this stage, major features are not usually added.
 
-The branch is used for:
+The branch is used to:
 
-- conducting final tests;
-- fixing minor issues;
-- updating the project version;
-- preparing documentation;
-- validating publication.
+- perform final tests;
+- fix minor problems;
+- update the project version;
+- prepare documentation;
+- validate publication.
 
 When the version is ready, it can be integrated into `main`.
 
 # `hotfix` Branches
 
-`hotfix` branches are used to fix urgent problems already in production.
+`hotfix` branches are used to fix urgent problems that are already in production.
 
 Example:
 
@@ -222,11 +222,11 @@ git commit -m "fix: corrige erro no login"
 git push -u origin hotfix/corrigir-login
 ```
 
-The fix can be integrated back into `main` and also into `develop`, preventing the problem from reappearing in the next version.
+The fix can then be integrated back into `main` and also into `develop`, preventing the problem from reappearing in the next version.
 
 # GitFlow Overview
 
-The flow can be represented as follows:
+The workflow can be represented as follows:
 
 ```mermaid
 flowchart TD
@@ -263,7 +263,7 @@ hotfix/*
 
 # What is a Pull Request?
 
-A `Pull Request`, also known as a `PR`, is a proposal to integrate changes from one branch into another.
+A `Pull Request`, also known as `PR`, is a proposal to integrate changes from one branch into another.
 
 For example:
 
@@ -273,7 +273,7 @@ feature/login → develop
 
 In this case, we are proposing that the code developed in the `feature/login` branch be integrated into the `develop` branch.
 
-In projects that do not use the `develop` branch, the flow might be:
+In projects that do not use the `develop` branch, the workflow can be:
 
 ```text
 feature/login → main
@@ -288,7 +288,7 @@ Other people can:
 - request corrections;
 - verify tests;
 - approve the code;
-- block the merge if there's an issue.
+- block the merge if there is a problem.
 
 # Creating a Pull Request
 
@@ -344,7 +344,7 @@ Foi criada a tela de login da aplicação.
 
 A good description greatly facilitates the work of those who will review the code.
 
-# Pull Request Flow
+# Pull Request Workflow
 
 ```mermaid
 flowchart TD
@@ -361,19 +361,19 @@ flowchart TD
 
 The Pull Request is not just a button to merge branches.
 
-It also serves as:
+It also serves as a:
 
-- a decision history;
-- a discussion space;
-- a review process;
-- a record of changes;
-- an integration point with automated tests.
+- decision history;
+- discussion space;
+- review process;
+- change log;
+- integration point with automated tests.
 
-# What is Branch Protection?
+# What is branch protection?
 
 Branch protection is a set of rules used to prevent dangerous changes on important branches.
 
-Typically, we protect branches like:
+Normally, we protect branches like:
 
 ```text
 main
@@ -386,26 +386,26 @@ Without a protection rule, someone could execute:
 git push origin main
 ```
 
-This would allow pushing code directly to the main branch, without review and without tests.
+This would allow code to be pushed directly to the main branch, without review or tests.
 
 In a team, this type of change can break the application for everyone.
 
-# Branch Protection Rules
+# Branch protection rules
 
 Protection rules can require that:
 
-- changes are submitted via Pull Request;
-- the Pull Request has one or more approvals;
+- changes be submitted via Pull Request;
+- the Pull Request have one or more approvals;
 - project tests pass;
-- the branch is up-to-date before merging;
-- all comments are resolved;
-- the code has no conflicts;
-- specific responsible parties review the code;
-- commits are signed;
+- the branch be up-to-date before merging;
+- all comments be resolved;
+- the code have no conflicts;
+- specific owners review the code;
+- commits be signed;
 - the branch cannot be deleted;
-- direct pushes are blocked.
+- direct pushes be blocked.
 
-A protected workflow can operate like this:
+A protected workflow can work like this:
 
 ```text
 feature/login
@@ -421,7 +421,7 @@ Aprovação
 Merge na main
 ```
 
-# Why Protect `main`?
+# Why protect `main`?
 
 The main branch represents the most important version of the repository.
 
@@ -437,9 +437,9 @@ If anyone can change it directly, problems such as the following can occur:
 
 Branch protection transforms `main` into a controlled area.
 
-No one bypasses the process. Everyone goes through the Pull Request.
+No one gets in through the window. Everyone goes through the Pull Request.
 
-# Example Rule for `main`
+# Example of a rule for `main`
 
 A common configuration can require:
 
@@ -464,7 +464,7 @@ GitHub can block the operation.
 
 The `CODEOWNERS` file allows you to define owners for different parts of the project.
 
-It informs GitHub who should review a change depending on the modified files.
+It tells GitHub who should review a change depending on the modified files.
 
 We can understand its function as follows:
 
@@ -476,7 +476,7 @@ The file can be created in:
 .github/CODEOWNERS
 ```
 
-# CODEOWNERS Example
+# CODEOWNERS example
 
 Imagine a project with this structure:
 
@@ -503,11 +503,11 @@ In this example:
 
 - changes in the front-end request the front-end owner;
 - changes in the back-end request the back-end owner;
-- changes in the infrastructure request the infrastructure owner;
-- changes in workflows request a specific review;
+- infrastructure changes request the infrastructure owner;
+- workflow changes request a specific review;
 - `*` defines a default owner.
 
-# Using Teams in CODEOWNERS
+# Using teams in CODEOWNERS
 
 In a GitHub organization, we can also use teams:
 
@@ -520,13 +520,13 @@ In a GitHub organization, we can also use teams:
 
 Thus, when someone changes a file within `backend`, GitHub can automatically request a review from the responsible team.
 
-# CODEOWNERS and Branch Protection
+# CODEOWNERS and branch protection
 
 `CODEOWNERS` becomes even more useful when used in conjunction with protection rules.
 
 The rule can require approval from the owners defined in the file.
 
-The flow then works like this:
+The workflow then works like this:
 
 ```mermaid
 flowchart TD
@@ -539,7 +539,7 @@ flowchart TD
     F -- Sim --> H[Merge liberado]
 ```
 
-# Complete Flow
+# Complete workflow
 
 Using GitFlow, Pull Requests, branch protection, and CODEOWNERS, the process can look like this:
 
@@ -582,11 +582,11 @@ CODEOWNERS
 
 GitFlow helps organize development through branches with different responsibilities.
 
-Feature branches isolate new functionalities. Release branches prepare new versions, while hotfix branches fix urgent production issues.
+`feature` branches isolate new functionalities. `release` branches prepare new versions, while `hotfix` branches fix urgent problems in production.
 
 Pull Requests create a review step before code integration.
 
-Protection rules prevent direct changes on important branches, and the `CODEOWNERS` file helps route each change to the correct owners.
+Protection rules prevent direct changes to important branches, and the `CODEOWNERS` file helps route each change to the correct owners.
 
 When these tools are used together, development becomes more organized, secure, and predictable.
 
