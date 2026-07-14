@@ -34,7 +34,10 @@ Topics currently covered include:
 
 The frontend was built with [Astro](https://astro.build/), and AI tools were used along the way to help with styling, layout, and content.
 
-The automation side — the GitHub Actions workflow and script that automatically translate posts from Portuguese to English using the Gemini API — was designed and implemented by me. You can check it out at [`.github/workflows/translate-posts.yml`](.github/workflows/translate-posts.yml) and [`scripts/translate-posts.mjs`](scripts/translate-posts.mjs).
+The automation side was designed and implemented by me, and includes two GitHub Actions workflows:
+
+* **Post translation** — automatically translates new posts from Portuguese to English using the Gemini API. See [`.github/workflows/translate-posts.yml`](.github/workflows/translate-posts.yml) and [`scripts/translate-posts.mjs`](scripts/translate-posts.mjs).
+* **Newsletter drafts** — automatically creates a draft email in Buttondown for every new published post. See [`.github/workflows/newsletter.yml`](.github/workflows/newsletter.yml).
 
 ## Features
 
@@ -46,6 +49,7 @@ The automation side — the GitHub Actions workflow and script that automaticall
 * RSS feed and sitemap generation
 * Responsive layout
 * Automatic post translation (PT → EN) via GitHub Actions and the Gemini API
+* Automatic newsletter draft creation (Buttondown) for new posts via GitHub Actions
 
 ## Getting Started
 
@@ -76,13 +80,14 @@ http://localhost:4321
 
 ## Available Commands
 
-| Command                   | Description                                  |
-| ------------------------- | -------------------------------------------- |
-| `npm run dev`             | Starts the local development server          |
-| `npm run build`           | Builds the production version of the website |
-| `npm run preview`         | Previews the production build locally        |
-| `npm run astro -- check`  | Runs Astro checks                            |
-| `npm run astro -- --help` | Shows Astro CLI help                         |
+| Command                   | Description                                               |
+|---------------------------|-----------------------------------------------------------|
+| `npm run dev`             | Starts the local development server                       |
+| `npm run build`           | Builds the production version of the website              |
+| `npm run preview`         | Previews the production build locally                     |
+| `npm run astro -- check`  | Runs Astro checks                                         |
+| `npm run astro -- --help` | Shows Astro CLI help                                      |
+| `npm run translate:posts` | Translates new/updated posts (PT → EN) via the Gemini API |
 
 ## Creating a New Post
 
@@ -122,13 +127,14 @@ flowchart LR
 ```text
 .
 ├── .github/
-│   └── workflows/       # GitHub Actions workflows (post translation)
+│   └── workflows/       # GitHub Actions workflows (post translation, newsletter)
 ├── public/              # Static files such as images and favicons
 ├── scripts/             # Automation scripts (post translation)
 ├── src/
 │   ├── components/      # Reusable UI components
 │   ├── content/
-│   │   └── posts/       # Blog posts written in Markdown
+│   │   └── posts/       # Blog posts written in Markdown (PT)
+│   │       └── en/      # Auto-generated English translations
 │   ├── layouts/         # Page layouts
 │   ├── pages/           # Astro routes and pages
 │   ├── styles/          # Global and component styles

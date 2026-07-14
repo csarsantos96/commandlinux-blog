@@ -6,16 +6,7 @@ import Navbar from '../../components/Navbar.astro';
 import ShareButtons from '../../components/ShareButtons.tsx';
 import CopyCode from '../../components/CopyCode.astro';
 import Newsletter from '../../components/Newsletter.astro';
-
-const catColor: Record<string, string> = {
-  KUBERNETES: 'var(--c-kubernetes)',
-  DOCKER: 'var(--c-docker)',
-  TERRAFORM: 'var(--c-terraform)',
-  LINUX: 'var(--c-linux)',
-  'CI/CD': 'var(--c-cicd)',
-  'SYSTEM DESIGN': 'var(--c-sysdesign)',
-  CLOUD: 'var(--c-cloud)',
-};
+import { getPostColor } from '../../utils/categories';
 
 export async function getStaticPaths() {
   const portuguesePosts = await getCollection(
@@ -44,7 +35,7 @@ export async function getStaticPaths() {
 const { post, enHref } = Astro.props;
 const { Content } = await render(post);
 
-const color = catColor[post.data.category] ?? 'var(--accent-hover)';
+const color = getPostColor(post.data.category);
 
 const formattedDate = post.data.date.toLocaleDateString('pt-BR', {
   year: 'numeric',
@@ -88,12 +79,7 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
     <a class="post-back" href="/">cd ..</a>
 
     <header class="post-header">
-      <span
-        class="post-type"
-        style={`color:${color};border:1px solid ${color}`}
-      >
-        {post.data.category}
-      </span>
+      <span class="post-type">{post.data.category}</span>
 
       <h1 class="post-title">{post.data.title}</h1>
 
@@ -122,9 +108,7 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
               <a
                 class="related-card"
                 href={`/posts/${item.id}/`}
-                style={`--post-color:${
-                  catColor[item.data.category] ?? 'var(--accent-hover)'
-                }`}
+                style={`--post-color:${getPostColor(item.data.category)}`}
               >
                 <span class="related-cat">{item.data.category}</span>
                 <span class="related-title">{item.data.title}</span>

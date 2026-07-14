@@ -2,7 +2,7 @@
 title: "Sobrevivendo no shell: do FHS ao diff, o Linux que você usa todo dia"
 description: "Anotações de estudo passadas a limpo: estrutura de diretórios, permissões, manipulação de arquivos, wildcards, compactação, links, processos e leitura de logs no terminal."
 date: 2026-07-14
-category: "Linux"
+category: "LINUX"
 tags: ["linux", "cli", "shell", "fhs", "sysadmin"]
 ---
 
