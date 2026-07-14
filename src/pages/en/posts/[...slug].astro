@@ -6,7 +6,7 @@ import Navbar from '../../../components/Navbar.astro';
 import ShareButtons from '../../../components/ShareButtons.tsx';
 import CopyCode from '../../../components/CopyCode.astro';
 
-const catColor: Record<string, string> = {
+const categoryColors: Record<string, string> = {
   KUBERNETES: 'var(--c-kubernetes)',
   DOCKER: 'var(--c-docker)',
   TERRAFORM: 'var(--c-terraform)',
@@ -15,6 +15,15 @@ const catColor: Record<string, string> = {
   'SYSTEM DESIGN': 'var(--c-sysdesign)',
   CLOUD: 'var(--c-cloud)',
 };
+
+function getCategoryColor(category: string): string {
+  const normalizedCategory = category.trim().toUpperCase();
+
+  return (
+    categoryColors[normalizedCategory] ??
+    'var(--accent-hover)'
+  );
+}
 
 export async function getStaticPaths() {
   const posts = await getCollection(
@@ -34,7 +43,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 
 const englishSlug = post.id.replace(/^en\//, '');
-const color = catColor[post.data.category] ?? 'var(--accent-hover)';
+const postColor = getCategoryColor(post.data.category);
 
 const formattedDate = post.data.date.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -46,10 +55,12 @@ const ptHref = post.data.translationOf
   ? `/posts/${post.data.translationOf}/`
   : '/';
 
-const all = (await getCollection(
-  'posts',
-  ({ data }) => !data.draft && data.language === 'en',
-))
+const all = (
+  await getCollection(
+    'posts',
+    ({ data }) => !data.draft && data.language === 'en',
+  )
+)
   .filter((item) => item.id !== post.id)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
@@ -78,16 +89,14 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
     enHref={`/en/posts/${englishSlug}/`}
   />
 
-  <div class="section-wrap post-page" style={`--post-color:${color}`}>
+  <div
+    class="section-wrap post-page"
+    style={`--post-color: ${postColor};`}
+  >
     <a class="post-back" href="/en/">cd ..</a>
 
     <header class="post-header">
-      <span
-        class="post-type"
-        style={`color:${color};border:1px solid ${color}`}
-      >
-        {post.data.category}
-      </span>
+      <span class="post-type">{post.data.category}</span>
 
       <h1 class="post-title">{post.data.title}</h1>
 
@@ -115,9 +124,9 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
               <a
                 class="related-card"
                 href={`/en/posts/${item.id.replace(/^en\//, '')}/`}
-                style={`--post-color:${
-                  catColor[item.data.category] ?? 'var(--accent-hover)'
-                }`}
+                style={`--post-color: ${getCategoryColor(
+                  item.data.category,
+                )};`}
               >
                 <span class="related-cat">{item.data.category}</span>
                 <span class="related-title">{item.data.title}</span>
