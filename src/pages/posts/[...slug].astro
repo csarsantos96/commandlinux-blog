@@ -6,7 +6,7 @@ import Navbar from '../../components/Navbar.astro';
 import ShareButtons from '../../components/ShareButtons.tsx';
 import CopyCode from '../../components/CopyCode.astro';
 import Newsletter from '../../components/Newsletter.astro';
-import { getPostColor } from '../../utils/categories';
+
 
 export async function getStaticPaths() {
   const portuguesePosts = await getCollection(
