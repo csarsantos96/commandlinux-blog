@@ -14,11 +14,11 @@ tags:
 draft: false
 language: en
 translationOf: entendendo-conceitos-github-actions
-sourceHash: e299723f6f4b8ac4faba023a13dcb6a8a7716dfcc6cd984783f6405cc4622ac2
+sourceHash: a99ad5e96faa273d1b812cc19ed37974f5e8f1577a61c91ddbac3ab3db110fc3
 ---
 # Understanding Contexts in GitHub Actions: github, env, vars, and secrets
 
-If you've started learning GitHub Actions, you've probably encountered expressions like these:
+If you've started studying GitHub Actions, you've probably come across expressions like these:
 
 ```yaml
 ${{ github.repository }}
@@ -38,7 +38,7 @@ Understanding this difference is crucial for writing more organized, reusable, a
 
 In this article, we'll explore the main GitHub Actions contexts using practical examples.
 
----
+
 
 ## What you will learn
 
@@ -50,7 +50,7 @@ By the end of this article, you will be able to:
 - Avoid common errors involving Secrets;
 - Write cleaner and more secure workflows.
 
----
+
 
 ## What is a Context?
 
@@ -89,7 +89,7 @@ In practice, it works like accessing a property of an object in JavaScript.
 github.repository
 ```
 
----
+
 
 ## How GitHub processes an expression
 
@@ -103,19 +103,19 @@ are not interpreted by Bash.
 
 GitHub Actions itself resolves this expression **before** sending the Job to the Runner.
 
-This allows the use of conditions like:
+This allows for using conditions like:
 
 ```yaml
 if: ${{ github.ref_name == 'main' }}
 ```
 
-In this case, GitHub decides whether the Job will run even before the Runner starts.
+In this case, GitHub decides whether the Job will be executed even before the Runner starts.
 
----
+
 
 ## The `github` context
 
-The `github` context contains virtually all information about the Workflow's execution.
+The `github` context contains virtually all information about the Workflow execution.
 
 Some commonly used properties are:
 
@@ -143,7 +143,7 @@ steps:
       echo "Commit: ${{ github.sha }}"
 ```
 
----
+
 
 ## Context is not the same as Environment Variable
 
@@ -157,7 +157,7 @@ First:
 run: echo "${{ github.ref_name }}"
 ```
 
-Here, GitHub replaces the expression before execution.
+Here GitHub substitutes the expression before execution.
 
 Now:
 
@@ -165,11 +165,11 @@ Now:
 run: echo "$GITHUB_REF_NAME"
 ```
 
-In this case, Bash within the Runner interprets the variable.
+In this case, Bash inside the Runner interprets the variable.
 
 The result might be similar, but the moment each value is resolved is completely different.
 
----
+
 
 ## The `env` context
 
@@ -203,7 +203,7 @@ The `env` context can be defined at three levels:
 
 Each level can overwrite the previous one.
 
----
+
 
 ## The `vars` context
 
@@ -227,9 +227,9 @@ ${{ vars.APP_URL }}
 ${{ vars.DOCKER_IMAGE }}
 ```
 
-This information can be reused by multiple workflows without needing to repeat values in the code.
+This information can be reused by multiple workflows without repeating values in the code.
 
----
+
 
 ## The `secrets` context
 
@@ -247,13 +247,13 @@ steps:
   - run: node scripts/translate-post.mjs
 ```
 
-The secret is never written directly into the code.
+The secret is never written directly in the code.
 
----
+
 
 ## What never to do
 
-Even if GitHub tries to mask sensitive values in the logs, the recommendation is to never print Secrets.
+Even if GitHub attempts to mask sensitive values in logs, the recommendation is never to print Secrets.
 
 Avoid doing this:
 
@@ -263,18 +263,18 @@ run: echo "${{ secrets.GEMINI_API_KEY }}"
 
 The best practice is to pass the Secret directly to the application that will use it.
 
----
+
 
 ## Summary
 
-| Context  | Usage                               |
-|----------|-------------------------------------|
-| `github` | Workflow execution information      |
-| `env`    | Variables defined in the workflow   |
-| `vars`   | Non-sensitive GitHub configurations |
-| `secrets`| Confidential information            |
+| Context | Usage |
+|----------|------------|
+| `github` | Workflow execution information |
+| `env` | Variables defined in the workflow |
+| `vars` | Non-sensitive GitHub configurations |
+| `secrets` | Confidential information |
 
----
+
 
 ## Conclusion
 
@@ -282,7 +282,6 @@ Contexts are one of the most important features of GitHub Actions. Understanding
 
 Although they all appear to be just "variables," each has a specific purpose and is interpreted at different times during execution. Mastering this difference prevents common errors and makes your pipelines much more predictable.
 
----
 
 ## References
 
