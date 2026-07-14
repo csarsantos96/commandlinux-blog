@@ -3,16 +3,9 @@ title: "Entendendo Contextos no GitHub Actions: github, env, vars e secrets"
 description: "Aprenda como funcionam os contextos do GitHub Actions, quando utilizar github, env, vars e secrets e entenda as diferenças entre eles com exemplos práticos."
 pubDate: 2026-07-14
 author: "Cesar Santos"
-category: "GitHub Actions"
-tags:
-  - GitHub Actions
-  - CI/CD
-  - DevOps
-  - GitHub
-  - Automation
-heroImage: "/images/posts/github-actions-contexts.webp"
-readingTime: 9
-language: "pt-BR"
+category: "CI/CD"
+tags: [GitHub Actions, CI/CD, DevOps,GitHub, Automation]
+  
 ---
 
 # Entendendo Contextos no GitHub Actions: github, env, vars e secrets
