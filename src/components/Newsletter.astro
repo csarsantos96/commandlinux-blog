@@ -1,0 +1,107 @@
+---
+const BUTTONDOWN_USER = 'SEU_USUARIO'; // troque aqui
+---
+
+<section class="newsletter">
+  <p class="newsletter-label">// newsletter</p>
+
+  <div class="newsletter-box">
+    <h2 class="newsletter-title">Receba novos posts por email</h2>
+    <p class="newsletter-desc">
+      Linux, DevOps e Cloud. Sem spam, cancele quando quiser.
+    </p>
+
+    <form
+      action={`https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`}
+      method="post"
+      target="popupwindow"
+      class="newsletter-form"
+    >
+      <input
+        type="email"
+        name="email"
+        id="bd-email"
+        placeholder="seu@email.com"
+        required
+        aria-label="Seu email"
+      />
+      <button type="submit">Assinar</button>
+    </form>
+  </div>
+</section>
+
+<style>
+  .newsletter {
+    margin: 4rem 0 3rem;
+  }
+
+  .newsletter-label {
+    color: var(--text-muted, #6b7280);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .newsletter-box {
+    border: 1px solid var(--post-color, var(--accent-hover));
+    border-radius: 8px;
+    padding: 1.75rem;
+    background: color-mix(in srgb, var(--post-color, var(--accent-hover)) 5%, transparent);
+  }
+
+  .newsletter-title {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+    color: var(--text-primary, #e5e7eb);
+  }
+
+  .newsletter-desc {
+    color: var(--text-muted, #9ca3af);
+    font-size: 0.9375rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .newsletter-form input {
+    flex: 1;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--border, #374151);
+    border-radius: 6px;
+    background: var(--bg-primary, #0d1117);
+    color: var(--text-primary, #e5e7eb);
+    font-family: inherit;
+    font-size: 0.9375rem;
+  }
+
+  .newsletter-form input:focus {
+    outline: none;
+    border-color: var(--post-color, var(--accent-hover));
+  }
+
+  .newsletter-form button {
+    padding: 0.625rem 1.25rem;
+    border: 1px solid var(--post-color, var(--accent-hover));
+    border-radius: 6px;
+    background: transparent;
+    color: var(--post-color, var(--accent-hover));
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .newsletter-form button:hover {
+    background: color-mix(in srgb, var(--post-color, var(--accent-hover)) 15%, transparent);
+  }
+
+  @media (max-width: 520px) {
+    .newsletter-form {
+      flex-direction: column;
+    }
+  }
+</style>
