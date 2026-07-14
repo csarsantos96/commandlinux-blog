@@ -35,7 +35,7 @@ export async function getStaticPaths() {
 const { post, enHref } = Astro.props;
 const { Content } = await render(post);
 
-const color = getPostColor(post.data.category);
+
 
 const formattedDate = post.data.date.toLocaleDateString('pt-BR', {
   year: 'numeric',
@@ -108,7 +108,7 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
               <a
                 class="related-card"
                 href={`/posts/${item.id}/`}
-                style={`--post-color:${getPostColor(item.data.category)}`}
+                
               >
                 <span class="related-cat">{item.data.category}</span>
                 <span class="related-title">{item.data.title}</span>
