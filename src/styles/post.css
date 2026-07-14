@@ -1,4 +1,9 @@
-.post-page { max-width: 780px; }
+.post-page {
+  max-width: 780px;
+
+  /* Cor padrão caso nenhuma categoria seja encontrada */
+  --post-color: var(--accent-hover);
+}
 
 .post-back {
   font-family: var(--mono);
@@ -6,8 +11,15 @@
   color: var(--text2);
   transition: color 0.2s;
 }
-.post-back::before { content: '$ '; color: var(--text3); }
-.post-back:hover { color: var(--accent-hover); }
+
+.post-back::before {
+  content: '$ ';
+  color: var(--text3);
+}
+
+.post-back:hover {
+  color: var(--accent-hover);
+}
 
 .post-header {
   margin: 2rem 0 2.5rem;
@@ -19,6 +31,23 @@
   align-items: flex-start;
 }
 
+/* Categoria do post */
+.post-page .post-type {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  color: var(--post-color);
+  border: 1px solid var(--post-color);
+
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+
+  background: transparent;
+}
+
 .post-title {
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 800;
@@ -26,7 +55,7 @@
   line-height: 1.2;
 }
 
-/* markdown body */
+/* Markdown body */
 .post-body {
   font-size: 1rem;
   color: var(--muted);
@@ -38,6 +67,7 @@
   margin: 2.25rem 0 0.75rem;
   letter-spacing: -0.01em;
 }
+
 .post-body h2::before {
   content: '## ';
   color: var(--post-color);
@@ -51,6 +81,13 @@
   margin: 1.75rem 0 0.5rem;
 }
 
+.post-body h3::before {
+  content: '### ';
+  color: var(--post-color);
+  font-family: var(--mono);
+  font-size: 0.85em;
+}
+
 .post-body p {
   margin: 0.9rem 0;
   line-height: 1.8;
@@ -61,13 +98,20 @@
   color: var(--accent-hover);
   border-bottom: 1px solid transparent;
 }
-.post-body a:hover { border-bottom-color: var(--accent-hover); }
 
-.post-body ul, .post-body ol {
+.post-body a:hover {
+  border-bottom-color: var(--accent-hover);
+}
+
+.post-body ul,
+.post-body ol {
   margin: 0.9rem 0;
   padding-left: 1.5rem;
 }
-.post-body li { margin: 0.35rem 0; }
+
+.post-body li {
+  margin: 0.35rem 0;
+}
 
 .post-body :not(pre) > code {
   font-family: var(--mono);
@@ -113,22 +157,51 @@
   margin: 1.25rem 0;
   font-size: 0.85rem;
 }
-.post-body th, .post-body td {
+
+.post-body th,
+.post-body td {
   border: 1px solid var(--border);
   padding: 8px 12px;
   text-align: left;
 }
+
 .post-body th {
   background: var(--surface);
   font-family: var(--mono);
   font-size: 0.78rem;
 }
 
-/* highlight.js — minimal dark theme aligned to the palette */
-.hljs-keyword, .hljs-built_in { color: #f472b6; }
-.hljs-string { color: #22c55e; }
-.hljs-number, .hljs-literal { color: #fbbf24; }
-.hljs-comment { color: var(--text3); font-style: italic; }
-.hljs-attr, .hljs-attribute { color: #00d4ff; }
-.hljs-variable, .hljs-title { color: #a78bfa; }
-.hljs-section, .hljs-meta { color: #ff6b35; }
+/* Highlight.js — tema escuro alinhado à paleta */
+.hljs-keyword,
+.hljs-built_in {
+  color: #f472b6;
+}
+
+.hljs-string {
+  color: #22c55e;
+}
+
+.hljs-number,
+.hljs-literal {
+  color: #fbbf24;
+}
+
+.hljs-comment {
+  color: var(--text3);
+  font-style: italic;
+}
+
+.hljs-attr,
+.hljs-attribute {
+  color: #00d4ff;
+}
+
+.hljs-variable,
+.hljs-title {
+  color: #a78bfa;
+}
+
+.hljs-section,
+.hljs-meta {
+  color: #ff6b35;
+}

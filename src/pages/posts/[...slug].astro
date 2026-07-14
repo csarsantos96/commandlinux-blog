@@ -7,6 +7,18 @@ import ShareButtons from '../../components/ShareButtons.tsx';
 import CopyCode from '../../components/CopyCode.astro';
 import Newsletter from '../../components/Newsletter.astro';
 
+const categoryColors: Record<string, string> = {
+  KUBERNETES: 'var(--c-kubernetes)',
+  DOCKER: 'var(--c-docker)',
+  TERRAFORM: 'var(--c-terraform)',
+  LINUX: 'var(--c-linux)',
+  'CI/CD': 'var(--c-cicd)',
+  'SYSTEM DESIGN': 'var(--c-sysdesign)',
+  CLOUD: 'var(--c-cloud)',
+};
+
+const normalizeCategory = (category: string) =>
+  String(category).trim().toUpperCase();
 
 export async function getStaticPaths() {
   const portuguesePosts = await getCollection(
@@ -22,7 +34,9 @@ export async function getStaticPaths() {
   const englishIds = new Set(englishPosts.map((post) => post.id));
 
   return portuguesePosts.map((post) => ({
-    params: { slug: post.id },
+    params: {
+      slug: post.id,
+    },
     props: {
       post,
       enHref: englishIds.has(`en/${post.id}`)
@@ -35,7 +49,10 @@ export async function getStaticPaths() {
 const { post, enHref } = Astro.props;
 const { Content } = await render(post);
 
+const category = normalizeCategory(post.data.category);
 
+const postColor =
+  categoryColors[category] ?? 'var(--accent-hover)';
 
 const formattedDate = post.data.date.toLocaleDateString('pt-BR', {
   year: 'numeric',
@@ -43,22 +60,32 @@ const formattedDate = post.data.date.toLocaleDateString('pt-BR', {
   day: 'numeric',
 });
 
-const all = (await getCollection(
-  'posts',
-  ({ data }) => !data.draft && data.language === 'pt',
-))
+const all = (
+  await getCollection(
+    'posts',
+    ({ data }) => !data.draft && data.language === 'pt',
+  )
+)
   .filter((item) => item.id !== post.id)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .sort(
+    (a, b) =>
+      b.data.date.valueOf() - a.data.date.valueOf(),
+  );
 
 const sameCategory = all.filter(
-  (item) => item.data.category === post.data.category,
+  (item) =>
+    normalizeCategory(item.data.category) === category,
 );
 
 const remainingPosts = all.filter(
-  (item) => item.data.category !== post.data.category,
+  (item) =>
+    normalizeCategory(item.data.category) !== category,
 );
 
-const related = [...sameCategory, ...remainingPosts].slice(0, 3);
+const related = [
+  ...sameCategory,
+  ...remainingPosts,
+].slice(0, 3);
 ---
 
 <BaseLayout
@@ -75,13 +102,23 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
     enHref={enHref}
   />
 
-  <div class="section-wrap post-page">
+  <div
+    class="section-wrap post-page"
+    style={`--post-color: ${postColor};`}
+  >
     <a class="post-back" href="/">cd ..</a>
 
     <header class="post-header">
-      <span class="post-type">{post.data.category}</span>
+      <span
+        class="post-type"
+        style={`color: ${postColor}; border-color: ${postColor};`}
+      >
+        {category}
+      </span>
 
-      <h1 class="post-title">{post.data.title}</h1>
+      <h1 class="post-title">
+        {post.data.title}
+      </h1>
 
       <div class="post-meta">
         <time datetime={post.data.date.toISOString()}>
@@ -94,24 +131,35 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
       <Content />
     </div>
 
-    <ShareButtons client:load title={post.data.title} />
+    <ShareButtons
+      client:load
+      title={post.data.title}
+    />
+
     <CopyCode />
+
     <Newsletter />
 
     {
       related.length > 0 && (
         <section class="related">
-          <p class="related-label">// continue lendo</p>
+          <p class="related-label">
+            // continue lendo
+          </p>
 
           <div class="related-grid">
             {related.map((item) => (
               <a
                 class="related-card"
                 href={`/posts/${item.id}/`}
-                
               >
-                <span class="related-cat">{item.data.category}</span>
-                <span class="related-title">{item.data.title}</span>
+                <span class="related-cat">
+                  {normalizeCategory(item.data.category)}
+                </span>
+
+                <span class="related-title">
+                  {item.data.title}
+                </span>
               </a>
             ))}
           </div>
