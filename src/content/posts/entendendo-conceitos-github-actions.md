@@ -194,7 +194,6 @@ O contexto `env` pode ser definido em três níveis:
 Cada nível pode sobrescrever o anterior.
 
 
-
 ## O contexto `vars`
 
 As Variables são configuradas diretamente no GitHub.

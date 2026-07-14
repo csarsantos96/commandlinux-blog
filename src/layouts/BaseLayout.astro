@@ -9,6 +9,7 @@ import '../styles/sharebuttons.css';
 import '../styles/postextras.css';
 
 import Mermaid from '../components/Mermaid.astro';
+import Analytics from '@vercel/analytics/astro';
 
 export interface Props {
   title: string;
@@ -100,5 +101,6 @@ const jsonLd =
   <body>
     <slot />
     <Mermaid />
+    <Analytics />
   </body>
 </html>
