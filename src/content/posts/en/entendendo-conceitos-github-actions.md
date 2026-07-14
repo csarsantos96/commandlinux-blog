@@ -1,8 +1,9 @@
 ---
-title: 'Understanding Contexts in GitHub Actions: github, env, vars, and secrets'
+title: 'Understanding GitHub Actions Contexts: github, env, vars, and secrets'
 description: >-
-  Learn how GitHub Actions contexts work, when to use github, env, vars, and
-  secrets, and understand the differences between them with practical examples.
+  Learn how GitHub Actions contexts work, when to use `github`, `env`, `vars`,
+  and `secrets`, and understand the differences between them with practical
+  examples.
 date: '2026-07-14'
 category: CI/CD
 tags:
@@ -14,11 +15,11 @@ tags:
 draft: false
 language: en
 translationOf: entendendo-conceitos-github-actions
-sourceHash: a99ad5e96faa273d1b812cc19ed37974f5e8f1577a61c91ddbac3ab3db110fc3
+sourceHash: 46a071f111494219cb2e1ac1768bb46c016ff3bb63813a5ca8e1dba4820e13aa
 ---
-# Understanding Contexts in GitHub Actions: github, env, vars, and secrets
+# Understanding GitHub Actions Contexts: github, env, vars, and secrets
 
-If you've started studying GitHub Actions, you've probably come across expressions like these:
+If you've started learning GitHub Actions, you've probably encountered expressions like these:
 
 ```yaml
 ${{ github.repository }}
@@ -32,7 +33,7 @@ ${{ secrets.GEMINI_API_KEY }}
 
 At first glance, they might seem like just different ways to access variables.
 
-But there's an important difference: **each belongs to a different context**, has a specific purpose, and is interpreted at distinct moments during workflow execution.
+But there's an important difference: **each belongs to a different context**, serves a specific purpose, and is interpreted at distinct moments during workflow execution.
 
 Understanding this difference is crucial for writing more organized, reusable, and secure workflows.
 
@@ -40,7 +41,7 @@ In this article, we'll explore the main GitHub Actions contexts using practical 
 
 
 
-## What you will learn
+## What You'll Learn
 
 By the end of this article, you will be able to:
 
@@ -54,9 +55,9 @@ By the end of this article, you will be able to:
 
 ## What is a Context?
 
-A **Context** is an object provided by GitHub during workflow execution.
+A **Context** is an object made available by GitHub during workflow execution.
 
-These objects store information about the execution and can be accessed via expressions.
+These objects store information about the execution and can be accessed through expressions.
 
 The syntax always follows this pattern:
 
@@ -91,7 +92,7 @@ github.repository
 
 
 
-## How GitHub processes an expression
+## How GitHub Processes an Expression
 
 A very important characteristic is that expressions like:
 
@@ -103,19 +104,19 @@ are not interpreted by Bash.
 
 GitHub Actions itself resolves this expression **before** sending the Job to the Runner.
 
-This allows for using conditions like:
+This allows the use of conditions such as:
 
 ```yaml
 if: ${{ github.ref_name == 'main' }}
 ```
 
-In this case, GitHub decides whether the Job will be executed even before the Runner starts.
+In this case, GitHub decides whether the Job will execute even before the Runner starts.
 
 
 
 ## The `github` context
 
-The `github` context contains virtually all information about the Workflow execution.
+The `github` context contains practically all information about the Workflow execution.
 
 Some commonly used properties are:
 
@@ -145,7 +146,7 @@ steps:
 
 
 
-## Context is not the same as Environment Variable
+## Context is not the same as an Environment Variable
 
 This detail often causes a lot of confusion.
 
@@ -157,7 +158,7 @@ First:
 run: echo "${{ github.ref_name }}"
 ```
 
-Here GitHub substitutes the expression before execution.
+Here, GitHub substitutes the expression before execution.
 
 Now:
 
@@ -201,8 +202,7 @@ The `env` context can be defined at three levels:
 - Job
 - Step
 
-Each level can overwrite the previous one.
-
+Each level can override the previous one.
 
 
 ## The `vars` context
@@ -227,7 +227,7 @@ ${{ vars.APP_URL }}
 ${{ vars.DOCKER_IMAGE }}
 ```
 
-This information can be reused by multiple workflows without repeating values in the code.
+This information can be reused by multiple workflows without having to repeat values in the code.
 
 
 
@@ -247,13 +247,13 @@ steps:
   - run: node scripts/translate-post.mjs
 ```
 
-The secret is never written directly in the code.
+The secret is never written directly into the code.
 
 
 
-## What never to do
+## What to Never Do
 
-Even if GitHub attempts to mask sensitive values in logs, the recommendation is never to print Secrets.
+Even if GitHub tries to mask sensitive values in logs, the recommendation is never to print Secrets.
 
 Avoid doing this:
 
@@ -267,12 +267,12 @@ The best practice is to pass the Secret directly to the application that will us
 
 ## Summary
 
-| Context | Usage |
-|----------|------------|
-| `github` | Workflow execution information |
-| `env` | Variables defined in the workflow |
-| `vars` | Non-sensitive GitHub configurations |
-| `secrets` | Confidential information |
+| Context   | Usage                                |
+|-----------|--------------------------------------|
+| `github`  | Workflow execution information       |
+| `env`     | Variables defined in the workflow    |
+| `vars`    | Non-sensitive GitHub configurations  |
+| `secrets` | Confidential information             |
 
 
 
@@ -280,7 +280,7 @@ The best practice is to pass the Secret directly to the application that will us
 
 Contexts are one of the most important features of GitHub Actions. Understanding when to use `github`, `env`, `vars`, and `secrets` helps create more organized, reusable, and secure workflows.
 
-Although they all appear to be just "variables," each has a specific purpose and is interpreted at different times during execution. Mastering this difference prevents common errors and makes your pipelines much more predictable.
+Although they all seem like just "variables," each has a specific purpose and is interpreted at different moments during execution. Mastering this difference prevents common errors and makes your pipelines much more predictable.
 
 
 ## References
