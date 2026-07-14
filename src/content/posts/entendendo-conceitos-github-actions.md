@@ -28,7 +28,7 @@ Entender essa diferença é fundamental para escrever workflows mais organizados
 
 Neste artigo vamos explorar os principais contextos do GitHub Actions utilizando exemplos práticos.
 
----
+
 
 ## O que você vai aprender
 
@@ -40,7 +40,7 @@ Ao final deste artigo você será capaz de:
 - Evitar erros comuns envolvendo Secrets;
 - Escrever workflows mais limpos e seguros.
 
----
+
 
 ## O que é um Contexto?
 
@@ -79,7 +79,7 @@ Na prática, funciona como acessar uma propriedade de um objeto em JavaScript.
 github.repository
 ```
 
----
+
 
 ## Como o GitHub processa uma expressão
 
@@ -101,7 +101,7 @@ if: ${{ github.ref_name == 'main' }}
 
 Nesse caso, o GitHub decide se o Job será executado antes mesmo do Runner iniciar.
 
----
+
 
 ## O contexto `github`
 
@@ -133,7 +133,7 @@ steps:
       echo "Commit: ${{ github.sha }}"
 ```
 
----
+
 
 ## Contexto não é o mesmo que Variável de Ambiente
 
@@ -159,7 +159,7 @@ Nesse caso quem interpreta a variável é o Bash dentro do Runner.
 
 O resultado pode ser parecido, mas o momento em que cada valor é resolvido é completamente diferente.
 
----
+
 
 ## O contexto `env`
 
@@ -193,7 +193,7 @@ O contexto `env` pode ser definido em três níveis:
 
 Cada nível pode sobrescrever o anterior.
 
----
+
 
 ## O contexto `vars`
 
@@ -219,7 +219,7 @@ ${{ vars.DOCKER_IMAGE }}
 
 Essas informações podem ser reutilizadas por vários workflows sem precisar repetir valores no código.
 
----
+
 
 ## O contexto `secrets`
 
@@ -239,7 +239,7 @@ steps:
 
 O segredo nunca fica escrito diretamente no código.
 
----
+
 
 ## O que nunca fazer
 
@@ -253,7 +253,7 @@ run: echo "${{ secrets.GEMINI_API_KEY }}"
 
 A melhor prática é passar o Secret diretamente para a aplicação que irá utilizá-lo.
 
----
+
 
 ## Resumo
 
@@ -264,7 +264,7 @@ A melhor prática é passar o Secret diretamente para a aplicação que irá uti
 | `vars` | Configurações do GitHub que não são sensíveis |
 | `secrets` | Informações confidenciais |
 
----
+
 
 ## Conclusão
 
@@ -272,7 +272,6 @@ Os Contextos são uma das funcionalidades mais importantes do GitHub Actions. En
 
 Embora todos pareçam apenas "variáveis", cada um possui um propósito específico e é interpretado em momentos diferentes da execução. Dominar essa diferença evita erros comuns e torna seus pipelines muito mais previsíveis.
 
----
 
 ## Referências
 
