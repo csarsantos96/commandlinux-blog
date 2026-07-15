@@ -1,12 +1,22 @@
 ---
 ---
 <script>
-  import mermaid from 'mermaid';
-  mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+  let initialized = false;
+
   const run = async () => {
     const nodes = document.querySelectorAll('pre.mermaid');
-    if (nodes.length) await mermaid.run({ nodes: Array.from(nodes) });
+    if (!nodes.length) return;
+
+    const { default: mermaid } = await import('mermaid');
+
+    if (!initialized) {
+      mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+      initialized = true;
+    }
+
+    await mermaid.run({ nodes: Array.from(nodes) });
   };
+
   run();
   document.addEventListener('astro:after-swap', run);
 </script>

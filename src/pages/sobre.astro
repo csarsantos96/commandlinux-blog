@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+---
+
+<BaseLayout
+  lang="pt-BR"
+  title="Sobre — CommandLinux"
+  description="Conheça Cesar Santos e a proposta do CommandLinux: aprender em público, organizar estudos e compartilhar conhecimento com a comunidade."
+>
+  <Navbar language="pt" ptHref="/sobre/" />
+
+  <main class="section-wrap about-page">
+    <header class="about-hero">
+      <div class="section-tag">sobre</div>
+      <h1 class="section-title">Olá, eu sou Cesar Santos.</h1>
+      <p class="about-intro">
+        Sou formado em Sistemas de Informação e atuo como desenvolvedor
+        back-end. Atualmente, estou direcionando minha carreira para DevOps e
+        Cloud Native, aprofundando meus conhecimentos em Linux, containers,
+        Kubernetes, infraestrutura como código, automação e observabilidade.
+        Também estudo computação em nuvem, com foco em AWS, Oracle Cloud e
+        Google Cloud, e curso uma pós-graduação em Cyber Security — Red Team na
+        FIAP.
+      </p>
+    </header>
+
+    <div class="about-content">
+      <section class="about-section" aria-labelledby="commandlinux-title">
+        <p class="about-prompt">$ cat objetivo.txt</p>
+        <h2 id="commandlinux-title">O que é o CommandLinux?</h2>
+        <p>
+          O CommandLinux é meu espaço para aprender em público. Escrever me
+          ajuda a reforçar conhecimentos, organizar conceitos e identificar o
+          que ainda preciso estudar. Ao publicar essas anotações, espero tornar
+          o caminho um pouco mais simples para quem está aprendendo os mesmos
+          assuntos.
+        </p>
+        <p>
+          Grande parte dos conteúdos nasce dos meus estudos nos treinamentos da
+          LINUXtips: <strong>PICK — Programa Intensivo em Containers e Kubernetes</strong>, 
+          <strong>LNC — Linux para Cloud Native</strong>,
+          <strong>Criando Pipelines e Automações com GitHub Actions</strong> e
+          <strong>IaC e Pipeline Specialist</strong>. Também compartilho aprendizados
+          da minha pós-graduação em <strong>Cyber Security — Red Team</strong> na FIAP.
+        </p>
+      </section>
+
+      <section class="about-section" aria-labelledby="journey-title">
+        <p class="about-prompt">$ whoami --learning</p>
+        <h2 id="journey-title">Minha jornada</h2>
+        <p>
+          Minha trajetória começou no desenvolvimento back-end, construindo
+          aplicações e entendendo como o código resolve problemas de negócio.
+          Com o tempo, passei a me interessar cada vez mais pelo que acontece
+          depois que uma aplicação é desenvolvida: como ela é empacotada,
+          testada, publicada, observada, protegida e mantida disponível em
+          produção.
+        </p>
+        <p>
+          Esse interesse me levou a iniciar uma transição de carreira para
+          DevOps e Cloud Native. Hoje estudo Linux, Docker, Kubernetes, GitHub
+          Actions, infraestrutura como código, pipelines e serviços de nuvem
+          da AWS, Oracle Cloud e Google Cloud. Busco conectar minha experiência
+          como desenvolvedor com uma visão mais completa do ciclo de vida do
+          software, desde a construção até a execução e operação em ambientes
+          de cloud.
+        </p>
+        <p>
+          A pós-graduação em Cyber Security — Red Team complementa esse caminho
+          ao trazer uma perspectiva de segurança ofensiva. Quero entender não
+          apenas como construir e operar sistemas, mas também como identificar
+          riscos e torná-los mais seguros desde o início.
+        </p>
+        <p>
+          Ainda estou construindo experiência nessa nova área e não escrevo
+          como alguém que tem todas as respostas. Escrevo como alguém que
+          estuda, testa, pesquisa, pratica e documenta o que aprendeu. O
+          CommandLinux registra essa evolução de forma aberta e honesta.
+        </p>
+      </section>
+
+      <section class="about-section" aria-labelledby="editorial-title">
+        <p class="about-prompt">$ cat politica-editorial.md</p>
+        <h2 id="editorial-title">Política editorial</h2>
+        <p>
+          Os artigos representam meu entendimento no momento em que foram
+          escritos. São anotações autorais, reorganizadas e complementadas com
+          pesquisa e prática; não são materiais oficiais da LINUXtips, da FIAP
+          ou de qualquer outra instituição mencionada.
+        </p>
+        <p>
+          Tecnologia muda rápido e eu também posso errar. Se você encontrar uma
+          informação desatualizada, quiser sugerir uma correção ou tiver uma
+          ideia de tema, ficarei feliz em receber sua mensagem.
+        </p>
+      </section>
+
+      <section class="about-section about-contact" aria-labelledby="contact-title">
+        <p class="about-prompt">$ mail --to cesar</p>
+        <h2 id="contact-title">Entre em contato</h2>
+        <p>
+          Sugestões, correções e conversas sobre tecnologia são bem-vindas.
+        </p>
+        <a href="mailto:hello@cesarsantos.dev">hello@cesarsantos.dev</a>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-page {
+    max-width: 820px;
+  }
+
+  .about-hero {
+    padding: 3.5rem 0 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .about-intro {
+    max-width: 700px;
+    color: var(--text2);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.8;
+  }
+
+  .about-content {
+    display: grid;
+    gap: 1px;
+    margin-top: 2.5rem;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .about-section {
+    padding: 2rem;
+    background: var(--bg2);
+  }
+
+  .about-prompt {
+    margin-bottom: 0.65rem;
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+
+  .about-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .about-section p:not(.about-prompt) {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .about-section p + p {
+    margin-top: 1rem;
+  }
+
+  .about-section strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .about-contact a {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .about-contact a:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  @media (max-width: 640px) {
+    .about-hero {
+      padding-top: 2.5rem;
+    }
+
+    .about-section {
+      padding: 1.4rem;
+    }
+  }
+</style>

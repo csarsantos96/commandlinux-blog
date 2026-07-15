@@ -5,6 +5,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Navbar from '../../../components/Navbar.astro';
 import ShareButtons from '../../../components/ShareButtons.tsx';
 import CopyCode from '../../../components/CopyCode.astro';
+import ReadingProgress from '../../../components/ReadingProgress.astro';
 
 const categoryColors: Record<string, string> = {
   KUBERNETES: 'var(--c-kubernetes)',
@@ -14,6 +15,7 @@ const categoryColors: Record<string, string> = {
   'CI/CD': 'var(--c-cicd)',
   'SYSTEM DESIGN': 'var(--c-sysdesign)',
   CLOUD: 'var(--c-cloud)',
+  NETWORKING: 'var(--c-networking)',
 };
 
 function getCategoryColor(category: string): string {
@@ -41,6 +43,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const hasMermaid = /```mermaid\b/.test(post.body);
 
 const englishSlug = post.id.replace(/^en\//, '');
 const postColor = getCategoryColor(post.data.category);
@@ -81,7 +84,12 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
   description={post.data.description}
   type="article"
   publishedDate={post.data.date}
+  modifiedDate={post.data.updatedDate ?? post.data.date}
   tags={post.data.tags}
+  hasMermaid={hasMermaid}
+  ogImagePath={`/og/en/${englishSlug}.png`}
+  alternatePt={post.data.translationOf ? `/posts/${post.data.translationOf}/` : undefined}
+  alternateEn={`/en/posts/${englishSlug}/`}
 >
   <Navbar
     language="en"
@@ -93,6 +101,7 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
     class="section-wrap post-page"
     style={`--post-color: ${postColor};`}
   >
+    <ReadingProgress label="Reading progress" />
     <a class="post-back" href="/en/">cd ..</a>
 
     <header class="post-header">
@@ -104,6 +113,14 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
         <time datetime={post.data.date.toISOString()}>
           {formattedDate}
         </time>
+        <span aria-hidden="true">·</span>
+        <a href="/sobre/" rel="author">Cesar Santos</a>
+      </div>
+
+      <div class="post-tags" aria-label="Article tags">
+        {post.data.tags.map((tag) => (
+          <a class="post-tag-link" href={`/en/?tag=${encodeURIComponent(tag)}`}>#{tag}</a>
+        ))}
       </div>
     </header>
 

@@ -55,6 +55,41 @@
   line-height: 1.2;
 }
 
+.post-header .post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+
+.post-header .post-meta a:hover {
+  color: var(--post-color);
+}
+
+.post-header .post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.post-tag-link {
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--border2);
+  border-radius: 999px;
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.post-tag-link:hover {
+  color: var(--post-color);
+  border-color: var(--post-color);
+  background: color-mix(in srgb, var(--post-color) 8%, transparent);
+}
+
 /* Markdown body */
 .post-body {
   font-size: 1rem;

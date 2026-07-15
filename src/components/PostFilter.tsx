@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
 
 type Locale = 'pt' | 'en'
@@ -22,6 +22,7 @@ const categoryColors: Record<string, string> = {
   'CI/CD': 'var(--c-cicd)',
   'SYSTEM DESIGN': 'var(--c-sysdesign)',
   CLOUD: 'var(--c-cloud)',
+  NETWORKING: 'var(--c-networking)',
 }
 
 const categoryFlags: Record<string, string> = {
@@ -32,6 +33,7 @@ const categoryFlags: Record<string, string> = {
   'CI/CD': '--ci-cd',
   'SYSTEM DESIGN': '--system-design',
   CLOUD: '--cloud',
+  NETWORKING: '--networking',
 }
 
 const categoryOrder = [
@@ -42,6 +44,7 @@ const categoryOrder = [
   'CI/CD',
   'SYSTEM DESIGN',
   'CLOUD',
+  'NETWORKING',
 ]
 
 const copy = {
@@ -84,6 +87,11 @@ export default function PostFilter({
 }) {
   const [active, setActive] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    const tag = new URLSearchParams(window.location.search).get('tag')
+    if (tag) setSearch(tag)
+  }, [])
 
   const text = copy[locale]
 

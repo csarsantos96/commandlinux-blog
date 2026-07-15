@@ -6,6 +6,7 @@ import Navbar from '../../components/Navbar.astro';
 import ShareButtons from '../../components/ShareButtons.tsx';
 import CopyCode from '../../components/CopyCode.astro';
 import Newsletter from '../../components/Newsletter.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
 
 const categoryColors: Record<string, string> = {
   KUBERNETES: 'var(--c-kubernetes)',
@@ -15,6 +16,7 @@ const categoryColors: Record<string, string> = {
   'CI/CD': 'var(--c-cicd)',
   'SYSTEM DESIGN': 'var(--c-sysdesign)',
   CLOUD: 'var(--c-cloud)',
+  NETWORKING: 'var(--c-networking)',
 };
 
 const normalizeCategory = (category: string) =>
@@ -48,6 +50,7 @@ export async function getStaticPaths() {
 
 const { post, enHref } = Astro.props;
 const { Content } = await render(post);
+const hasMermaid = /```mermaid\b/.test(post.body);
 
 const category = normalizeCategory(post.data.category);
 
@@ -94,7 +97,12 @@ const related = [
   description={post.data.description}
   type="article"
   publishedDate={post.data.date}
+  modifiedDate={post.data.updatedDate ?? post.data.date}
   tags={post.data.tags}
+  hasMermaid={hasMermaid}
+  ogImagePath={`/og/pt/${post.id}.png`}
+  alternatePt={`/posts/${post.id}/`}
+  alternateEn={enHref}
 >
   <Navbar
     language="pt"
@@ -106,6 +114,7 @@ const related = [
     class="section-wrap post-page"
     style={`--post-color: ${postColor};`}
   >
+    <ReadingProgress label="Progresso da leitura" />
     <a class="post-back" href="/">cd ..</a>
 
     <header class="post-header">
@@ -124,6 +133,14 @@ const related = [
         <time datetime={post.data.date.toISOString()}>
           {formattedDate}
         </time>
+        <span aria-hidden="true">·</span>
+        <a href="/sobre/" rel="author">Cesar Santos</a>
+      </div>
+
+      <div class="post-tags" aria-label="Tags do artigo">
+        {post.data.tags.map((tag) => (
+          <a class="post-tag-link" href={`/?tag=${encodeURIComponent(tag)}`}>#{tag}</a>
+        ))}
       </div>
     </header>
 
