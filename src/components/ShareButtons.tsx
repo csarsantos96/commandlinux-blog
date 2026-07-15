@@ -1,7 +1,43 @@
 import { useState, useEffect } from 'react';
 
-export default function ShareButtons({ title }: { title: string }) {
+type Props = {
+  title: string;
+  category: string;
+  locale?: 'pt' | 'en';
+};
+
+const categoryColors: Record<string, string> = {
+  KUBERNETES: '#00d4ff',
+  DOCKER: '#fbbf24',
+  TERRAFORM: '#a78bfa',
+  LINUX: '#22c55e',
+  'CI/CD': '#f472b6',
+  CLOUD: '#f97316',
+  NETWORKING: '#ffffff',
+};
+
+function wrapText(context: CanvasRenderingContext2D, text: string, maxWidth: number) {
+  const words = text.split(/\s+/);
+  const lines: string[] = [];
+  let line = '';
+
+  for (const word of words) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (line && context.measureText(candidate).width > maxWidth) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  }
+
+  if (line) lines.push(line);
+  return lines;
+}
+
+export default function ShareButtons({ title, category, locale = 'pt' }: Props) {
   const [copied, setCopied] = useState(false);
+  const [storyStatus, setStoryStatus] = useState<'idle' | 'creating' | 'ready'>('idle');
   const [url, setUrl] = useState('');
 
   useEffect(() => {
@@ -47,6 +83,103 @@ export default function ShareButtons({ title }: { title: string }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleStory = async () => {
+    if (!url || storyStatus === 'creating') return;
+
+    setStoryStatus('creating');
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1920;
+
+    const context = canvas.getContext('2d');
+    if (!context) return setStoryStatus('idle');
+
+    const normalizedCategory = category.trim().toUpperCase();
+    const accent = categoryColors[normalizedCategory] ?? '#00d4ff';
+    const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#080808');
+    gradient.addColorStop(1, '#161616');
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.strokeStyle = '#282828';
+    context.lineWidth = 2;
+    for (let position = 0; position <= canvas.width; position += 80) {
+      context.beginPath();
+      context.moveTo(position, 0);
+      context.lineTo(position, canvas.height);
+      context.stroke();
+    }
+    for (let position = 0; position <= canvas.height; position += 80) {
+      context.beginPath();
+      context.moveTo(0, position);
+      context.lineTo(canvas.width, position);
+      context.stroke();
+    }
+
+    context.fillStyle = accent;
+    context.fillRect(0, 0, 18, canvas.height);
+
+    context.fillStyle = accent;
+    context.font = '700 34px "JetBrains Mono", monospace';
+    context.fillText(`// ${normalizedCategory}`, 92, 230);
+
+    context.fillStyle = '#f5f5f5';
+    context.font = '800 78px Syne, sans-serif';
+    const lines = wrapText(context, title, 896).slice(0, 8);
+    lines.forEach((line, index) => context.fillText(line, 92, 430 + index * 96));
+
+    context.fillStyle = '#00d4ff';
+    context.font = '700 42px "JetBrains Mono", monospace';
+    context.fillText('>_', 92, 1645);
+    context.fillStyle = '#f5f5f5';
+    context.fillText(' commandlinux.dev', 155, 1645);
+
+    context.fillStyle = '#888888';
+    context.font = '400 28px "JetBrains Mono", monospace';
+    context.fillText(
+      locale === 'en' ? 'Read the full article at the link' : 'Leia o artigo completo no link',
+      92,
+      1710,
+    );
+
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) return setStoryStatus('idle');
+
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // The image can still be shared when clipboard permission is unavailable.
+    }
+
+    const slug = new URL(url).pathname.split('/').filter(Boolean).at(-1) ?? 'post';
+    const file = new File([blob], `commandlinux-${slug}-story.png`, { type: 'image/png' });
+
+    if (navigator.share && navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title, text: url });
+        setStoryStatus('ready');
+        setTimeout(() => setStoryStatus('idle'), 3000);
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          setStoryStatus('idle');
+          return;
+        }
+      }
+    }
+
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = file.name;
+    link.click();
+    URL.revokeObjectURL(downloadUrl);
+    setStoryStatus('ready');
+    setTimeout(() => setStoryStatus('idle'), 3000);
+  };
+
   return (
     <div className="share-buttons">
       <span className="share-label">compartilhar</span>
@@ -62,7 +195,26 @@ export default function ShareButtons({ title }: { title: string }) {
           aria-label="Copiar link" title="Copiar link">
           {copied ? '✓' : '🔗'}
         </button>
+        <button onClick={handleStory} className="share-icon share-story"
+          aria-label={locale === 'en' ? 'Create Instagram Story' : 'Criar Story do Instagram'}
+          title={locale === 'en' ? 'Create Instagram Story' : 'Criar Story do Instagram'}
+          disabled={storyStatus === 'creating'}>
+          {storyStatus === 'creating' ? (
+            <span className="story-spinner" aria-hidden="true" />
+          ) : storyStatus === 'ready' ? '✓' : (
+            <svg viewBox="0 0 24 24" fill="none" width="19" height="19" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="2" />
+              <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+            </svg>
+          )}
+        </button>
       </div>
+      {storyStatus === 'ready' && (
+        <span className="story-feedback" role="status">
+          {locale === 'en' ? 'Image ready · link copied' : 'Imagem pronta · link copiado'}
+        </span>
+      )}
     </div>
   );
 }

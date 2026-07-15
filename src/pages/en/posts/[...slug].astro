@@ -128,7 +128,7 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
       <Content />
     </div>
 
-    <ShareButtons client:load title={post.data.title} />
+    <ShareButtons client:load title={post.data.title} category={post.data.category} locale="en" />
     <CopyCode />
 
     {

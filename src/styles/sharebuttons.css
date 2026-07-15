@@ -5,6 +5,7 @@
   margin: 1.5rem 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
 }
 
 .share-label {
@@ -41,4 +42,32 @@
 
 .share-copy {
   font-size: 14px;
+}
+
+.share-story {
+  color: #f472b6;
+}
+
+.share-story:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.story-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border2);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: story-spin 0.7s linear infinite;
+}
+
+.story-feedback {
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+}
+
+@keyframes story-spin {
+  to { transform: rotate(360deg); }
 }
