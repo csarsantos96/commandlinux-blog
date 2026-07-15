@@ -40,6 +40,32 @@
 
 .filter-search input::placeholder { color: var(--text3); }
 
+.filter-shortcut {
+  display: flex;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  white-space: nowrap;
+}
+
+.filter-shortcut span {
+  padding: 2px 6px;
+  border: 1px solid var(--border2);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.filter-search:focus-within .filter-shortcut {
+  opacity: 0.35;
+}
+
+@media (max-width: 540px) {
+  .filter-shortcut span:last-child { display: none; }
+}
+
 .filter-flags {
   display: flex;
   flex-wrap: wrap;

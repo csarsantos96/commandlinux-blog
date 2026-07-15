@@ -4,6 +4,8 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import rehypeMermaid from 'rehype-mermaid';
 
+import vercel from '@astrojs/vercel';
+
 export default defineConfig({
   site: 'https://www.commandlinux.dev',
 
@@ -28,4 +30,6 @@ export default defineConfig({
       wrap: false,
     },
   },
+
+  adapter: vercel(),
 });

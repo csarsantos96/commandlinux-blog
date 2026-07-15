@@ -6,6 +6,7 @@ import Navbar from '../../../components/Navbar.astro';
 import ShareButtons from '../../../components/ShareButtons.tsx';
 import CopyCode from '../../../components/CopyCode.astro';
 import ReadingProgress from '../../../components/ReadingProgress.astro';
+import Reactions from '../../../components/Reactions.tsx';
 
 const categoryColors: Record<string, string> = {
   KUBERNETES: 'var(--c-kubernetes)',
@@ -76,6 +77,15 @@ const remainingPosts = all.filter(
 );
 
 const related = [...sameCategory, ...remainingPosts].slice(0, 3);
+
+const seriesPosts = post.data.series
+  ? [...all, post]
+      .filter((item) => item.data.series === post.data.series)
+      .sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0))
+  : [];
+const seriesIndex = seriesPosts.findIndex((item) => item.id === post.id);
+const previousInSeries = seriesIndex > 0 ? seriesPosts[seriesIndex - 1] : undefined;
+const nextInSeries = seriesIndex >= 0 ? seriesPosts[seriesIndex + 1] : undefined;
 ---
 
 <BaseLayout
@@ -128,7 +138,22 @@ const related = [...sameCategory, ...remainingPosts].slice(0, 3);
       <Content />
     </div>
 
-    <ShareButtons client:load title={post.data.title} category={post.data.category} locale="en" />
+    {post.data.series && (
+      <nav class="series-nav" aria-label={`Series ${post.data.series}`}>
+        <div class="series-heading">
+          <span>// series</span>
+          <strong>{post.data.series}</strong>
+          <small>Part {post.data.seriesOrder ?? seriesIndex + 1} of {seriesPosts.length}</small>
+        </div>
+        <div class="series-links">
+          {previousInSeries ? <a href={`/en/posts/${previousInSeries.id.replace(/^en\//, '')}/`}>← {previousInSeries.data.title}</a> : <span />}
+          {nextInSeries && <a href={`/en/posts/${nextInSeries.id.replace(/^en\//, '')}/`}>{nextInSeries.data.title} →</a>}
+        </div>
+      </nav>
+    )}
+
+    <ShareButtons client:load title={post.data.title} description={post.data.description} category={post.data.category} locale="en" />
+    <Reactions client:load postId={`en:${englishSlug}`} locale="en" />
     <CopyCode />
 
     {

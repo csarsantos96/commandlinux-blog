@@ -288,6 +288,8 @@ async function main() {
       language: 'en',
       translationOf: sourceSlug,
       sourceHash: hash,
+      ...(source.data.series ? { series: source.data.series } : {}),
+      ...(source.data.seriesOrder ? { seriesOrder: source.data.seriesOrder } : {}),
     });
 
     await fs.writeFile(targetPath, englishPost, 'utf8');

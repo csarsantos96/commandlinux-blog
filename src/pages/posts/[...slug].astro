@@ -7,6 +7,7 @@ import ShareButtons from '../../components/ShareButtons.tsx';
 import CopyCode from '../../components/CopyCode.astro';
 import Newsletter from '../../components/Newsletter.astro';
 import ReadingProgress from '../../components/ReadingProgress.astro';
+import Reactions from '../../components/Reactions.tsx';
 
 const categoryColors: Record<string, string> = {
   KUBERNETES: 'var(--c-kubernetes)',
@@ -89,6 +90,15 @@ const related = [
   ...sameCategory,
   ...remainingPosts,
 ].slice(0, 3);
+
+const seriesPosts = post.data.series
+  ? [...all, post]
+      .filter((item) => item.data.series === post.data.series)
+      .sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0))
+  : [];
+const seriesIndex = seriesPosts.findIndex((item) => item.id === post.id);
+const previousInSeries = seriesIndex > 0 ? seriesPosts[seriesIndex - 1] : undefined;
+const nextInSeries = seriesIndex >= 0 ? seriesPosts[seriesIndex + 1] : undefined;
 ---
 
 <BaseLayout
@@ -148,12 +158,29 @@ const related = [
       <Content />
     </div>
 
+    {post.data.series && (
+      <nav class="series-nav" aria-label={`Série ${post.data.series}`}>
+        <div class="series-heading">
+          <span>// série</span>
+          <strong>{post.data.series}</strong>
+          <small>Parte {post.data.seriesOrder ?? seriesIndex + 1} de {seriesPosts.length}</small>
+        </div>
+        <div class="series-links">
+          {previousInSeries ? <a href={`/posts/${previousInSeries.id}/`}>← {previousInSeries.data.title}</a> : <span />}
+          {nextInSeries && <a href={`/posts/${nextInSeries.id}/`}>{nextInSeries.data.title} →</a>}
+        </div>
+      </nav>
+    )}
+
     <ShareButtons
       client:load
       title={post.data.title}
+      description={post.data.description}
       category={category}
       locale="pt"
     />
+
+    <Reactions client:load postId={`pt:${post.id}`} locale="pt" />
 
     <CopyCode />
 

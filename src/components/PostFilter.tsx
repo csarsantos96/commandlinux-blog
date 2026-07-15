@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
 type Locale = 'pt' | 'en'
@@ -87,10 +87,34 @@ export default function PostFilter({
 }) {
   const [active, setActive] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const searchInput = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const tag = new URLSearchParams(window.location.search).get('tag')
     if (tag) setSearch(tag)
+  }, [])
+
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null
+      const isTyping = target?.matches('input, textarea, select, [contenteditable="true"]')
+      const opensSearch =
+        (event.key === '/' && !isTyping && !event.ctrlKey && !event.metaKey && !event.altKey) ||
+        (event.key.toLowerCase() === 'k' && (event.ctrlKey || event.metaKey))
+
+      if (opensSearch) {
+        event.preventDefault()
+        searchInput.current?.focus()
+        searchInput.current?.select()
+      }
+
+      if (event.key === 'Escape' && document.activeElement === searchInput.current) {
+        searchInput.current?.blur()
+      }
+    }
+
+    window.addEventListener('keydown', handleShortcut)
+    return () => window.removeEventListener('keydown', handleShortcut)
   }, [])
 
   const text = copy[locale]
@@ -122,12 +146,17 @@ export default function PostFilter({
           <span className="filter-search-prefix">$ grep -i</span>
 
           <input
+            ref={searchInput}
             type="text"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder='"kubernetes deployment"'
             aria-label={text.searchLabel}
           />
+          <kbd className="filter-shortcut" aria-hidden="true">
+            <span>/</span>
+            <span>Ctrl K</span>
+          </kbd>
         </div>
 
         <div className="filter-flags" role="group" aria-label={text.categoryLabel}>

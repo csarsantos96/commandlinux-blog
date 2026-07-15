@@ -68,3 +68,20 @@
   line-height: 1.3;
   color: var(--text);
 }
+
+.series-nav {
+  margin: 2.5rem 0 1rem;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--post-color);
+  border-radius: 10px;
+  background: var(--bg2);
+}
+
+.series-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem; }
+.series-heading span, .series-heading small { color: var(--text3); font-family: var(--mono); font-size: 0.68rem; }
+.series-heading strong { color: var(--text); }
+.series-links { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+.series-links a { color: var(--text2); font-family: var(--mono); font-size: 0.72rem; line-height: 1.4; }
+.series-links a:last-child { text-align: right; }
+.series-links a:hover { color: var(--post-color); }

@@ -18,6 +18,10 @@ const posts = defineCollection({
     // Used only by generated English versions.
     translationOf: z.string().optional(),
     sourceHash: z.string().optional(),
+
+    // Optional grouping used to render previous/next navigation in a series.
+    series: z.string().optional(),
+    seriesOrder: z.number().int().positive().optional(),
   }),
 });
 

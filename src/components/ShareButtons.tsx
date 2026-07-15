@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 type Props = {
   title: string;
+  description: string;
   category: string;
   locale?: 'pt' | 'en';
 };
@@ -35,10 +36,12 @@ function wrapText(context: CanvasRenderingContext2D, text: string, maxWidth: num
   return lines;
 }
 
-export default function ShareButtons({ title, category, locale = 'pt' }: Props) {
+export default function ShareButtons({ title, description, category, locale = 'pt' }: Props) {
   const [copied, setCopied] = useState(false);
   const [storyStatus, setStoryStatus] = useState<'idle' | 'creating' | 'ready'>('idle');
   const [url, setUrl] = useState('');
+  const [storyOpen, setStoryOpen] = useState(false);
+  const [storyTheme, setStoryTheme] = useState<'terminal' | 'light' | 'gradient'>('terminal');
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -97,13 +100,18 @@ export default function ShareButtons({ title, category, locale = 'pt' }: Props) 
 
     const normalizedCategory = category.trim().toUpperCase();
     const accent = categoryColors[normalizedCategory] ?? '#00d4ff';
+    const theme = {
+      terminal: { start: '#080808', end: '#161616', text: '#f5f5f5', muted: '#c8c8c8', grid: '#282828' },
+      light: { start: '#f5f5f5', end: '#dddddd', text: '#080808', muted: '#444444', grid: '#cccccc' },
+      gradient: { start: '#071a24', end: '#160d25', text: '#f5f5f5', muted: '#d5d5d5', grid: '#29404a' },
+    }[storyTheme];
     const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, '#080808');
-    gradient.addColorStop(1, '#161616');
+    gradient.addColorStop(0, theme.start);
+    gradient.addColorStop(1, theme.end);
     context.fillStyle = gradient;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    context.strokeStyle = '#282828';
+    context.strokeStyle = theme.grid;
     context.lineWidth = 2;
     for (let position = 0; position <= canvas.width; position += 80) {
       context.beginPath();
@@ -125,18 +133,26 @@ export default function ShareButtons({ title, category, locale = 'pt' }: Props) 
     context.font = '700 34px "JetBrains Mono", monospace';
     context.fillText(`// ${normalizedCategory}`, 92, 230);
 
-    context.fillStyle = '#f5f5f5';
+    context.fillStyle = theme.text;
     context.font = '800 78px Syne, sans-serif';
     const lines = wrapText(context, title, 896).slice(0, 8);
     lines.forEach((line, index) => context.fillText(line, 92, 430 + index * 96));
 
+    const descriptionTop = 430 + lines.length * 96 + 52;
+    context.fillStyle = theme.muted;
+    context.font = '400 38px Syne, sans-serif';
+    const descriptionLines = wrapText(context, description, 896).slice(0, 6);
+    descriptionLines.forEach((line, index) => {
+      context.fillText(line, 92, descriptionTop + index * 55);
+    });
+
     context.fillStyle = '#00d4ff';
     context.font = '700 42px "JetBrains Mono", monospace';
     context.fillText('>_', 92, 1645);
-    context.fillStyle = '#f5f5f5';
+    context.fillStyle = theme.text;
     context.fillText(' commandlinux.dev', 155, 1645);
 
-    context.fillStyle = '#888888';
+    context.fillStyle = theme.muted;
     context.font = '400 28px "JetBrains Mono", monospace';
     context.fillText(
       locale === 'en' ? 'Read the full article at the link' : 'Leia o artigo completo no link',
@@ -159,6 +175,7 @@ export default function ShareButtons({ title, category, locale = 'pt' }: Props) 
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
       try {
         await navigator.share({ files: [file], title, text: url });
+        setStoryOpen(false);
         setStoryStatus('ready');
         setTimeout(() => setStoryStatus('idle'), 3000);
         return;
@@ -177,6 +194,7 @@ export default function ShareButtons({ title, category, locale = 'pt' }: Props) 
     link.click();
     URL.revokeObjectURL(downloadUrl);
     setStoryStatus('ready');
+    setStoryOpen(false);
     setTimeout(() => setStoryStatus('idle'), 3000);
   };
 
@@ -191,7 +209,7 @@ export default function ShareButtons({ title, category, locale = 'pt' }: Props) 
             {s.icon}
           </a>
         ))}
-        <button onClick={handleStory} className="share-icon share-story"
+        <button onClick={() => setStoryOpen(true)} className="share-icon share-story"
           aria-label={locale === 'en' ? 'Create Instagram Story' : 'Criar Story do Instagram'}
           title={locale === 'en' ? 'Create Instagram Story' : 'Criar Story do Instagram'}
           disabled={storyStatus === 'creating'}>
@@ -221,6 +239,31 @@ export default function ShareButtons({ title, category, locale = 'pt' }: Props) 
         <span className="story-feedback" role="status">
           {locale === 'en' ? 'Image ready · link copied' : 'Imagem pronta · link copiado'}
         </span>
+      )}
+      {storyOpen && (
+        <div className="story-modal" role="dialog" aria-modal="true" aria-label={locale === 'en' ? 'Story preview' : 'Prévia do Story'}>
+          <button className="story-backdrop" onClick={() => setStoryOpen(false)} aria-label={locale === 'en' ? 'Close' : 'Fechar'} />
+          <div className="story-dialog">
+            <div className="story-dialog-header">
+              <strong>{locale === 'en' ? 'Story preview' : 'Prévia do Story'}</strong>
+              <button onClick={() => setStoryOpen(false)} aria-label={locale === 'en' ? 'Close' : 'Fechar'}>×</button>
+            </div>
+            <div className={`story-card story-card--${storyTheme}`}>
+              <span style={{ color: categoryColors[category.trim().toUpperCase()] ?? '#00d4ff' }}>// {category}</span>
+              <h2>{title}</h2>
+              <p>{description}</p>
+              <b>&gt;_ commandlinux.dev</b>
+            </div>
+            <div className="story-themes" role="group" aria-label={locale === 'en' ? 'Choose theme' : 'Escolha o tema'}>
+              {(['terminal', 'light', 'gradient'] as const).map((theme) => (
+                <button className={storyTheme === theme ? 'active' : ''} onClick={() => setStoryTheme(theme)}>{theme}</button>
+              ))}
+            </div>
+            <button className="story-generate" onClick={handleStory} disabled={storyStatus === 'creating'}>
+              {storyStatus === 'creating' ? (locale === 'en' ? 'Creating…' : 'Gerando…') : (locale === 'en' ? 'Share image' : 'Compartilhar imagem')}
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
