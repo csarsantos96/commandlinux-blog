@@ -1,13 +1,22 @@
 import { Redis } from '@upstash/redis';
 
-const url = import.meta.env.REDIS_KV_REST_API_URL;
-const token = import.meta.env.REDIS_KV_REST_API_TOKEN;
+export function getRedis(): Redis {
+  const url =
+    process.env.REDIS_KV_REST_API_URL ??
+    import.meta.env.REDIS_KV_REST_API_URL;
 
-if (!url || !token) {
-  throw new Error('As variáveis do Upstash Redis não foram configuradas.');
+  const token =
+    process.env.REDIS_KV_REST_API_TOKEN ??
+    import.meta.env.REDIS_KV_REST_API_TOKEN;
+
+  if (!url || !token) {
+    throw new Error(
+      'REDIS_KV_REST_API_URL ou REDIS_KV_REST_API_TOKEN ausente.',
+    );
+  }
+
+  return new Redis({
+    url,
+    token,
+  });
 }
-
-export const redis = new Redis({
-  url,
-  token,
-});

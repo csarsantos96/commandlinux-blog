@@ -13,8 +13,8 @@ function validPostId(value: unknown): value is string {
 }
 
 async function redis(commands: (string | number)[][]) {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url = process.env.REDIS_KV_REST_API_URL;
+  const token = process.env.REDIS_KV_REST_API_TOKEN;
 
   if (!url || !token) throw new Error('Redis is not configured');
 
