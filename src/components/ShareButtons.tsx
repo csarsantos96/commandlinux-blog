@@ -184,17 +184,13 @@ export default function ShareButtons({ title, category, locale = 'pt' }: Props) 
     <div className="share-buttons">
       <span className="share-label">compartilhar</span>
       <div className="share-icons">
-        {shareLinks.map((s) => (
+        {shareLinks.slice(0, 2).map((s) => (
           <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer"
             className="share-icon" aria-label={`Compartilhar no ${s.name}`}
             title={`Compartilhar no ${s.name}`}>
             {s.icon}
           </a>
         ))}
-        <button onClick={handleCopy} className="share-icon share-copy"
-          aria-label="Copiar link" title="Copiar link">
-          {copied ? '✓' : '🔗'}
-        </button>
         <button onClick={handleStory} className="share-icon share-story"
           aria-label={locale === 'en' ? 'Create Instagram Story' : 'Criar Story do Instagram'}
           title={locale === 'en' ? 'Create Instagram Story' : 'Criar Story do Instagram'}
@@ -208,6 +204,17 @@ export default function ShareButtons({ title, category, locale = 'pt' }: Props) 
               <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
             </svg>
           )}
+        </button>
+        {shareLinks.slice(2).map((s) => (
+          <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer"
+            className="share-icon" aria-label={`Compartilhar no ${s.name}`}
+            title={`Compartilhar no ${s.name}`}>
+            {s.icon}
+          </a>
+        ))}
+        <button onClick={handleCopy} className="share-icon share-copy"
+          aria-label="Copiar link" title="Copiar link">
+          {copied ? '✓' : '🔗'}
         </button>
       </div>
       {storyStatus === 'ready' && (
