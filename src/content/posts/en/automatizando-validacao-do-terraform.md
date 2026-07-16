@@ -1,9 +1,9 @@
 ---
-title: Automating Terraform Validation with GitHub Actions and Shell Script
+title: Automating Terraform Validation Using Scripts Within GitHub Actions Workflows
 description: >-
-  Learn how to separate Terraform validation logic into Bash scripts and use
-  them within a GitHub Actions workflow to create more organized and reusable
-  pipelines.
+  Learn how to use Bash scripts within GitHub Actions workflows to better
+  organize your pipelines, reuse commands, and automate tasks such as Terraform
+  project validation.
 date: '2026-07-16'
 category: CI/CD
 tags:
@@ -17,19 +17,18 @@ tags:
 draft: false
 language: en
 translationOf: automatizando-validacao-do-terraform
-sourceHash: 14c4cf61c71707a6b39902f79f1110ad4b9ee6e32f8d37dd95a74f33f10ea526
+sourceHash: 04799888611c34b3773cfe41e59e1faa24daae01c63827f6b2a90fe1e1a462c3
 ---
-# Automating Terraform Validation with GitHub Actions and Shell Script
+# Automating Terraform Validation Using Scripts Within GitHub Actions Workflows
 
-When we start creating pipelines in GitHub Actions, it's common to put all commands directly inside the YAML file.
+When we start creating pipelines in GitHub Actions, it's common to put all commands directly within the YAML file.
 
-While this works, as the pipeline grows, it becomes difficult to maintain.
+While it works, as the pipeline grows, it becomes difficult to maintain.
 
-A widely used alternative is to move all the logic to a **Shell Script**, leaving the workflow solely responsible for executing that script.
+A widely used alternative is to move all the logic to a **Shell Script**, leaving the workflow only responsible for executing that script.
 
 This pattern improves project organization and facilitates reuse across different pipelines.
 
----
 
 # Project Structure
 
@@ -51,8 +50,8 @@ A simple example would be:
 Each file has a specific responsibility.
 
 - **provider.tf** configures the AWS provider.
-- **variables.tf** declares the variables.
-- **ec2.tf** creates the resources.
+- **variables.tf** declares variables.
+- **ec2.tf** creates resources.
 - **valida-tf.sh** performs all validation.
 - **testa-terraform.yml** calls the script during the pipeline.
 
@@ -77,7 +76,6 @@ provider "aws" {
 }
 ```
 
----
 
 # Creating an Instance
 
@@ -94,7 +92,6 @@ resource "aws_instance" "web" {
 }
 ```
 
----
 
 # Declaring Variables
 
@@ -112,7 +109,6 @@ variable "instance_type" {
 }
 ```
 
----
 
 # Creating the Validation Script
 
@@ -134,15 +130,14 @@ The command
 set -euo pipefail
 ```
 
-is an excellent practice because it:
+is an excellent practice because:
 
-- terminates the script on the first error;
-- prevents the use of nonexistent variables;
-- correctly handles errors in command pipelines.
+- it terminates the script on the first error;
+- it prevents the use of non-existent variables;
+- it correctly handles errors in command pipelines.
 
----
 
-# Installing Terraform during the pipeline
+# Installing Terraform During the Pipeline
 
 If the runner does not have Terraform installed, we can download it automatically.
 
@@ -158,9 +153,8 @@ export PATH="$HOME/bin:$PATH"
 
 This way, we don't depend on a prior installation.
 
----
 
-# Executing the Validation
+# Running the Validation
 
 After initializing the project, simply validate the syntax.
 
@@ -178,7 +172,6 @@ The parameter
 
 is very useful during testing because it avoids configuring a remote backend just to validate the project structure.
 
----
 
 # Returning the Result to GitHub Actions
 
@@ -200,7 +193,6 @@ exit 1
 
 This way, other pipeline steps can use this information.
 
----
 
 # Simplified Workflow
 
@@ -228,9 +220,8 @@ jobs:
 
 Notice that almost all the logic has moved out of the workflow.
 
----
 
-# Advantages of this Approach
+# Advantages of This Approach
 
 Among the main benefits are:
 
@@ -240,7 +231,6 @@ Among the main benefits are:
 - Separation between infrastructure and automation;
 - Much simpler maintenance.
 
----
 
 # Conclusion
 
@@ -248,11 +238,10 @@ Separating pipeline logic into Bash scripts is a widely used practice in DevOps 
 
 GitHub Actions remains responsible for pipeline orchestration, while the Shell Script concentrates all the execution logic.
 
-This organization makes the code cleaner, facilitates local testing, and allows the same script to be reused across different pipelines without duplicating commands.
+This organization makes the code cleaner, facilitates local testing, and allows reusing the same script across different pipelines without duplicating commands.
 
 The larger the project, the greater the benefit of this separation tends to be.
 
----
 
 ## Official Documentation
 
