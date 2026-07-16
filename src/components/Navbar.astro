@@ -22,11 +22,11 @@ const {
   <div class="nav-actions">
     <ul class="nav-links">
       {
-        language === 'pt' && (
-          <li>
-            <a href="/sobre/">sobre</a>
-          </li>
-        )
+        <li>
+          <a href={language === 'pt' ? '/sobre/' : '/en/about/'}>
+            {language === 'pt' ? 'sobre' : 'about'}
+          </a>
+        </li>
       }
 
       <li>
@@ -79,5 +79,58 @@ const {
         )
       }
     </div>
+
+    <details class="mobile-menu">
+      <summary aria-label={language === 'pt' ? 'Abrir menu' : 'Open menu'}>
+        <span class="hamburger" aria-hidden="true"></span>
+      </summary>
+
+      <ul class="mobile-menu-links">
+        {
+          <li>
+            <a href={language === 'pt' ? '/sobre/' : '/en/about/'}>
+              {language === 'pt' ? 'sobre' : 'about'}
+            </a>
+          </li>
+        }
+        <li>
+          <a href="https://cesarsantos.dev" target="_blank" rel="noreferrer">
+            portfolio ↗
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/csarsantos96" target="_blank" rel="noreferrer">
+            github ↗
+          </a>
+        </li>
+      </ul>
+    </details>
   </div>
 </nav>
+
+<script>
+  const menus = document.querySelectorAll<HTMLDetailsElement>('.mobile-menu');
+
+  menus.forEach((menu) => {
+    menu.addEventListener('toggle', () => {
+      const summary = menu.querySelector('summary');
+      summary?.setAttribute('aria-expanded', String(menu.open));
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => menu.removeAttribute('open'));
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    menus.forEach((menu) => {
+      if (!menu.contains(event.target as Node)) menu.removeAttribute('open');
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      menus.forEach((menu) => menu.removeAttribute('open'));
+    }
+  });
+</script>

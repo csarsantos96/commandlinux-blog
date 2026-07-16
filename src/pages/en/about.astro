@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+---
+
+<BaseLayout
+  lang="en"
+  title="About — CommandLinux"
+  description="Meet Cesar Santos and learn about CommandLinux: a space for learning in public, organizing studies, and sharing knowledge with the community."
+  alternatePt="/sobre/"
+  alternateEn="/en/about/"
+>
+  <Navbar language="en" ptHref="/sobre/" enHref="/en/about/" />
+
+  <main class="section-wrap about-page">
+    <header class="about-hero">
+      <div class="section-tag">about</div>
+      <h1 class="section-title">Hi, I'm Cesar Santos.</h1>
+      <p class="about-intro">
+        I hold a degree in Information Systems and work as a back-end developer.
+        I am currently steering my career toward DevOps and Cloud Native,
+        deepening my knowledge of Linux, containers, Kubernetes,
+        infrastructure as code, automation, and observability. I also study
+        cloud computing with a focus on AWS, Oracle Cloud, and Google Cloud,
+        and I am pursuing a postgraduate degree in Cyber Security — Red Team
+        at FIAP.
+      </p>
+    </header>
+
+    <div class="about-content">
+      <section class="about-section" aria-labelledby="commandlinux-title">
+        <p class="about-prompt">$ cat purpose.txt</p>
+        <h2 id="commandlinux-title">What is CommandLinux?</h2>
+        <p>
+          CommandLinux is my space for learning in public. Writing helps me
+          reinforce what I learn, organize concepts, and identify what I still
+          need to study. By publishing these notes, I hope to make the path a
+          little easier for people learning the same subjects.
+        </p>
+        <p>
+          Much of the content comes from my studies in LINUXtips training
+          programs: <strong>PICK — Intensive Containers and Kubernetes Program</strong>,
+          <strong>LNC — Linux for Cloud Native</strong>,
+          <strong>Building Pipelines and Automations with GitHub Actions</strong>, and
+          <strong>IaC and Pipeline Specialist</strong>. I also share lessons from
+          my postgraduate studies in <strong>Cyber Security — Red Team</strong> at FIAP.
+        </p>
+      </section>
+
+      <section class="about-section" aria-labelledby="journey-title">
+        <p class="about-prompt">$ whoami --learning</p>
+        <h2 id="journey-title">My journey</h2>
+        <p>
+          My journey began in back-end development, building applications and
+          understanding how code solves business problems. Over time, I became
+          increasingly interested in what happens after an application is
+          developed: how it is packaged, tested, deployed, observed, secured,
+          and kept available in production.
+        </p>
+        <p>
+          That interest led me to begin a career transition into DevOps and
+          Cloud Native. Today I study Linux, Docker, Kubernetes, GitHub Actions,
+          infrastructure as code, pipelines, and cloud services from AWS,
+          Oracle Cloud, and Google Cloud. My goal is to connect my development
+          experience with a broader view of the software lifecycle, from
+          building applications to running and operating them in the cloud.
+        </p>
+        <p>
+          My postgraduate degree in Cyber Security — Red Team complements this
+          path by adding an offensive security perspective. I want to understand
+          not only how to build and operate systems, but also how to identify
+          risks and make systems secure from the start.
+        </p>
+        <p>
+          I am still gaining experience in this new field, and I do not write
+          as someone who has all the answers. I write as someone who studies,
+          tests, researches, practices, and documents what they learn.
+          CommandLinux records this progress openly and honestly.
+        </p>
+      </section>
+
+      <section class="about-section" aria-labelledby="editorial-title">
+        <p class="about-prompt">$ cat editorial-policy.md</p>
+        <h2 id="editorial-title">Editorial policy</h2>
+        <p>
+          The articles represent my understanding at the time they were
+          written. They are original notes, reorganized and supplemented with
+          research and practice; they are not official materials from
+          LINUXtips, FIAP, or any other institution mentioned here.
+        </p>
+        <p>
+          Technology changes quickly, and I can make mistakes too. If you find
+          outdated information, want to suggest a correction, or have an idea
+          for a topic, I will be happy to hear from you.
+        </p>
+      </section>
+
+      <section class="about-section about-contact" aria-labelledby="contact-title">
+        <p class="about-prompt">$ mail --to cesar</p>
+        <h2 id="contact-title">Get in touch</h2>
+        <p>Suggestions, corrections, and conversations about technology are welcome.</p>
+        <a href="mailto:hello@cesarsantos.dev">hello@cesarsantos.dev</a>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-page { max-width: 820px; }
+  .about-hero { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--border); }
+  .about-intro { max-width: 700px; color: var(--text2); font-size: clamp(1rem, 2vw, 1.15rem); line-height: 1.8; }
+  .about-content { display: grid; gap: 1px; margin-top: 2.5rem; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .about-section { padding: 2rem; background: var(--bg2); }
+  .about-prompt { margin-bottom: 0.65rem; color: var(--green); font-family: var(--mono); font-size: 0.75rem; }
+  .about-section h2 { margin-bottom: 1rem; font-size: 1.3rem; }
+  .about-section p:not(.about-prompt) { color: var(--muted); font-size: 0.95rem; line-height: 1.8; }
+  .about-section p + p { margin-top: 1rem; }
+  .about-section strong { color: var(--text); font-weight: 500; }
+  .about-contact a { display: inline-block; margin-top: 1rem; padding: 0.65rem 1rem; border: 1px solid var(--accent); border-radius: 6px; color: var(--accent); font-family: var(--mono); font-size: 0.85rem; transition: background 0.2s, color 0.2s; }
+  .about-contact a:hover { background: var(--accent); color: var(--bg); }
+  @media (max-width: 640px) {
+    .about-hero { padding-top: 2.5rem; }
+    .about-section { padding: 1.4rem; }
+  }
+</style>
