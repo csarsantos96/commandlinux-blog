@@ -88,11 +88,7 @@ export default function Reactions({ postId, locale = 'pt' }: { postId: string; l
           </button>
         ))}
       </div>
-      <small role="status">
-        {!available
-          ? (locale === 'en' ? 'Reactions unavailable' : 'Reações indisponíveis')
-          : (locale === 'en' ? 'Global reactions · no login required' : 'Reações globais · sem login')}
-      </small>
+      
     </section>
   );
 }
