@@ -15,6 +15,8 @@ const categoryColors: Record<string, string> = {
   'CI/CD': '#f472b6',
   CLOUD: '#f97316',
   NETWORKING: '#ffffff',
+  'SEGURANÇA CIBERNÉTICA': '#39ff14',
+  'CYBER SECURITY': '#39ff14',
 };
 
 function wrapText(context: CanvasRenderingContext2D, text: string, maxWidth: number) {

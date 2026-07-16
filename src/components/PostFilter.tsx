@@ -23,6 +23,8 @@ const categoryColors: Record<string, string> = {
   'SYSTEM DESIGN': 'var(--c-sysdesign)',
   CLOUD: 'var(--c-cloud)',
   NETWORKING: 'var(--c-networking)',
+  'SEGURANÇA CIBERNÉTICA': 'var(--c-cyber-security)',
+  'CYBER SECURITY': 'var(--c-cyber-security)',
 }
 
 const categoryFlags: Record<string, string> = {
@@ -34,6 +36,8 @@ const categoryFlags: Record<string, string> = {
   'SYSTEM DESIGN': '--system-design',
   CLOUD: '--cloud',
   NETWORKING: '--networking',
+  'SEGURANÇA CIBERNÉTICA': '--seguranca-cibernetica',
+  'CYBER SECURITY': '--cyber-security',
 }
 
 const categoryOrder = [
@@ -45,6 +49,8 @@ const categoryOrder = [
   'SYSTEM DESIGN',
   'CLOUD',
   'NETWORKING',
+  'SEGURANÇA CIBERNÉTICA',
+  'CYBER SECURITY',
 ]
 
 const copy = {

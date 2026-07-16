@@ -26,6 +26,7 @@
   --c-sysdesign: #df0606;
   --c-cloud: #f97316;   /* laranja AWS, cobre AWS/GCP/Azure via tags */
   --c-networking: #ffffff;
+  --c-cyber-security: #39ff14;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

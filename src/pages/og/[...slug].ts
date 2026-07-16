@@ -20,6 +20,8 @@ const categoryColors: Record<string, [number, number, number]> = {
   'CI/CD': [244, 114, 182],
   CLOUD: [249, 115, 22],
   NETWORKING: [255, 255, 255],
+  'SEGURANÇA CIBERNÉTICA': [57, 255, 20],
+  'CYBER SECURITY': [57, 255, 20],
 };
 
 export const { getStaticPaths, GET } = await OGImageRoute({
