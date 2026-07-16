@@ -1,12 +1,12 @@
 ---
-title: Automatizando a validação de Terraform com GitHub Actions e Shell Script
-description: Aprenda como separar a lógica de validação do Terraform em scripts Bash e utilizá-los dentro de um workflow do GitHub Actions para criar pipelines mais organizadas e reutilizáveis.
+title: Automatizando a validação de Terraform utilizando scripts dentro de workflows do GitHub Actions
+description: Aprenda como utilizar scripts Bash dentro de workflows do GitHub Actions para organizar melhor suas pipelines, reutilizar comandos e automatizar tarefas como a validação de projetos Terraform.
 date: 2026-07-16
 category: CI/CD
 tags: [github-actions, terraform, shell-script, bash, automation, devops, ci-cd]
 ---
 
-# Automatizando a validação de Terraform com GitHub Actions e Shell Script
+# Automatizando a validação de Terraform utilizando scripts dentro de workflows do GitHub Actions
 
 Quando começamos a criar pipelines no GitHub Actions, é comum colocar todos os comandos diretamente dentro do arquivo YAML.
 
@@ -16,7 +16,6 @@ Uma alternativa muito utilizada é mover toda a lógica para um **Shell Script**
 
 Esse padrão melhora a organização do projeto e facilita a reutilização em diferentes pipelines.
 
----
 
 # Estrutura do projeto
 
@@ -64,7 +63,6 @@ provider "aws" {
 }
 ```
 
----
 
 # Criando uma instância
 
@@ -81,7 +79,6 @@ resource "aws_instance" "web" {
 }
 ```
 
----
 
 # Declarando variáveis
 
@@ -99,7 +96,6 @@ variable "instance_type" {
 }
 ```
 
----
 
 # Criando o script de validação
 
@@ -127,7 +123,6 @@ set -euo pipefail
 - impede uso de variáveis inexistentes;
 - trata corretamente erros em pipelines de comandos.
 
----
 
 # Instalando o Terraform durante a pipeline
 
@@ -145,7 +140,6 @@ export PATH="$HOME/bin:$PATH"
 
 Assim não dependemos de uma instalação prévia.
 
----
 
 # Executando a validação
 
@@ -165,7 +159,6 @@ O parâmetro
 
 é muito útil durante testes porque evita configurar um backend remoto apenas para validar a estrutura do projeto.
 
----
 
 # Retornando o resultado para o GitHub Actions
 
@@ -187,7 +180,6 @@ exit 1
 
 Dessa forma outros passos da pipeline conseguem utilizar essa informação.
 
----
 
 # Workflow simplificado
 
@@ -215,7 +207,6 @@ jobs:
 
 Observe que praticamente toda a lógica saiu do workflow.
 
----
 
 # Vantagens dessa abordagem
 
@@ -227,7 +218,6 @@ Entre os principais benefícios estão:
 - Separação entre infraestrutura e automação;
 - Manutenção muito mais simples.
 
----
 
 # Conclusão
 
@@ -239,7 +229,6 @@ Essa organização torna o código mais limpo, facilita testes locais e permite 
 
 Quanto maior o projeto, maior tende a ser o benefício dessa separação.
 
----
 
 ## Documentação oficial
 
