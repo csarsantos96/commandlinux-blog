@@ -1,9 +1,9 @@
 ---
-title: Automating Terraform Validation Using Scripts Within GitHub Actions Workflows
+title: Automating Terraform Validation using Scripts within GitHub Actions Workflows
 description: >-
   Learn how to use Bash scripts within GitHub Actions workflows to better
-  organize your pipelines, reuse commands, and automate tasks such as Terraform
-  project validation.
+  organize your pipelines, reuse commands, and automate tasks such as validating
+  Terraform projects.
 date: '2026-07-16'
 category: CI/CD
 tags:
@@ -17,15 +17,15 @@ tags:
 draft: false
 language: en
 translationOf: automatizando-validacao-do-terraform
-sourceHash: 04799888611c34b3773cfe41e59e1faa24daae01c63827f6b2a90fe1e1a462c3
+sourceHash: 308b4e5aa307976df45ad2c343ca9108eacc5347884f34861db0b0943906907a
 ---
-# Automating Terraform Validation Using Scripts Within GitHub Actions Workflows
+# Automating Terraform Validation using Scripts within GitHub Actions Workflows
 
-When we start creating pipelines in GitHub Actions, it's common to put all commands directly within the YAML file.
+When we start creating pipelines in GitHub Actions, it's common to put all commands directly inside the YAML file.
 
-While it works, as the pipeline grows, it becomes difficult to maintain.
+Although it works, as the pipeline grows, it becomes difficult to maintain.
 
-A widely used alternative is to move all the logic to a **Shell Script**, leaving the workflow only responsible for executing that script.
+A widely used alternative is to move all the logic to a **Shell Script**, leaving the workflow solely responsible for executing that script.
 
 This pattern improves project organization and facilitates reuse across different pipelines.
 
@@ -50,8 +50,8 @@ A simple example would be:
 Each file has a specific responsibility.
 
 - **provider.tf** configures the AWS provider.
-- **variables.tf** declares variables.
-- **ec2.tf** creates resources.
+- **variables.tf** declares the variables.
+- **ec2.tf** creates the resources.
 - **valida-tf.sh** performs all validation.
 - **testa-terraform.yml** calls the script during the pipeline.
 
@@ -132,12 +132,12 @@ set -euo pipefail
 
 is an excellent practice because:
 
-- it terminates the script on the first error;
-- it prevents the use of non-existent variables;
-- it correctly handles errors in command pipelines.
+- terminates the script on the first error;
+- prevents the use of non-existent variables;
+- correctly handles errors in command pipelines.
 
 
-# Installing Terraform During the Pipeline
+# Installing Terraform during the Pipeline
 
 If the runner does not have Terraform installed, we can download it automatically.
 
@@ -151,10 +151,10 @@ unzip terraform.zip
 export PATH="$HOME/bin:$PATH"
 ```
 
-This way, we don't depend on a prior installation.
+This way, we don't depend on a previous installation.
 
 
-# Running the Validation
+# Executing the Validation
 
 After initializing the project, simply validate the syntax.
 
@@ -218,27 +218,27 @@ jobs:
         run: ./scripts/valida-tf.sh
 ```
 
-Notice that almost all the logic has moved out of the workflow.
+Note that virtually all the logic has moved out of the workflow.
 
 
-# Advantages of This Approach
+# Advantages of this Approach
 
 Among the main benefits are:
 
 - Smaller and more readable workflows;
 - Reusable scripts;
-- Easy to test locally;
+- Easier local testing;
 - Separation between infrastructure and automation;
 - Much simpler maintenance.
 
 
 # Conclusion
 
-Separating pipeline logic into Bash scripts is a widely used practice in DevOps projects.
+Separating pipeline logic into Bash scripts is a common practice in DevOps projects.
 
 GitHub Actions remains responsible for pipeline orchestration, while the Shell Script concentrates all the execution logic.
 
-This organization makes the code cleaner, facilitates local testing, and allows reusing the same script across different pipelines without duplicating commands.
+This organization makes the code cleaner, facilitates local testing, and allows the same script to be reused across different pipelines without duplicating commands.
 
 The larger the project, the greater the benefit of this separation tends to be.
 

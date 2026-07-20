@@ -20,15 +20,15 @@ tags:
 draft: false
 language: en
 translationOf: trabalhando-com-arquivos-no-linux
-sourceHash: 45ec46a75cdd5dee637603eae1a87b44fce307a917f7429eb2c6e99bf418e803
+sourceHash: 11d05c63a35562a1864e09e0de28c61076cb155f06c8bcd75b17886148335794
 ---
-Working with Linux means constantly dealing with files: configuration files, logs, system information, and application outputs.
+Working with Linux means constantly dealing with files: configuration files, logs, system information, and outputs produced by applications.
 
 While it's possible to open these files in a text editor, often we just want quick answers to questions like:
 
 - What is the content of this file?
 - How many lines does it have?
-- What were the latest messages logged?
+- What were the last messages logged?
 - What changed between two versions?
 - How to monitor a log in real-time?
 
@@ -38,11 +38,11 @@ For each of these situations, there's an appropriate command. In this post, we'l
 
 # Creating hard links with `ln`
 
-Before viewing files, it's worth understanding how Linux relates file names to the content stored on disk.
+Before viewing files, it's worth understanding how Linux relates filenames to the content stored on disk.
 
 Internally, a file has a structure called an **inode**. The inode stores information such as permissions, owner, size, and data location.
 
-The file name acts as a reference to that inode.
+The filename acts as a reference to this inode.
 
 A **hard link** creates another name pointing to the same inode as the original file.
 
@@ -61,7 +61,7 @@ ln servidor.conf servidor-hardlink.conf
 Output:
 
 ```text
-Nenhuma saída é exibida quando o comando é executado com sucesso.
+No output is displayed when the command is executed successfully.
 ```
 
 Now there are two names pointing to the same content.
@@ -89,7 +89,7 @@ Since both files have the same inode, they represent the same content stored on 
 
 The number `2`, after the permissions, represents the number of hard links pointing to that inode.
 
-If we change the content using either of the names, the change will be visible through the other.
+If we change the content using either name, the change will be visible through the other.
 
 ```bash
 echo "porta=8080" >> servidor-hardlink.conf
@@ -98,7 +98,7 @@ echo "porta=8080" >> servidor-hardlink.conf
 Output:
 
 ```text
-Nenhuma saída é exibida.
+No output is displayed.
 ```
 
 When viewing the original file:
@@ -128,7 +128,7 @@ ln -s servidor.conf servidor-simbolico.conf
 Output:
 
 ```text
-Nenhuma saída é exibida.
+No output is displayed.
 ```
 
 Comparing the three files:
@@ -145,13 +145,13 @@ Output:
 184240 lrwxrwxrwx 1 cesar cesar 13 jul 10 09:42 servidor-simbolico.conf -> servidor.conf
 ```
 
-The symbolic link has a different inode and starts with the letter `l` in the permissions:
+The symbolic link has a different inode and starts with the letter `l` in its permissions:
 
 ```text
 lrwxrwxrwx
 ```
 
-Furthermore, `ls` shows where it points:
+Additionally, `ls` shows where it points:
 
 ```text
 servidor-simbolico.conf -> servidor.conf
@@ -159,14 +159,14 @@ servidor-simbolico.conf -> servidor.conf
 
 Hard links have some important limitations:
 
-- Must be on the same filesystem.
-- Normally cannot be created for directories.
-- Continue to work even if one of the names is removed.
+- They must be on the same filesystem.
+- They usually cannot be created for directories.
+- They continue to work even if one of the names is removed.
 - Data is only removed when the last hard link ceases to exist.
 
 # `cat`: direct viewing
 
-The `cat` command, short for **concatenate**, displays the full content of a file directly in the terminal.
+The `cat` command, short for **concatenate**, displays the entire content of a file directly in the terminal.
 
 ```bash
 cat /etc/hostname
@@ -189,7 +189,7 @@ However, we should be careful with large files. Running `cat` on a file with tho
 
 ## Numbering lines with `cat -n`
 
-The `-n` option adds the number to each line.
+The `-n` option adds the number for each line.
 
 ```bash
 cat -n /etc/hosts
@@ -206,7 +206,7 @@ Output:
 This is extremely useful when someone reports an error on a specific line:
 
 ```text
-O problema está na linha 47.
+The problem is on line 47.
 ```
 
 Instead of counting manually, we can easily locate the line.
@@ -245,11 +245,11 @@ PRETTY_NAME="Fedora Linux"
 
 The content is displayed in the same order as the files were provided.
 
-This works well for small files, but it's not the best option when we need to calmly navigate through the content.
+This works well for small files, but it's not the best option when we need to browse content carefully.
 
 # `less`: controlled navigation
 
-The `less` command opens the file in a paginated mode. Instead of dumping everything to the terminal, it allows you to navigate through the content.
+The `less` command opens the file in a paged mode. Instead of dumping everything into the terminal, it allows you to navigate through the content.
 
 ```bash
 less /etc/passwd
@@ -316,7 +316,7 @@ man ssh
 
 The documentation will usually open within `less` itself.
 
-Knowing how to navigate in `less` also means knowing how to better navigate through Linux documentation.
+Knowing how to navigate `less` also means knowing how to better navigate Linux documentation.
 
 # `less +F`: monitoring files in real-time
 
@@ -337,13 +337,13 @@ Waiting for data... (interrupt to abort)
 
 Whenever a new line is added to the file, it will appear automatically.
 
-This mode has an advantage over `tail -f`: we can temporarily pause following by pressing:
+This mode has an advantage over `tail -f`: we can temporarily interrupt monitoring by pressing:
 
 ```text
 Ctrl + C
 ```
 
-After that, we can navigate through the file normally.
+After that, we can navigate through the file as usual.
 
 To return to follow mode, just press:
 
@@ -376,7 +376,7 @@ mail:x:8:12:mail:/var/spool/mail:/usr/sbin/nologin
 operator:x:11:0:operator:/root:/usr/sbin/nologin
 ```
 
-To choose how many lines to display, use `-n`.
+To choose how many lines to display, we use `-n`.
 
 ```bash
 head -n 5 /etc/passwd
@@ -392,7 +392,7 @@ adm:x:3:4:adm:/var/adm:/usr/sbin/nologin
 lp:x:4:7:lp:/var/spool/lpd:/usr/sbin/nologin
 ```
 
-`head` is great for quickly checking the initial structure of a file without loading all its content.
+`head` is great for quickly checking the initial structure of a file without loading its entire content.
 
 # `tail`: displaying the end of the file
 
@@ -412,9 +412,9 @@ Jul 10 09:55:05 servidor systemd-logind[842]: New session 18 of user cesar.
 Jul 10 09:55:09 servidor systemd[1]: Started User Manager for UID 1000.
 ```
 
-Like `head`, `tail` shows ten lines by default.
+Like `head`, `tail` displays ten lines by default.
 
-To set a different number:
+To define a different quantity:
 
 ```bash
 tail -n 3 /var/log/messages
@@ -432,7 +432,7 @@ Jul 10 09:55:09 servidor systemd[1]: Started User Manager for UID 1000.
 
 # `tail -f`: monitoring logs in real-time
 
-The `-f` option, for **follow**, keeps the command open, waiting for new lines.
+The `-f` option, short for **follow**, keeps the command open, waiting for new lines.
 
 ```bash
 tail -f /var/log/messages
@@ -453,26 +453,26 @@ Jul 10 10:01:17 servidor app[2451]: Request received from 192.168.1.10.
 Jul 10 10:01:18 servidor app[2451]: Request completed successfully.
 ```
 
-To stop following:
+To stop monitoring:
 
 ```text
 Ctrl + C
 ```
 
-This command is widely used during problem investigations. We can reproduce an error while observing exactly what is being logged.
+This command is widely used during troubleshooting. We can reproduce an error while observing exactly what is being logged.
 
 ## Log locations
 
-File locations may vary depending on the distribution.
+File locations may vary by distribution.
 
-On Fedora, RHEL, and derivative systems, it's common to find:
+In Fedora, RHEL, and derivative systems, it's common to find:
 
 ```text
 /var/log/messages
 /var/log/secure
 ```
 
-On Debian, Ubuntu, and derivative systems, it's common to find:
+In Debian, Ubuntu, and derivative systems, it's common to find:
 
 ```text
 /var/log/syslog
@@ -495,7 +495,7 @@ jul 10 10:04:13 servidor app[2604]: Application ready.
 
 # Combining `tail` with `grep`
 
-A log can receive dozens or hundreds of messages per second. To display only the lines that interest us, we can combine `tail` and `grep`.
+A log can receive tens or hundreds of messages per second. To display only the lines we're interested in, we can combine `tail` and `grep`.
 
 On Fedora or RHEL:
 
@@ -518,23 +518,23 @@ Jul 10 10:08:29 servidor sshd[2740]: Failed password for root from 203.0.113.25 
 
 The `|` character is called a **pipe**.
 
-It takes the output of the command on the left:
+It takes the output of the left command:
 
 ```bash
 tail -f /var/log/secure
 ```
 
-And uses that output as input for the command on the right:
+And uses that output as input for the right command:
 
 ```bash
 grep "Failed password"
 ```
 
-Thus, the terminal shows only failed login attempts. The noise goes away, and what truly matters remains — almost a silent mode for chatty logs.
+This way, the terminal only shows failed login attempts. The noise is gone, and what's truly relevant remains — almost a silent mode for verbose logs.
 
 # `wc`: counting lines, words, and bytes
 
-The `wc` command, short for **word count**, displays information about a file's content.
+The `wc` command, short for **word count**, provides information about a file's content.
 
 Consider a file named `app.log` with the following content:
 
@@ -559,7 +559,7 @@ Output:
 The three values represent, respectively:
 
 ```text
-linhas palavras bytes arquivo
+lines words bytes file
 ```
 
 Therefore, the file has:
@@ -570,7 +570,7 @@ Therefore, the file has:
 
 ## Counting only lines
 
-Most of the time, we just want to know how many lines exist.
+Most of the time, we just want to know how many lines there are.
 
 For this, we use `-l`:
 
@@ -593,7 +593,7 @@ Other useful options:
 | `-c` | Number of bytes |
 | `-m` | Number of characters |
 
-To count only words:
+To count only the words:
 
 ```bash
 wc -w app.log
@@ -605,7 +605,7 @@ Output:
 9 app.log
 ```
 
-To count bytes:
+To count the bytes:
 
 ```bash
 wc -c app.log
@@ -620,7 +620,7 @@ Output:
 `wc` quickly answers questions like:
 
 - How many lines are in this log?
-- What is the text size of this file?
+- What is the textual size of this file?
 - How many entries are in this list?
 - How many lines does this configuration file have?
 
@@ -628,7 +628,7 @@ Output:
 
 The `diff` command compares two files and shows exactly what changed between them.
 
-Consider the `original.conf` file:
+Consider the file `original.conf`:
 
 ```text
 porta=8080
@@ -636,7 +636,7 @@ debug=false
 workers=2
 ```
 
-And the `modificado.conf` file:
+And the file `modificado.conf`:
 
 ```text
 porta=9090
@@ -675,7 +675,7 @@ Lines starting with `>` exist in the second file:
 > debug=true
 ```
 
-The section:
+The segment:
 
 ```text
 1,2c1,2
@@ -683,7 +683,7 @@ The section:
 
 indicates that lines 1 and 2 of the first file were changed to lines 1 and 2 of the second.
 
-When files are identical, `diff` produces no output.
+When files are identical, `diff` displays no output.
 
 ```bash
 diff original.conf copia-original.conf
@@ -692,7 +692,7 @@ diff original.conf copia-original.conf
 Output:
 
 ```text
-Nenhuma saída significa que os arquivos são iguais.
+No output means the files are identical.
 ```
 
 # `diff -u`: unified format
@@ -728,7 +728,7 @@ Anyone who has used:
 git diff
 ```
 
-will probably immediately recognize this format.
+will likely immediately recognize this format.
 
 # Backing up before editing
 
@@ -741,7 +741,7 @@ cp original.conf original.conf.bak
 Output:
 
 ```text
-Nenhuma saída é exibida quando a cópia é realizada com sucesso.
+No output is displayed when the copy is successful.
 ```
 
 After editing the file, we can compare the current version with the backup:
@@ -770,7 +770,7 @@ This practice is especially useful before changing files like:
 /etc/hosts
 ```
 
-Thus, if any configuration presents problems, we can identify exactly what was changed.
+This way, if any configuration causes problems, we can identify exactly what was changed.
 
 # Which command to use?
 
@@ -788,7 +788,7 @@ Thus, if any configuration presents problems, we can identify exactly what was c
 | Filter specific lines | `grep` |
 | Count lines, words, or bytes | `wc` |
 | Compare two files | `diff` |
-| Compare in Git-like format | `diff -u` |
+| Compare in a Git-like format | `diff -u` |
 
 # Conclusion
 
@@ -798,6 +798,6 @@ The commands presented solve a large part of daily tasks involving files in Linu
 
 When we need to filter information, `grep` can be combined with other commands using pipes. `wc` quickly answers how many lines, words, or bytes are in a file.
 
-Finally, `diff` allows you to compare versions and discover exactly what has changed, which is essential when working with configuration files.
+Finally, `diff` allows you to compare versions and find out exactly what has changed, which is essential when working with configuration files.
 
 Mastering these commands doesn't just mean memorizing options. It means learning to investigate the system, find information, and understand what's happening without relying on a graphical interface.

@@ -2,7 +2,7 @@
 title: Multi-stage builds — much smaller Docker images
 description: >-
   How to use multi-stage builds to separate build from runtime and drastically
-  reduce the size of your images.
+  reduce your image size.
 date: '2026-06-24'
 category: DOCKER
 tags:
@@ -12,15 +12,15 @@ tags:
 draft: false
 language: en
 translationOf: multi-stage-builds-docker
-sourceHash: 7c4ed547e8c337feb0a099591b7e52105a775f82b5e445e10b008e24f8bc9b14
+sourceHash: 6e79203fb48b28f882ee721808560e7c330596db89a650822c08cf15f2d929dd
 ---
-A Python application image weighing 1.2 GB is not normal — it's a lack of multi-stage build.
+A Python application image weighing 1.2 GB is not normal — it's a lack of multi-stage builds.
 
-## The problem
+## The Problem
 
 When you install compilers, build tools, and development dependencies in the same image that goes to production, all of it travels together.
 
-## The solution
+## The Solution
 
 ```dockerfile
 # stage 1: build
@@ -44,9 +44,9 @@ ENV PATH=/root/.local/bin:$PATH
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
 ```
 
-The `COPY --from=builder` is the key: only what you explicitly copy leaves the first stage.
+`COPY --from=builder` is the key: only what you explicitly copy leaves the first stage.
 
-## Measuring the result
+## Measuring the Result
 
 ```bash
 docker build -t app:antes -f Dockerfile.old .

@@ -1,9 +1,8 @@
 ---
-title: 'Understanding GitHub Actions Contexts: github, env, vars, and secrets'
+title: 'Understanding Contexts in GitHub Actions: github, env, vars, and secrets'
 description: >-
-  Learn how GitHub Actions contexts work, when to use `github`, `env`, `vars`,
-  and `secrets`, and understand the differences between them with practical
-  examples.
+  Learn how GitHub Actions contexts work, when to use github, env, vars, and
+  secrets, and understand the differences between them with practical examples.
 date: '2026-07-14'
 category: CI/CD
 tags:
@@ -15,11 +14,11 @@ tags:
 draft: false
 language: en
 translationOf: entendendo-conceitos-github-actions
-sourceHash: 46a071f111494219cb2e1ac1768bb46c016ff3bb63813a5ca8e1dba4820e13aa
+sourceHash: 588dcb07ab853469f075d4ac1f117cbc3513235cb268a06ef16fe26d23418b9e
 ---
-# Understanding GitHub Actions Contexts: github, env, vars, and secrets
+# Understanding Contexts in GitHub Actions: github, env, vars, and secrets
 
-If you've started learning GitHub Actions, you've probably encountered expressions like these:
+If you've started studying GitHub Actions, you've probably encountered expressions like these:
 
 ```yaml
 ${{ github.repository }}
@@ -31,17 +30,17 @@ ${{ vars.AWS_REGION }}
 ${{ secrets.GEMINI_API_KEY }}
 ```
 
-At first glance, they might seem like just different ways to access variables.
+At first glance, they seem like just different ways to access variables.
 
-But there's an important difference: **each belongs to a different context**, serves a specific purpose, and is interpreted at distinct moments during workflow execution.
+But there's an important difference: **each belongs to a different context**, has a specific purpose, and is interpreted at distinct moments during workflow execution.
 
-Understanding this difference is crucial for writing more organized, reusable, and secure workflows.
+Understanding this difference is fundamental for writing more organized, reusable, and secure workflows.
 
 In this article, we'll explore the main GitHub Actions contexts using practical examples.
 
 
 
-## What You'll Learn
+## What you will learn
 
 By the end of this article, you will be able to:
 
@@ -82,7 +81,7 @@ If the workflow is being executed in this repository:
 csarsantos96/commandlinux-blog
 ```
 
-this will be the output of the expression.
+that will be the output of the expression.
 
 In practice, it works like accessing a property of an object in JavaScript.
 
@@ -92,7 +91,7 @@ github.repository
 
 
 
-## How GitHub Processes an Expression
+## How GitHub processes an expression
 
 A very important characteristic is that expressions like:
 
@@ -104,21 +103,21 @@ are not interpreted by Bash.
 
 GitHub Actions itself resolves this expression **before** sending the Job to the Runner.
 
-This allows the use of conditions such as:
+This allows for conditions such as:
 
 ```yaml
 if: ${{ github.ref_name == 'main' }}
 ```
 
-In this case, GitHub decides whether the Job will execute even before the Runner starts.
+In this case, GitHub decides whether the Job will be executed even before the Runner starts.
 
 
 
 ## The `github` context
 
-The `github` context contains practically all information about the Workflow execution.
+The `github` context contains almost all information about the Workflow execution.
 
-Some commonly used properties are:
+Some frequently used properties are:
 
 ```yaml
 ${{ github.repository }}
@@ -146,7 +145,7 @@ steps:
 
 
 
-## Context is not the same as an Environment Variable
+## Context is not the same as Environment Variable
 
 This detail often causes a lot of confusion.
 
@@ -158,7 +157,7 @@ First:
 run: echo "${{ github.ref_name }}"
 ```
 
-Here, GitHub substitutes the expression before execution.
+Here GitHub replaces the expression before execution.
 
 Now:
 
@@ -166,9 +165,9 @@ Now:
 run: echo "$GITHUB_REF_NAME"
 ```
 
-In this case, Bash inside the Runner interprets the variable.
+In this case, it's Bash inside the Runner that interprets the variable.
 
-The result might be similar, but the moment each value is resolved is completely different.
+The result may be similar, but the moment each value is resolved is completely different.
 
 
 
@@ -190,7 +189,7 @@ jobs:
       - run: echo "${{ env.APP_NAME }}"
 ```
 
-Since this variable is also exported to the Runner's environment, we can access it directly:
+As this variable is also exported to the Runner's environment, we can access it directly:
 
 ```yaml
 run: echo "$APP_NAME"
@@ -215,7 +214,7 @@ They can exist at the:
 - Repository
 - Environment
 
-They are ideal for non-sensitive configurations.
+levels. They are ideal for non-sensitive configurations.
 
 Examples:
 
@@ -251,7 +250,7 @@ The secret is never written directly into the code.
 
 
 
-## What to Never Do
+## What never to do
 
 Even if GitHub tries to mask sensitive values in logs, the recommendation is never to print Secrets.
 
@@ -267,12 +266,12 @@ The best practice is to pass the Secret directly to the application that will us
 
 ## Summary
 
-| Context   | Usage                                |
-|-----------|--------------------------------------|
-| `github`  | Workflow execution information       |
-| `env`     | Variables defined in the workflow    |
-| `vars`    | Non-sensitive GitHub configurations  |
-| `secrets` | Confidential information             |
+| Context   | Usage                                 |
+|-----------|---------------------------------------|
+| `github`  | Workflow execution information        |
+| `env`     | Variables defined in the workflow     |
+| `vars`    | Non-sensitive GitHub configurations   |
+| `secrets` | Confidential information              |
 
 
 
@@ -280,7 +279,7 @@ The best practice is to pass the Secret directly to the application that will us
 
 Contexts are one of the most important features of GitHub Actions. Understanding when to use `github`, `env`, `vars`, and `secrets` helps create more organized, reusable, and secure workflows.
 
-Although they all seem like just "variables," each has a specific purpose and is interpreted at different moments during execution. Mastering this difference prevents common errors and makes your pipelines much more predictable.
+Although they all seem like just "variables," each has a specific purpose and is interpreted at different times during execution. Mastering this difference avoids common errors and makes your pipelines much more predictable.
 
 
 ## References

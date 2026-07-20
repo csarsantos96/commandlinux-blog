@@ -1,8 +1,8 @@
 ---
-title: Understanding GitHub Actions
+title: Getting to Know GitHub Actions
 description: >-
   Understand what GitHub Actions is, how it works, and how to use workflows to
-  automate tasks like testing, building, and deploying directly on GitHub.
+  automate tasks like testing, builds, and deploys directly within GitHub.
 date: '2026-05-30'
 category: CI/CD
 tags:
@@ -15,69 +15,69 @@ tags:
 draft: false
 language: en
 translationOf: conhecendo-github-actions
-sourceHash: 639b52b6e683c2b687367aed25f8d70b08ca199efe2e37a8f526e331a7b6dc9a
+sourceHash: 0cebd1cd58b9dcce140eceecda6d4e4d44ad19c4d7527004f684be4fdd5de579
 ---
-# Understanding **GitHub Actions**
-In practice, **GitHub Actions** is used to create **CI/CD** pipelines directly within GitHub.
+# Getting to Know **GitHub Actions**  
+In practice, **GitHub Actions** is used to create **CI/CD** pipelines within GitHub itself.  
 
-This means that instead of doing everything manually every time we change the code, we can configure GitHub to execute some commands automatically when something happens in the repository.
+In other words, instead of doing everything manually every time we change the code, we can configure GitHub to execute some automatic commands when something happens in the repository.  
 
-For example: when I `push` to GitHub, I can create an automation to download the code, install dependencies, run tests, build the application, generate a Docker image, and even publish this application to an environment.
+For example: when I `push` to GitHub, I can create an automation to download the code, install dependencies, run tests, build the application, generate a Docker image, and even publish that application to an environment.  
 
 This environment could be AWS, Vercel, a self-hosted server, or any other place that makes sense for the project.
 
-The main idea is simple:
+The main idea is simple:  
 
 ```txt  
-Eu altero o código
+I change the code
         ↓
-Faço push para o GitHub
+I push to GitHub
         ↓
-O GitHub Actions executa uma pipeline
+GitHub Actions executes a pipeline
         ↓
-A pipeline roda comandos automaticamente
+The pipeline runs commands automatically
         ↓
-O projeto é testado, validado ou publicado
-```
+The project is tested, validated, or published
+```  
 
-## What is a pipeline?
-A pipeline is nothing more than an automated sequence of steps to take something "raw" and lead it to a final result.
-For example, in a real project, a pipeline could have this flow:
+## What is a pipeline?  
+A pipeline is simply an automated sequence of steps to take something "raw" and lead it to a final result.  
+For example, in a real project, a pipeline could have this flow:  
 
 ```txt  
-Baixar o código
+Download the code
         ↓
-Instalar dependências
+Install dependencies
         ↓
-Rodar testes
+Run tests
         ↓
-Fazer o build da aplicação
+Build the application
         ↓
-Gerar uma imagem Docker
+Generate a Docker image
         ↓
-Fazer o deploy
-```
-The great advantage is that this process is always executed in the same way. Instead of relying on someone to remember all the commands manually, GitHub itself executes everything based on what has been configured.
-This helps avoid errors, saves time, and makes the delivery process much more reliable.
+Deploy
+```  
+The great advantage is that this process is always executed in the same way. Instead of relying on someone to manually remember all the commands, GitHub itself executes everything based on what has been configured.  
+This helps prevent errors, saves time, and makes the delivery process much more reliable.  
 
-## What is a workflow?
-Within GitHub Actions, what defines this automation is the **workflow**.
-The workflow is a file written in **YAML**, where we configure when the automation should run, on which machine it will be executed, and which commands will be executed.
+## What is a workflow?  
+Within GitHub Actions, what defines this automation is the **workflow**.  
+The workflow is a file written in **YAML**, where we configure when the automation should run, on which machine it will be executed, and which commands will be run.  
 
-This file is located inside the folder:
+This file is located inside the folder:  
 ``` 
 .github/workflows/ 
-```
+```  
 ``` 
 .github/workflows/meu-primeiro-workflow.yaml
-```
-In practice, it's in this file that we tell GitHub:
- > When a push happens to the main branch, run these commands on an Ubuntu machine
+```  
+In practice, it's in this file that we tell GitHub:  
+ > When a push happens on the main branch, run these commands on an Ubuntu machine  
 
-The ***pipeline*** is the idea of the automated process, and the workflow is the file where we describe this automation within GitHub Actions.
+The ***pipeline*** is the idea of the automated process, and the workflow is the file where we describe this automation within GitHub Actions.  
 
-## Basic Structure of a **Workflow**
-A GitHub Actions workflow usually follows a structure similar to this:
+## Basic Workflow Structure  
+A GitHub Actions workflow typically follows a structure similar to this:  
 ``` 
 name: Primeiro Workflow
 
@@ -94,15 +94,15 @@ jobs:
       - name: Exibir mensagem
         run: echo "Meu primeiro workflow com GitHub Actions"    
 ```
-This example is still quite simple, but it already shows the basis of a workflow.
+This example is still very simple, but it already shows the foundation of a workflow.  
 ``` 
 name     → nome do workflow
 on       → quando o workflow será executado
 jobs     → o que será executado
 runs-on  → onde será executado
 steps    → quais passos serão executados  
-```
-GitHub Actions basically works like this:
+``` 
+GitHub Actions basically works like this:  
 ```
 Um evento acontece no repositório
         ↓
@@ -113,17 +113,17 @@ Um ou mais jobs são executados
 Cada job roda seus steps
         ↓
 A automação termina com sucesso ou falha
-```
+```   
 
-In other words, the workflow is the file that organizes all the automation.
-## Summary
-GitHub Actions allows you to create automations directly within GitHub.
+In other words, the workflow is the file that organizes all the automation.  
+## In Summary  
+GitHub Actions allows you to create automations within GitHub itself.
 
-With it, we can set up pipelines to test, validate, build, and even publish an application automatically.
+With it, we can set up pipelines to automatically test, validate, build, and even publish an application.
 
-In this first contact, we saw that a pipeline is a sequence of automated steps, and in GitHub Actions, this pipeline is defined through a file called a workflow.
+In this first contact, we saw that a pipeline is a sequence of automated steps, and that in GitHub Actions, this pipeline is defined through a file called a workflow.  
 
-The important thing is to remember this idea:
-> GitHub Actions automates tasks.
-> A pipeline is the automated process.
-> A workflow is the file that describes this process on GitHub.
+The important thing is to remember this idea:  
+> GitHub Actions automates tasks.  
+> A pipeline is the automated process.  
+> A workflow is the file that describes this process in GitHub.

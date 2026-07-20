@@ -15,18 +15,18 @@ tags:
 draft: false
 language: en
 translationOf: Entendendo-Control-Plane
-sourceHash: 731c2a8e5574d2917ac30c62bc9ddbdaeddabc713163df38c285cd8cce875c6f
+sourceHash: 69425ebd438cb191ab9851fed2b5951cc47648ae94191ec0a5c5f8afb550c694
 ---
 In `Kubernetes`, the cluster is basically divided into two parts:
 
-### **Control Plane** = The cluster's brain
+### **Control Plane** = The brain of the cluster
 ### **Workers** = Machines that do the heavy lifting.
 
 <br>
 
 
 # **Control Plane**
-The Control Plane decides what happens in the clusters. It doesn't usually run the application directly, but it manages the entire environment.
+The Control Plane decides what happens in the clusters. It doesn't usually run applications directly, but it manages the entire environment.
 
 ### <center> **Basic Kubernetes Architecture**</center>
 
@@ -60,32 +60,31 @@ flowchart LR
 It stores all information. The entire real state of the `cluster`. It only communicates with the `kube API SERVER`.
 
 ## **kube API SERVER**
-Only it has default permission to communicate with etcd. Its function is to retrieve the status of the `cluster` as a whole. It will communicate with everyone. All `cluster` communication happens through the `kube API SERVER`.
+Only it has default permission to communicate with etcd. Its function is to get the status of the `cluster` as a whole. It will communicate with everyone. All `cluster` communication happens through the `kube API SERVER`.
 
 ## **kube scheduler**
-It is responsible for managing where each of the containers will run; it is the controller responsible for new containers, and it knows the capacity of the nodes.
+It is responsible for managing where each container will run; it is the controller responsible for where new containers go, and it knows the capacity of the nodes.
 
 ## **kube controller manager**
-It is the manager of all controllers; it ensures the state of the `cluster`. It is the `cluster`'s controller.
-  
+It's the manager of all controllers; it ensures the state of the `cluster`. It is the `cluster`'s controller.
+
 <br>
 
 
 # **Workers**
 
 ## **kubelet**
-It is the Kubernetes agent within the node, and every `Kubernetes` node will have a `kubelet`. It checks if everything is okay and communicates with the `kube APISERVER`, receiving the Pod specifications for that node and reporting the status back.
+It is the Kubernetes agent within the node, and any `kubernetes` node will have a `kubelet`. It checks if everything is okay and communicates with the `kube APISERVER`, receiving the specification of the Pods for that node and reporting the status back.
 
 ## **kube proxy**
-Every node will have a `kube proxy`. It enables communication between `pods` and the outside world; it observes cluster resources and configures network rules on the node.
+Every node will have a `kube proxy`. It enables communication between `pods` and the rest of the world; it observes cluster resources and configures network rules on the node.
 
 <br>
 
+# **Ports used by Kubernetes components**
 
-# **Ports Used by Kubernetes Components**
 
-
-## Ports Used by Kubernetes Components
+## Ports used by Kubernetes components
 
 | Component | Default Port | Protocol |
 |---|---:|---|
@@ -96,10 +95,10 @@ Every node will have a `kube proxy`. It enables communication between `pods` and
 | kubelet | 10250 | TCP |
 | kube-proxy | 10256 | TCP |
 
-## Application Exposure Ports
+## Application exposure ports
 
 | Resource | Default Port | Protocol |
 |---|---:|---|
-| NodePort Service | 30000–32767 | TCP or UDP |
+| Service of type NodePort | 30000–32767 | TCP or UDP |
 
 <br>

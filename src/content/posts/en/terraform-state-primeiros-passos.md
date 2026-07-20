@@ -1,5 +1,5 @@
 ---
-title: Terraform state - the file that can bring down your infrastructure
+title: Terraform state - the file that can bring down your infra
 description: >-
   What Terraform state is, why it should never live on your machine, and how to
   configure a remote backend with locking.
@@ -13,21 +13,21 @@ tags:
 draft: false
 language: en
 translationOf: terraform-state-primeiros-passos
-sourceHash: f0fd99c20231df83820d2f80db53f4aa08399dfda937e62ce6232846c93530f6
+sourceHash: 8a30251d3c96b2d7486663b1b038db9cad652ad4726c5319e1da3d362cb94199
 ---
 The `terraform.tfstate` is the map between your code and the real world. Lose the state, lose control of your infrastructure.
 
 ## What the state stores
 
-Every resource created, their real IDs in the cloud, dependencies, and metadata. This is how Terraform knows what to create, change, or destroy in a `plan`.
+Every resource created, its real cloud IDs, dependencies, and metadata. This is how Terraform knows what needs to be created, changed, or destroyed in a `plan`.
 
 ## Why local state is dangerous
 
 - No teamwork: everyone has a different state
-- No locking: two simultaneous `apply` operations corrupt everything
-- Secrets can be stored in plain text in the file
+- No lock: two simultaneous `apply` commands corrupt everything
+- Secrets can be saved in plain text in the file
 
-## Remote Backend with S3
+## Remote backend with S3
 
 ```hcl
 terraform {
@@ -48,7 +48,7 @@ terraform init -migrate-state
 terraform plan
 ```
 
-## Golden Rules
+## Golden rules
 
 1. State always remote, versioned, and encrypted
 2. Never edit the state manually — use `terraform state mv` and similar commands

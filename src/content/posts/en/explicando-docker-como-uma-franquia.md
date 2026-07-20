@@ -1,8 +1,8 @@
 ---
-title: Explaining Docker as a Franchise
+title: Explaining Docker like a Franchise
 description: >-
   Understand Dockerfile, image, container, and configurations using a simple
-  franchise analogy.
+  analogy with franchises.
 date: '2026-03-31'
 category: DOCKER
 tags:
@@ -14,20 +14,20 @@ tags:
 draft: false
 language: en
 translationOf: explicando-docker-como-uma-franquia
-sourceHash: ac316c4114b4de1b02d1fa8f80d34bde68e27173b3cde8c835c76a0733eed5b7
+sourceHash: b9e6b4939c44f3905adff8c59088ec8a66b725a7b4cb91a148deeef360a75b65
 ---
-Imagine you open a restaurant franchise, and within that franchise, there's a strict standard to follow. The exact same thing happens with Docker.
+Imagine you open a restaurant franchise, and within this franchise, there's a strict standard to follow. In Docker, exactly the same thing happens.
 
 ### **Dockerfile: The Franchise Manual**
 
-When we think of a manual, we remember someone created a step-by-step guide that must be followed precisely. The Dockerfile defines this entire roadmap: it determines how the image should be created, built, and run.
+When we think of a manual, we remember that someone created a step-by-step guide that must be followed strictly. The Dockerfile defines this entire roadmap: it determines how the image should be created, generated, and executed.
 
 Join The Writer's Circle event
 Example guidelines:
 
 - Which base to use (e.g., Ubuntu);
 - Which tools to install (e.g., Nginx);
-- What should run on startup.  
+- What should run on startup.
   
 **Dockerfile**  
 
@@ -38,9 +38,9 @@ CMD ["nginx", "-g", "daemon off;"]
 O Docker lê esse manual, executa o passo a passo e gera uma Imagem.  
 ``` 
 
-### **Image: The Standard Model**  
+### **Image: The Standard Template**  
 
-The image is the ready-made franchise model; it's the standard that all "units" will follow. Like any franchise standard, the image is **immutable**. It serves as the base for creating containers, ensuring that all start exactly the same.
+The image is the ready-made template of the franchise; it's the standard that all "units" will follow. Like any franchise standard, the image is **immutable**. It serves as the base for creating containers, ensuring that all of them start exactly alike.
 
 ### **Containers: The Franchise Units** 
 
@@ -54,7 +54,7 @@ All follow the same standard, but operate **independently**.
 
 ### **Configurations: Local Adaptations**  
 
-Although they follow the standard, each franchise can have particularities:
+Although they follow the standard, each franchise can have specific characteristics:
 
 - Different prices;
 - Specific promotions;

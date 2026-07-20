@@ -1,7 +1,7 @@
 ---
 title: Creating and Managing Pods with kubectl and YAML Manifests
 description: >-
-  Learn how to generate YAML manifests, create Pods, and use the main kubectl
+  Learn to generate YAML manifests, create Pods, and use the main kubectl
   commands to manage resources in Kubernetes.
 date: '2026-07-20'
 category: Kubernetes
@@ -15,7 +15,7 @@ tags:
 draft: false
 language: en
 translationOf: conhecendo-manifestos-yaml
-sourceHash: 00fa635715619ed7dbcfc1db346be108cd47e3c11e7b3728663ccd9bc712c735
+sourceHash: 3e768dbc8e9c24065513e8113627f76c7a1276cb421be62d9f4355e83b84da17
 series: Kubernetes Fundamentals
 part: 2
 totalParts: 4
@@ -26,11 +26,11 @@ totalParts: 4
 
 In the previous article, we learned about Pods and how to create our first resource using the `kubectl run` command.
 
-While this command is extremely useful for studies and quick tests, it does not represent the most common way to work with Kubernetes in production environments.
+Although this command is extremely useful for studies and quick tests, it does not represent the most common way to work with Kubernetes in production environments.
 
-In practice, most applications are created using **YAML manifests** that are versioned in a Git repository.
+In practice, most applications are created through **YAML manifests** that are versioned in a Git repository.
 
-In this article, we will learn how to automatically generate these manifests using `kubectl`, understand their structure, and explore some of the most used commands for managing Pods.
+In this article, we will learn how to automatically generate these manifests using `kubectl`, understand their structure, create a Pod with multiple containers, and get acquainted with some of the most used commands for managing Pods.
 
 
 
@@ -38,7 +38,7 @@ In this article, we will learn how to automatically generate these manifests usi
 
 Imagine we want to create a Pod using the Nginx image.
 
-We could run directly:
+We could execute directly:
 
 ```bash
 kubectl run corinthians --image=nginx
@@ -54,15 +54,15 @@ kubectl run corinthians \
   -o yaml > pod.yaml
 ```
 
-This command does not create any resources.
+This command does not create any resource.
 
-It only generates the YAML manifest and saves its content into the file `pod.yaml`.
+It only generates the YAML manifest and saves its content into the `pod.yaml` file.
 
 Let's understand each option.
 
 
 
-# The `--image` Parameter
+# The `--image` parameter
 
 ```bash
 --image=nginx
@@ -76,7 +76,7 @@ If it doesn't exist locally, it will be downloaded automatically.
 
 
 
-# The `--port` Parameter
+# The `--port` parameter
 
 ```bash
 --port=80
@@ -84,7 +84,7 @@ If it doesn't exist locally, it will be downloaded automatically.
 
 Informs that the container uses port 80.
 
-This makes the manifest contain:
+This causes the manifest to contain:
 
 ```yaml
 ports:
@@ -97,7 +97,7 @@ For that, it will still be necessary to create a Service.
 
 
 
-# The `--dry-run=client` Parameter
+# The `--dry-run=client` parameter
 
 This is one of the most useful options during studies.
 
@@ -115,28 +115,28 @@ In practice, the following happens:
 kubectl
       │
       ▼
-Monta o objeto
+Assembles the object
       │
       ▼
-Gera o YAML
+Generates the YAML
       │
       ▼
-Não cria nenhum recurso
+Does not create any resource
 ```
 
 Since the entire simulation happens within `kubectl` itself, we use the `client` option.
 
 
 
-# The `-o yaml` Parameter
+# The `-o yaml` parameter
 
-The `-o` option stands for **output**.
+The `-o` option means **output**.
 
 ```bash
 -o yaml
 ```
 
-It tells `kubectl` that we want to view the resource in YAML format.
+It informs `kubectl` that we want to view the resource in YAML format.
 
 The result will be similar to the following:
 
@@ -162,7 +162,7 @@ spec:
 
 
 
-# The `>` Operator
+# The `>` operator
 
 The final part of the command often causes confusion.
 
@@ -178,7 +178,7 @@ It redirects the command's output to a file.
 
 Without it, the YAML would be displayed directly in the terminal.
 
-With it, all the content will be saved in `pod.yaml`.
+With it, all content will be saved to `pod.yaml`.
 
 
 
@@ -256,7 +256,7 @@ If Sidecars exist, they will also appear in this list.
 restartPolicy: Always
 ```
 
-Defines Kubernetes' behavior if the container terminates.
+Defines the behavior of Kubernetes if the container is terminated.
 
 By default, Pods created this way use `Always`.
 
@@ -280,7 +280,7 @@ After reviewing the manifest, simply apply it.
 kubectl apply -f pod.yaml
 ```
 
-Expected output:
+Expected result:
 
 ```text
 pod/corinthians created
@@ -288,11 +288,169 @@ pod/corinthians created
 
 Now Kubernetes will send this manifest to the API Server and begin the Pod creation process.
 
+# Creating a Pod with Multiple Containers
 
+Up until now, we've worked with a Pod containing only one container.
+
+However, a Pod can also run two or more containers simultaneously.
+
+In the example below, we will create a Pod named `corinthians` with two containers:
+
+- one container using the Nginx image;
+- one container using the BusyBox image.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: corinthians
+  name: corinthians
+spec:
+  containers:
+  - image: nginx
+    name: corinthians
+    resources: {}
+
+  - image: busybox
+    name: busybox
+    args:
+    - sleep
+    - "700"
+
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+```
+
+The first container runs Nginx.
+
+The second uses the BusyBox image and executes the command:
+
+```bash
+sleep 700
+```
+
+This command keeps the container active for 700 seconds. Without a running process, the BusyBox container would terminate shortly after starting.
+
+After applying the manifest:
+
+```bash
+kubectl apply -f pod.yaml
+```
+
+We can query the Pod with additional information:
+
+```bash
+kubectl get pods -o wide
+```
+
+Result:
+
+```text
+NAME          READY   STATUS    RESTARTS        AGE    IP           NODE
+corinthians   2/2     Running   9 (2m18s ago)   4h5m   10.244.2.5   giropops-worker
+```
+
+The `READY` column shows:
+
+```text
+2/2
+```
+
+This means the Pod has two containers, and both are ready.
+
+The `NODE` column shows that the Pod is running on the Node:
+
+```text
+giropops-worker
+```
+
+We can represent this structure as follows:
+
+```text
+Kubernetes Cluster
+└── Node: giropops-worker
+    └── Pod: corinthians
+        ├── Container: corinthians
+        │   └── Image: nginx
+        └── Container: busybox
+            └── Command: sleep 700
+```
+
+It's important to understand that containers are not run directly by the Node as separate resources.
+
+The two containers are within the same Pod, and it is the Pod that is running on the Node.
+
+They also share:
+
+- the same IP address;
+- the same network interface;
+- the same lifecycle;
+- the volumes defined in the Pod.
+
+In this example, the IP address `10.244.2.5` belongs to the Pod.
+
+## Understanding BusyBox Restarts
+
+In the command's output, the `RESTARTS` column shows that the containers have been restarted:
+
+```text
+9 (2m18s ago)
+```
+
+This happens because BusyBox executes:
+
+```bash
+sleep 700
+```
+
+After 700 seconds, this process terminates.
+
+Since the manifest uses:
+
+```yaml
+restartPolicy: Always
+```
+
+Kubernetes starts the container again.
+
+This is why the number of restarts increases over time.
+
+## Managing Specific Containers
+
+When a Pod has multiple containers, we need to specify which container we want to access.
+
+To view the Nginx logs:
+
+```bash
+kubectl logs corinthians -c corinthians
+```
+
+To query BusyBox:
+
+```bash
+kubectl logs corinthians -c busybox
+```
+
+We can also execute commands within a specific container.
+
+In the Nginx container:
+
+```bash
+kubectl exec -it corinthians -c corinthians -- sh
+```
+
+In the BusyBox container:
+
+```bash
+kubectl exec -it corinthians -c busybox -- sh
+```
+
+The `-c` option specifies the name of the container to be used.
 
 # Querying Pods
 
-The first command we usually run is:
+The first command we typically run is:
 
 ```bash
 kubectl get pods
@@ -313,7 +471,7 @@ This option shows information such as:
 
 # Getting Details
 
-If it's necessary to investigate a specific resource:
+If it is necessary to investigate a specific resource:
 
 ```bash
 kubectl describe pod corinthians
@@ -380,11 +538,11 @@ hostname
 cat /etc/os-release
 ```
 
-In practice, `kubectl exec` is much more used than `kubectl attach`.
+In practice, `kubectl exec` is much more commonly used than `kubectl attach`.
 
 
 
-# Understanding kubectl attach
+# Understanding `kubectl attach`
 
 The `attach` command has a different behavior.
 
@@ -414,7 +572,7 @@ After a few seconds, it will cease to exist in the cluster.
 
 # Summary
 
-Throughout this article, we learned a commonly used daily workflow.
+During this article, we learned a frequently used daily workflow.
 
 ```text
 kubectl run
@@ -447,6 +605,6 @@ kubectl exec
 kubectl delete
 ```
 
-This workflow represents the foundation of working with Kubernetes and will be used for practically all the next resources we study, such as Deployments, Services, ConfigMaps, and Ingress.
+This workflow represents the foundation of working with Kubernetes and will be used for practically all upcoming resources we study, such as Deployments, Services, ConfigMaps, and Ingress.
 
-In upcoming articles, we will move on to more complex declarative resources and understand how real applications are executed within a Kubernetes cluster.
+In future articles, we will move on to more complex declarative resources and understand how real applications are run within a Kubernetes cluster.

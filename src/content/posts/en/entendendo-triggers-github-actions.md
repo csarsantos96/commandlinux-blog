@@ -1,8 +1,8 @@
 ---
 title: Understanding GitHub Actions Triggers
 description: >-
-  Learn how the push, pull_request, workflow_dispatch, schedule, create, delete,
-  and branch_protection_rule events start workflows in GitHub Actions.
+  Learn how push, pull_request, workflow_dispatch, schedule, create, delete, and
+  branch_protection_rule events start workflows in GitHub Actions.
 date: '2026-06-27'
 category: CI/CD
 tags:
@@ -15,9 +15,9 @@ tags:
 draft: false
 language: en
 translationOf: entendendo-triggers-github-actions
-sourceHash: d289866bbeb9c2cf939ce6610a4981119dceed015c8614cf4460626aa47df159
+sourceHash: c870e8f83ecee8855b204679bb405510b7e6f1f6946dc488fc0d61d1793d5678
 ---
-A GitHub Actions workflow needs to know when to run.
+A GitHub Actions workflow needs to know when it should run.
 
 It can start when:
 
@@ -40,7 +40,7 @@ on:
 
 In this example, the workflow will start when a `push` occurs.
 
-# Workflow Structure
+# Structure of a workflow
 
 A GitHub Actions workflow is created inside the folder:
 
@@ -83,7 +83,7 @@ flowchart LR
     D --> E[Steps são processados]
 ```
 
-# `push` Trigger
+# Push Trigger
 
 The `push` trigger starts the workflow when commits or tags are pushed to the repository.
 
@@ -104,7 +104,7 @@ git push origin main
 
 After the push, GitHub looks for workflows configured with this event.
 
-# Running Only on a Specific Branch
+# Running only on a specific branch
 
 We can limit the workflow to a specific branch:
 
@@ -127,7 +127,7 @@ on:
       - develop
 ```
 
-# Using Branch Patterns
+# Using branch patterns
 
 We can use patterns to monitor groups of branches:
 
@@ -149,7 +149,7 @@ feature/pagamento/pix
 
 When using characters like `*`, it is recommended to enclose the value in quotes.
 
-# Ignoring Branches
+# Ignoring branches
 
 We can also define branches that should not start the workflow:
 
@@ -163,7 +163,7 @@ on:
 
 In this case, pushes made to `develop` or `feature` branches will be ignored.
 
-# Running Workflows with Tags
+# Running workflows with tags
 
 The `push` event can also monitor tags:
 
@@ -174,7 +174,7 @@ on:
       - "v*"
 ```
 
-This workflow can be started by tags such as:
+This workflow can be triggered by tags such as:
 
 ```text
 v1.0.0
@@ -195,7 +195,7 @@ This type of trigger is common in workflows used for:
 - generating artifacts;
 - publishing packages;
 - publishing Docker images;
-- initiating deploys.
+- initiating deployments.
 
 Example:
 
@@ -219,7 +219,7 @@ jobs:
         run: echo "Publicando a versão ${{ github.ref_name }}"
 ```
 
-# File Filters with `paths`
+# File filters with `paths`
 
 Not every change needs to run all pipelines.
 
@@ -233,7 +233,7 @@ docs/
 .github/
 ```
 
-A change only in the documentation does not necessarily need to run the backend tests.
+A change only in the documentation doesn't necessarily need to run the backend tests.
 
 We can use the `paths` filter:
 
@@ -261,7 +261,7 @@ flowchart TD
     D -- Sim --> E[Workflow executa]
 ```
 
-# Ignoring Files
+# Ignoring files
 
 We can also use `paths-ignore`:
 
@@ -275,7 +275,7 @@ on:
 
 In this case, changes made only to Markdown files or in the `docs` folder will not start the workflow.
 
-# `pull_request` Trigger
+# Pull Request Trigger
 
 The `pull_request` event starts the workflow when any activity related to a Pull Request occurs.
 
@@ -313,7 +313,7 @@ jobs:
         run: echo "Executando testes do Pull Request"
 ```
 
-# Pull Request to a Specific Branch
+# Pull Request to a specific branch
 
 We can run the workflow only when the target branch is `main`:
 
@@ -344,7 +344,7 @@ main
 
 In the `pull_request` event, the `branches` filter considers the target branch.
 
-# Pull Request Activity Types
+# Pull Request activity types
 
 We can control which activities will start the workflow:
 
@@ -363,7 +363,7 @@ In this example, the workflow will start when the Pull Request is:
 - updated with new commits;
 - reopened.
 
-Complete example:
+Full example:
 
 ```yaml
 name: Testes do Pull Request
@@ -389,7 +389,7 @@ jobs:
         run: echo "Validando o Pull Request"
 ```
 
-# Filtering Files in the Pull Request
+# Filtering files in Pull Request
 
 We can also use `paths`:
 
@@ -407,7 +407,7 @@ The workflow will run when:
 - the Pull Request targets `main`;
 - any file in the `backend` folder has been modified.
 
-# `workflow_dispatch` Trigger
+# Workflow Dispatch Trigger
 
 The `workflow_dispatch` trigger allows you to run the workflow manually.
 
@@ -420,8 +420,8 @@ With it, the workflow can be started from the Actions tab on GitHub.
 
 This trigger is useful for:
 
-- performing manual deploys;
-- running maintenance tasks;
+- performing manual deployments;
+- performing maintenance;
 - generating reports;
 - cleaning up resources;
 - testing an automation;
@@ -444,9 +444,9 @@ jobs:
         run: echo "O workflow foi iniciado manualmente"
 ```
 
-# Receiving Parameters Manually
+# Receiving parameters manually
 
-The `workflow_dispatch` can also receive values provided by the user.
+The `workflow_dispatch` can also receive user-provided values.
 
 ```yaml
 name: Executar imagem Docker
@@ -470,7 +470,7 @@ jobs:
 
 When starting the workflow manually, you will be able to specify which image should be used.
 
-# `schedule` Trigger
+# Schedule Trigger
 
 The `schedule` trigger runs workflows at scheduled times.
 
@@ -485,11 +485,11 @@ In this example, the workflow will run from Monday to Friday, at 09:00 UTC.
 A cron expression has five positions:
 
 ```text
-┌──────────── minuto
-│ ┌────────── hora
-│ │ ┌──────── dia do mês
-│ │ │ ┌────── mês
-│ │ │ │ ┌──── dia da semana
+┌──────────── minute
+│ ┌────────── hour
+│ │ ┌──────── day of month
+│ │ │ ┌────── month
+│ │ │ │ ┌──── day of week
 │ │ │ │ │
 0 9 * * 1-5
 ```
@@ -503,11 +503,11 @@ The expression:
 means:
 
 ```text
-minuto: 0
-hora: 9
-dia do mês: qualquer
-mês: qualquer
-dia da semana: segunda a sexta
+minute: 0
+hour: 9
+day of month: any
+month: any
+day of week: Monday to Friday
 ```
 
 Example:
@@ -531,9 +531,9 @@ jobs:
         run: echo "Executando testes agendados"
 ```
 
-Times configured in the `schedule` use UTC.
+Times configured in `schedule` use UTC.
 
-# `create` Trigger
+# Create Trigger
 
 The `create` event starts a workflow when a Git reference is created.
 
@@ -554,7 +554,7 @@ git checkout -b feature/login
 git push -u origin feature/login
 ```
 
-It can also occur when a tag is pushed:
+It can also occur when pushing a tag:
 
 ```bash
 git tag v1.0.0
@@ -580,7 +580,7 @@ jobs:
           echo "Tipo: ${{ github.ref_type }}"
 ```
 
-# `delete` Trigger
+# Delete Trigger
 
 The `delete` event starts a workflow when a branch or tag is deleted.
 
@@ -600,8 +600,8 @@ This trigger can be used for:
 - logging deletions;
 - sending notifications;
 - removing temporary environments;
-- deleting resources linked to a feature;
-- maintaining repository audit trails.
+- deleting resources associated with a feature;
+- maintaining repository audit.
 
 Example:
 
@@ -622,7 +622,7 @@ jobs:
           echo "Tipo: ${{ github.event.ref_type }}"
 ```
 
-# `branch_protection_rule` Trigger
+# Branch Protection Rule Trigger
 
 The `branch_protection_rule` event starts a workflow when a protection rule is created, changed, or removed.
 
@@ -646,16 +646,16 @@ The types represent:
 
 ```text
 created
-└── regra criada
+└── rule created
 
 edited
-└── regra modificada
+└── rule modified
 
 deleted
-└── regra removida
+└── rule removed
 ```
 
-This event can assist in repository auditing.
+This event can help with repository auditing.
 
 Example:
 
@@ -680,7 +680,7 @@ jobs:
           echo "Ação: ${{ github.event.action }}"
 ```
 
-# Combining Multiple Triggers
+# Combining multiple triggers
 
 A workflow can have more than one trigger.
 
@@ -713,16 +713,16 @@ jobs:
 This workflow can be started:
 
 ```text
-por um push na main
-        ou
-por um Pull Request para a main
-        ou
-manualmente
+by a push to main
+        or
+by a Pull Request to main
+        or
+manually
 ```
 
-# Identifying the Event that Started the Workflow
+# Identifying the event that started the workflow
 
-We can find out which trigger started the workflow using:
+We can find out which trigger started the workflow by using:
 
 ```yaml
 ${{ github.event_name }}
@@ -747,7 +747,7 @@ jobs:
         run: echo "Evento recebido: ${{ github.event_name }}"
 ```
 
-The result can be:
+The result could be:
 
 ```text
 push
@@ -761,7 +761,7 @@ pull_request
 workflow_dispatch
 ```
 
-# Running Steps Based on the Trigger
+# Executing steps according to the trigger
 
 We can also use conditions:
 
@@ -797,10 +797,10 @@ jobs:
 
 In this example:
 
-- tests are run on all events;
-- deploy is run only when the event is `push`.
+- the tests are run on all events;
+- the deployment is run only when the event is `push`.
 
-# Complete Pipeline Example
+# Complete pipeline example
 
 ```yaml
 name: Pipeline da aplicação
@@ -865,19 +865,19 @@ flowchart TD
     E -- Sim --> G[Executar deploy]
 ```
 
-# Summary of Key Triggers
+# Summary of main triggers
 
 | Trigger | When it runs |
 |---|---|
 | `push` | When commits or tags are pushed |
-| `pull_request` | When an activity occurs on a Pull Request |
-| `workflow_dispatch` | When the workflow is manually started |
+| `pull_request` | When an activity occurs in a Pull Request |
+| `workflow_dispatch` | When the workflow is started manually |
 | `schedule` | When a scheduled time arrives |
 | `create` | When a branch or tag is created |
 | `delete` | When a branch or tag is deleted |
-| `branch_protection_rule` | When a protection rule is changed |
+| `branch_protection_rule` | When a branch protection rule is changed |
 
-# Best Practices
+# Best practices
 
 Avoid running all workflows on every change.
 
@@ -901,7 +901,7 @@ on:
 
 It's also good practice to separate workflows according to their responsibilities.
 
-A testing workflow can use:
+A test workflow can use:
 
 ```yaml
 on:
@@ -917,7 +917,7 @@ on:
       - main
 ```
 
-Manual maintenance can use:
+A manual maintenance can use:
 
 ```yaml
 on:
@@ -930,11 +930,11 @@ This way, each pipeline will run only when truly necessary.
 
 Triggers define when a GitHub Actions workflow should run.
 
-The `push` trigger reacts to commits or tags being pushed. The `pull_request` allows validating changes before merging. The `workflow_dispatch` offers manual execution, while the `schedule` allows creating scheduled automations.
+The `push` trigger reacts to pushing commits or tags. The `pull_request` allows validating changes before merging. The `workflow_dispatch` offers manual execution, while `schedule` enables creating scheduled automations.
 
-Events like `create`, `delete`, and `branch_protection_rule` can also be used for repository auditing, security, and management.
+Events like `create`, `delete`, and `branch_protection_rule` can also be used for auditing, security, and repository management.
 
-With branch and path filters, we can precisely control when the workflow should run:
+With branch and path filters, we can control exactly when the workflow should run:
 
 ```yaml
 on:

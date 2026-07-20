@@ -17,23 +17,25 @@ tags:
 draft: false
 language: en
 translationOf: entendendo-redes
-sourceHash: feb0ec0e2256a55ad856a28e2ae284acd2ae7ca647372a4f10ae15fd2313a3db
+sourceHash: 3000779e4274258e932ecb0e72be8c49ca4399e9a1aa9e4e9354bbbb845cc5a2
 ---
+--------------------------------------------------------------------------------------
+
 # Understanding Networks with **Wireshark, DNS, and VPN**
 
 When we access a website, perform a `git push`, connect to a machine via SSH, or execute a deploy, different packets traverse the network.
 
-For someone using the computer, the process seems simple:
+For someone using a computer, the process seems simple:
 
 ```txt
-Meu computador
+My computer
         ↓
 Internet
         ↓
-Servidor
+Server
 ```
 
-Behind this communication, however, there are DNS queries, IP addresses, ports, protocols, encryption, and different servers exchanging information.
+Behind this communication, however, there are DNS queries, IP addresses, ports, protocols, encryption, and various servers exchanging information.
 
 Tools like **Wireshark** allow us to visualize part of this communication and help understand what truly happens when an application connects to another service.
 
@@ -41,50 +43,50 @@ This knowledge is important for those working with **DevOps**, especially when i
 
 ## What is a network packet?
 
-A packet is a small unit of data transmitted over the network.
+A packet is a small unit of data transmitted over a network.
 
 When an application needs to send information, the data is divided into packets. These packets carry information that helps the network deliver them to the correct destination.
 
 Among this information, we typically find:
 
 ```txt
-IP de origem
-IP de destino
-Protocolo utilizado
-Porta de origem
-Porta de destino
-Tamanho do pacote
-Informações específicas do protocolo
+Source IP
+Destination IP
+Protocol used
+Source port
+Destination port
+Packet size
+Protocol-specific information
 ```
 
 In a simplified way, communication happens like this:
 
 ```txt
-Aplicação gera os dados
+Application generates data
         ↓
-Sistema operacional prepara os pacotes
+Operating system prepares packets
         ↓
-Pacotes são enviados pela interface de rede
+Packets are sent over the network interface
         ↓
-Roteadores encaminham os pacotes
+Routers forward packets
         ↓
-Servidor recebe e processa a solicitação
+Server receives and processes the request
         ↓
-Servidor envia uma resposta
+Server sends a response
 ```
 
 ## What is Wireshark?
 
 **Wireshark** is a tool used to capture and analyze network packets.
 
-It allows observing traffic entering and leaving a network interface, such as:
+It allows observation of traffic entering and exiting a network interface, such as:
 
 ```txt
 Wi-Fi
 Ethernet
-Interface de VPN
+VPN interface
 Loopback
-Interfaces virtuais de containers
+Virtual container interfaces
 ```
 
 During a capture, Wireshark displays various information about the packets.
@@ -92,18 +94,18 @@ During a capture, Wireshark displays various information about the packets.
 The main columns are:
 
 ```txt
-Source       → origem do pacote
-Destination  → destino do pacote
-Protocol     → protocolo utilizado
-Length       → tamanho do pacote
-Info         → resumo da comunicação
+Source       → packet source
+Destination  → packet destination
+Protocol     → protocol used
+Length       → packet size
+Info         → communication summary
 ```
 
-For example, when the computer sends a query to a DNS server, we might see something like:
+For example, when the computer sends a query to a DNS server, we might see something similar to:
 
 ```txt
-Source:       IP do computador
-Destination:  IP do servidor DNS
+Source:       Computer IP
+Destination:  DNS server IP
 Protocol:     DNS
 Info:         Standard query
 ```
@@ -111,22 +113,22 @@ Info:         Standard query
 When the DNS server responds, the communication appears in the opposite direction:
 
 ```txt
-Source:       IP do servidor DNS
-Destination:  IP do computador
+Source:       DNS server IP
+Destination:  Computer IP
 Protocol:     DNS
 Info:         Standard query response
 ```
 
-Therefore, the same address can appear as source or destination depending on the direction of communication.
+Therefore, the same address can appear as a source or a destination depending on the direction of communication.
 
 ```txt
-Consulta:
+Query:
 
-Meu computador  →  Servidor DNS
+My computer  →  DNS Server
 
-Resposta:
+Response:
 
-Servidor DNS    →  Meu computador
+DNS Server    →  My computer
 ```
 
 ## What do Wireshark's colors mean?
@@ -140,51 +142,51 @@ This doesn't automatically mean that a particular packet is dangerous or malicio
 The colors primarily serve to visually organize the capture.
 
 ```txt
-Cor diferente
+Different color
         ↓
-Regra de coloração do Wireshark
+Wireshark coloring rule
         ↓
-Protocolo ou comportamento específico
+Specific protocol or behavior
 ```
 
 It's also possible to view or modify these rules within Wireshark itself.
 
-The most important thing is to analyze the protocol, addresses, ports, and information presented in the packet, rather than concluding something solely based on its color.
+The most important thing is to analyze the protocol, addresses, ports, and information presented in the packet, rather than concluding something based solely on the color.
 
 ## Understanding source and destination
 
 During a capture, Wireshark shows who sent and who received each packet.
 
-If the computer initiates a connection with a server, we might have:
+If the computer initiates a connection with a server, we might see:
 
 ```txt
-Source:       Meu computador
-Destination:  Servidor
+Source:       My computer
+Destination:  Server
 ```
 
 When the server responds:
 
 ```txt
-Source:       Servidor
-Destination:  Meu computador
+Source:       Server
+Destination:  My computer
 ```
 
-In the same communication, the direction of packets changes multiple times.
+Within the same communication, the direction of packets changes several times.
 
 ```txt
-Meu computador  →  Servidor
-Meu computador  ←  Servidor
-Meu computador  →  Servidor
-Meu computador  ←  Servidor
+My computer  →  Server
+My computer  ←  Server
+My computer  →  Server
+My computer  ←  Server
 ```
 
-This happens because there is an exchange of information.
+This happens because there's an exchange of information.
 
 The client sends a request, the server responds, and other packets may be used to confirm data receipt and control the connection.
 
 ## The role of DNS
 
-**DNS**, or Domain Name System, is responsible for translating domain names into IP addresses.
+**DNS**, or Domain Name System, is responsible for translating domain names to IP addresses.
 
 When we access:
 
@@ -192,18 +194,18 @@ When we access:
 github.com
 ```
 
-The computer needs to find out which IP address corresponds to this domain.
+The computer needs to find out which IP address corresponds to that domain.
 
 The simplified process is:
 
 ```txt
-Usuário acessa github.com
+User accesses github.com
         ↓
-Computador consulta o servidor DNS
+Computer queries the DNS server
         ↓
-Servidor DNS retorna um endereço IP
+DNS server returns an IP address
         ↓
-Computador conecta ao endereço recebido
+Computer connects to the received address
 ```
 
 In Wireshark, we can filter DNS queries using:
@@ -227,77 +229,77 @@ avatars.githubusercontent.com
 github.githubassets.com
 ```
 
-This happens because a modern page typically uses several services.
+This happens because a modern page typically uses multiple services.
 
 The website might load images, JavaScript files, stylesheets, APIs, and other resources hosted on different domains.
 
-Therefore, accessing just one page can generate multiple DNS queries and multiple network connections.
+Therefore, accessing just one page can generate multiple DNS queries and several network connections.
 
 ## HTTP, HTTPS, and encryption
 
 In an unencrypted HTTP connection, part of the transmitted information can be viewed directly during capture.
 
-However, with **HTTPS**, the content of the communication is protected by encryption.
+With **HTTPS**, the communication content is protected by encryption.
 
 Wireshark can still show information such as:
 
 ```txt
-IP de origem
-IP de destino
-Portas utilizadas
-Quantidade de pacotes
-Tamanho dos pacotes
-Tempo da comunicação
-Protocolo de transporte
+Source IP
+Destination IP
+Ports used
+Number of packets
+Packet size
+Communication time
+Transport protocol
 ```
 
-However, it typically cannot directly show page content, passwords, messages, or data sent within the encrypted connection.
+However, it usually cannot directly show page content, passwords, messages, or data sent within the encrypted connection.
 
 In a simplified way:
 
 ```txt
-Sem criptografia:
+Without encryption:
 
-Cliente  →  Dados legíveis  →  Servidor
+Client  →  Readable data  →  Server
 ```
 
 ```txt
-Com HTTPS:
+With HTTPS:
 
-Cliente  →  Dados criptografados  →  Servidor
+Client  →  Encrypted data  →  Server
 ```
 
-This does not mean the connection becomes invisible.
+This doesn't mean the connection becomes invisible.
 
 Communication continues to exist, and packets continue to traverse the network. What changes is that the content is protected.
 
 ## What happens without a VPN?
 
-Without a VPN, traffic usually leaves directly through the network interface used by the computer.
+Without a VPN, traffic usually exits directly through the network interface used by the computer.
 
 ```txt
-Meu computador
+My computer
         ↓
-Roteador
+Router
         ↓
-Provedor de internet
+Internet provider
         ↓
-Servidor de destino
+Destination server
 ```
 
-The router and the ISP can detect that there is communication with certain IP addresses.
+The router and the provider can perceive that there is communication with specific IP addresses.
 
-Depending on the DNS configuration and the protocol used, additional information might also be visible on the network.
+Depending on the DNS configuration and the protocol used, additional information may also be visible on the network.
 
-In Wireshark, we can observe connections being established directly between the computer and different servers.
+In Wireshark, we can observe connections being established directly between the computer and various servers.
 
 For example:
 
 ```txt
-Meu computador  →  Servidor DNS
-Meu computador  →  Servidor do GitHub
-Meu computador  →  API
-Meu computador  →  Servidor SSH
+My computer  →  DNS Server
+My computer  →  GitHub Server
+My computer  →  API
+My computer  →  SSH Server
 ```
 
 ## What changes when we use a VPN?
@@ -307,70 +309,70 @@ A VPN creates an encrypted tunnel between the computer and the VPN server.
 Without a VPN, the flow is similar to:
 
 ```txt
-Meu computador
+My computer
         ↓
-Roteador
+Router
         ↓
-Provedor
+Provider
         ↓
-Site ou servidor
+Website or server
 ```
 
 With a VPN:
 
 ```txt
-Meu computador
+My computer
         ↓
-Túnel criptografado
+Encrypted tunnel
         ↓
-Servidor da VPN
+VPN server
         ↓
-Site ou servidor
+Website or server
 ```
 
-For the local network and the ISP, the primary communication becomes between the computer and the VPN server.
+For the local network and the provider, the main communication becomes between the computer and the VPN server.
 
 ```txt
-Meu computador  →  Servidor da VPN
+My computer  →  VPN server
 ```
 
 After that, the VPN server establishes the connection with the destination.
 
 ```txt
-Servidor da VPN  →  Site
-Servidor da VPN  →  API
-Servidor da VPN  →  GitHub
+VPN server  →  Website
+VPN server  →  API
+VPN server  →  GitHub
 ```
 
 Therefore, during a capture performed on the physical interface, it's common to primarily see the IP address of the VPN server.
 
-The various accesses are being transported within the encrypted tunnel.
+The different accesses are being transported within the encrypted tunnel.
 
 ## Does the VPN hide all traffic?
 
 The VPN doesn't make traffic disappear.
 
-It changes the communication path and creates an encryption layer between the computer and the VPN server.
+It alters the communication path and creates an encryption layer between the computer and the VPN server.
 
-The router can still detect that an active connection exists.
+The router can still perceive that there's an active connection.
 
-The ISP can also detect that the computer is transmitting data to an address, which will typically be the VPN server's address.
+The provider can also perceive that the computer is transmitting data to some address, which will typically be the VPN server's address.
 
-What changes is that they don't directly see all destinations accessed within the tunnel.
+What changes is that they don't directly visualize all destinations accessed within the tunnel.
 
 ```txt
-Sem VPN:
+Without VPN:
 
-Provedor observa conexões com vários destinos
+Provider observes connections with multiple destinations
 ```
 
 ```txt
-Com VPN:
+With VPN:
 
-Provedor observa principalmente a conexão com a VPN
+Provider primarily observes the connection with the VPN
 ```
 
-The VPN server, on the other hand, takes on an important position in the communication path.
+The VPN server, on the other hand, comes to occupy an important position in the communication path.
 
 Therefore, using a VPN also involves trusting the provider responsible for that service.
 
@@ -378,9 +380,9 @@ Therefore, using a VPN also involves trusting the provider responsible for that 
 
 ## Network interfaces and VPN
 
-When a VPN is activated, the system usually creates a virtual network interface.
+When a VPN is activated, the system typically creates a virtual network interface.
 
-In Linux, we can view interfaces with commands like:
+On Linux, we can view interfaces with commands like:
 
 ```bash
 ip addr
@@ -392,7 +394,7 @@ or:
 ip link
 ```
 
-Depending on the technology used by the VPN, interfaces with names like:
+Depending on the technology used by the VPN, interfaces might appear with names like:
 
 ```txt
 tun0
@@ -400,7 +402,7 @@ wg0
 nordlynx
 ```
 
-The physical interface still exists:
+The physical interface continues to exist:
 
 ```txt
 wlan0
@@ -410,39 +412,39 @@ enp0s31f6
 The difference is that traffic can be routed through the virtual interface before exiting through the physical interface.
 
 ```txt
-Aplicação
+Application
         ↓
-Interface virtual da VPN
+VPN virtual interface
         ↓
-Criptografia
+Encryption
         ↓
-Interface física
+Physical interface
         ↓
-Servidor da VPN
+VPN server
 ```
 
 When capturing packets in Wireshark, the result can change depending on the selected interface.
 
-On the physical interface, it's mainly possible to observe the encrypted tunnel.
+On the physical interface, you can primarily observe the encrypted tunnel.
 
 On the virtual interface, depending on the VPN and system permissions, it might be possible to observe traffic before or after it passes through the tunnel.
 
-## Protocols that may appear in Wireshark
+## Protocols that might appear in Wireshark
 
-During a capture, several protocols may appear.
+During a capture, various protocols might appear.
 
 Some of the most common are:
 
 ```txt
-ARP    → descoberta de dispositivos na rede local
-DNS    → resolução de nomes
-TCP    → comunicação confiável entre aplicações
-UDP    → comunicação mais simples e rápida
-TLS    → criptografia utilizada pelo HTTPS
-ICMP   → mensagens de diagnóstico, como o ping
-SSH    → acesso remoto seguro
-HTTP   → comunicação web sem criptografia
-QUIC   → protocolo utilizado por aplicações modernas
+ARP    → local network device discovery
+DNS    → name resolution
+TCP    → reliable communication between applications
+UDP    → simpler and faster communication
+TLS    → encryption used by HTTPS
+ICMP   → diagnostic messages, such as ping
+SSH    → secure remote access
+HTTP   → unencrypted web communication
+QUIC   → protocol used by modern applications
 ```
 
 Each protocol has a different responsibility within the communication.
@@ -450,33 +452,33 @@ Each protocol has a different responsibility within the communication.
 For example:
 
 ```txt
-DNS encontra o endereço IP
-TCP estabelece a conexão
-TLS protege o conteúdo
-HTTP envia a requisição da aplicação
+DNS finds the IP address
+TCP establishes the connection
+TLS protects the content
+HTTP sends the application request
 ```
 
-In traditional HTTPS browsing, the flow can be represented as follows:
+In a traditional HTTPS browsing session, the flow can be represented as follows:
 
 ```txt
-Consulta DNS
+DNS Query
         ↓
-Endereço IP encontrado
+IP Address found
         ↓
-Conexão TCP
+TCP Connection
         ↓
-Negociação TLS
+TLS Negotiation
         ↓
-Requisição HTTPS
+HTTPS Request
         ↓
-Resposta do servidor
+Server Response
 ```
 
 ## Using filters in Wireshark
 
-A capture can generate thousands of packets in a few seconds.
+A capture can generate thousands of packets in just a few seconds.
 
-Therefore, filters are essential for finding only the relevant information.
+Therefore, filters are fundamental for finding only the relevant information.
 
 To show only DNS traffic:
 
@@ -563,78 +565,78 @@ ssh usuario@servidor
 The computer is initiating an outbound connection.
 
 ```txt
-Meu computador  →  Servidor SSH
+My computer  →  SSH Server
 ```
 
-In this case, it is not necessary to maintain an SSH server accessible via the internet on the local computer.
+In this case, it's not necessary to maintain an internet-accessible SSH server on the local computer.
 
 On the other hand, when we want to access our computer remotely:
 
 ```txt
-Notebook fora de casa
+Laptop away from home
         ↓
 Internet
         ↓
-Meu computador
+My computer
 ```
 
 The computer needs to accept inbound connections.
 
 In this scenario, it would be necessary to correctly configure the SSH server, firewall, authentication, and routing.
 
-Directly opening an SSH port to the internet requires considerable care.
+Directly exposing an SSH port to the internet requires significant caution.
 
-In many cases, alternatives such as private VPN, Tailscale, WireGuard, or identity-based access services may be more suitable.
+In many cases, alternatives such as private VPN, Tailscale, WireGuard, or identity-based access services might be more suitable.
 
 ## What does this have to do with DevOps?
 
 Networks are part of practically all DevOps activities.
 
-An application might be functioning correctly in its code, but fail because it cannot communicate with another service.
+An application might be functioning correctly in the code but fail because it cannot communicate with another service.
 
-Some common problems are:
+Some common problems include:
 
 ```txt
-DNS não resolve o domínio
-Firewall bloqueia a porta
-Container não alcança outro container
-Load balancer não encaminha a requisição
-Certificado TLS está inválido
-Servidor não consegue acessar uma API
-Pipeline não consegue baixar dependências
-Aplicação não consegue conectar ao banco
-Rota de rede está incorreta
-VPN bloqueia ou redireciona o tráfego
+DNS fails to resolve the domain
+Firewall blocks the port
+Container cannot reach another container
+Load balancer does not forward the request
+TLS certificate is invalid
+Server cannot access an API
+Pipeline cannot download dependencies
+Application cannot connect to the database
+Network route is incorrect
+VPN blocks or redirects traffic
 ```
 
-Therefore, understanding networks helps investigate the difference between:
+Therefore, understanding networks helps to investigate the difference between:
 
 ```txt
-A aplicação está com erro
+The application has an error
 ```
 
 and:
 
 ```txt
-A aplicação não consegue alcançar o serviço
+The application cannot reach the service
 ```
 
-These two problems might appear the same to the user, but they have completely different causes.
+These two problems might seem the same to the user but have completely different causes.
 
 ## Example of a problem in a pipeline
 
-Imagine a pipeline needs to download a dependency.
+Imagine a pipeline needing to download a dependency.
 
 ```txt
-Pipeline inicia
+Pipeline starts
         ↓
-Runner tenta acessar o repositório
+Runner tries to access the repository
         ↓
-DNS não consegue resolver o domínio
+DNS fails to resolve the domain
         ↓
-Download falha
+Download fails
         ↓
-Pipeline termina com erro
+Pipeline ends with an error
 ```
 
 The problem is not necessarily in the code or the workflow file.
@@ -644,15 +646,15 @@ It could be a DNS failure or a connectivity issue.
 Another example:
 
 ```txt
-Pipeline inicia
+Pipeline starts
         ↓
-Testes são executados
+Tests are executed
         ↓
-Aplicação tenta acessar o banco
+Application tries to access the database
         ↓
-Firewall bloqueia a porta 5432
+Firewall blocks port 5432
         ↓
-Testes falham
+Tests fail
 ```
 
 In this scenario, the database might be functioning normally, but communication between environments is blocked.
@@ -662,11 +664,11 @@ In this scenario, the database might be functioning normally, but communication 
 In Docker environments, containers use virtual networks to communicate.
 
 ```txt
-Container da aplicação
+Application container
         ↓
-Rede Docker
+Docker Network
         ↓
-Container do banco de dados
+Database container
 ```
 
 The application might try to access the database using:
@@ -675,9 +677,9 @@ The application might try to access the database using:
 localhost
 ```
 
-However, within a container, `localhost` represents the container itself.
+However, inside a container, `localhost` represents the container itself.
 
-In many cases, it is necessary to use the service name:
+In many cases, it's necessary to use the service name:
 
 ```txt
 postgres
@@ -689,16 +691,16 @@ or:
 database
 ```
 
-The flow then becomes:
+The flow becomes:
 
 ```txt
-Aplicação
+Application
         ↓
-DNS interno do Docker
+Docker's internal DNS
         ↓
-Nome do serviço resolvido
+Service name resolved
         ↓
-Conexão com o container do banco
+Connection to the database container
 ```
 
 Understanding DNS and network communication helps identify this type of problem.
@@ -708,11 +710,11 @@ Understanding DNS and network communication helps identify this type of problem.
 In Kubernetes, communication also depends on networks, DNS, and services.
 
 ```txt
-Pod da aplicação
+Application Pod
         ↓
 Service
         ↓
-Pod de destino
+Destination Pod
 ```
 
 Kubernetes uses internal DNS to allow applications to find services by name.
@@ -725,18 +727,18 @@ database-service
 redis-service
 ```
 
-When an application cannot access another service, some possible causes are:
+When an application cannot access another service, some possible causes include:
 
 ```txt
-Service configurado incorretamente
-Selector não encontra os Pods
-Porta errada
-NetworkPolicy bloqueando o tráfego
-DNS interno com problema
-Pod de destino indisponível
+Service incorrectly configured
+Selector does not find the Pods
+Incorrect port
+NetworkPolicy blocking traffic
+Internal DNS issue
+Destination Pod unavailable
 ```
 
-Network knowledge helps understand where communication is failing.
+Knowledge of networks helps to understand where communication is failing.
 
 ## Networks and observability
 
@@ -747,41 +749,41 @@ We also need to observe how services communicate.
 Some important information includes:
 
 ```txt
-Tempo de resposta
-Quantidade de conexões
-Erros de DNS
-Pacotes perdidos
-Retransmissões
-Latência
-Portas utilizadas
-Conexões recusadas
+Response time
+Number of connections
+DNS errors
+Lost packets
+Retransmissions
+Latency
+Ports used
+Rejected connections
 Timeouts
 ```
 
-Observability tools can show metrics and logs, while Wireshark allows for a more detailed analysis of communication packets.
+Observability tools can show metrics and logs, while Wireshark allows for more detailed analysis of communication packets.
 
 ```txt
-Métricas mostram que existe um problema
+Metrics show there is a problem
         ↓
-Logs ajudam a localizar o serviço
+Logs help locate the service
         ↓
-Captura de rede ajuda a entender a comunicação
+Network capture helps understand the communication
 ```
 
 ## Is Wireshark a security tool?
 
-Wireshark can be used in security, but it is not *only* a security tool.
+Wireshark can be used in security, but it's not *just* a security tool.
 
 It can also be used for:
 
 ```txt
-Diagnóstico de rede
-Estudo de protocolos
-Investigação de falhas
-Análise de desempenho
-Identificação de conexões
-Troubleshooting de aplicações
-Aprendizado de TCP/IP
+Network diagnostics
+Protocol study
+Failure investigation
+Performance analysis
+Connection identification
+Application troubleshooting
+Learning TCP/IP
 ```
 
 In security, it can help identify unusual behaviors, unexpected connections, and insecure protocols.
@@ -799,41 +801,41 @@ Network captures can contain sensitive information.
 Depending on the environment and protocols used, a capture file might record:
 
 ```txt
-Endereços IP
-Domínios acessados
-Nomes de máquinas
-Consultas DNS
-Tokens sem proteção
+IP addresses
+Accessed domains
+Machine names
+DNS queries
+Unprotected tokens
 Cookies
-Cabeçalhos HTTP
-Informações de infraestrutura
+HTTP headers
+Infrastructure information
 ```
 
 Therefore, files like `.pcap` and `.pcapng` should not be published without analysis.
 
-Before sharing a capture, it's important to check if it contains private information or infrastructure data.
+Before sharing a capture, it's important to verify if it contains private information or infrastructure data.
 
 We should also only capture traffic on networks, systems, and environments for which we have authorization.
 
 ## Summary
 
-Wireshark allows visualizing packets entering and leaving a network interface.
+Wireshark allows visualization of packets entering and exiting a network interface.
 
 With it, we can analyze:
 
 ```txt
-Origem e destino
-Protocolos
-Consultas DNS
-Portas
-Conexões TCP e UDP
-Tráfego de VPN
-Erros e retransmissões
+Source and destination
+Protocols
+DNS queries
+Ports
+TCP and UDP connections
+VPN traffic
+Errors and retransmissions
 ```
 
 When a VPN is active, traffic is forwarded through an encrypted tunnel to the VPN server.
 
-For the local network and the ISP, the primary communication becomes with this server, while the final destinations remain within the tunnel.
+For the local network and the provider, the main communication becomes with this server, while the final destinations remain within the tunnel.
 
 For DevOps, understanding these concepts is important because many application problems are not directly in the code.
 
@@ -841,15 +843,15 @@ They might be in the communication between services.
 
 The main ideas to remember are:
 
-> Wireshark shows the packets traversing the network interface.
+> Wireshark shows the packets passing through the network interface.
 
 > Source is who sent the packet, and Destination is who received it.
 
-> Wireshark's colors help with organization and don't necessarily represent an attack.
+> Wireshark's colors aid organization and do not necessarily represent an attack.
 
-> DNS translates domain names into IP addresses.
+> DNS transforms domain names into IP addresses.
 
-> HTTPS protects the communication content but doesn't make the connection disappear.
+> HTTPS protects the content of communication but doesn't make the connection disappear.
 
 > A VPN creates an encrypted tunnel between the computer and the VPN server.
 
