@@ -9,6 +9,7 @@ const POSTS_DIR = path.resolve('src/content/posts');
 const ENGLISH_DIR = path.join(POSTS_DIR, 'en');
 const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const API_KEY = process.env.GEMINI_API_KEY;
+const TRANSLATION_POST = process.env.TRANSLATION_POST?.trim();
 const TRANSLATION_VERSION = '2';
 
 
@@ -253,9 +254,27 @@ async function main() {
     withFileTypes: true,
   });
 
-  const sourceFiles = entries.filter(
+  let sourceFiles = entries.filter(
     (entry) => entry.isFile() && entry.name.endsWith('.md'),
   );
+
+  if (TRANSLATION_POST) {
+    const requestedPost = path.basename(TRANSLATION_POST);
+
+    if (requestedPost !== TRANSLATION_POST || !requestedPost.endsWith('.md')) {
+      throw new Error(
+        'TRANSLATION_POST must be a Markdown filename without a directory.',
+      );
+    }
+
+    sourceFiles = sourceFiles.filter((entry) => entry.name === requestedPost);
+
+    if (sourceFiles.length === 0) {
+      throw new Error(`Post not found: ${requestedPost}`);
+    }
+
+    console.log(`Selected post: ${requestedPost}`);
+  }
 
   if (sourceFiles.length === 0) {
     console.log('No Portuguese posts found.');

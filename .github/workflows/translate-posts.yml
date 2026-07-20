@@ -2,6 +2,11 @@ name: Translate posts to English
 
 on:
   workflow_dispatch:
+    inputs:
+      post:
+        description: 'Post filename to translate (example: O-Que-e-containers.md)'
+        required: true
+        type: string
 
   push:
     paths:
@@ -37,6 +42,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash
+          TRANSLATION_POST: ${{ inputs.post }}
         run: npm run translate:posts
 
       - name: Validate production build
