@@ -128,7 +128,8 @@ tags: [linux, containers, namespaces]
 draft: false
 language: pt
 series: Linux Internals # optional
-seriesOrder: 1         # optional; required only when ordering a series
+part: 1                # optional; current part of the series
+totalParts: 3          # optional; total number of parts
 ---
 
 Your post content goes here.

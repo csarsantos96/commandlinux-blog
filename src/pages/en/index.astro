@@ -22,6 +22,9 @@ const posts = raw
       date: post.data.date.toISOString().slice(0, 10),
       category: post.data.category.toUpperCase(),
       tags: post.data.tags,
+      series: post.data.series,
+      part: post.data.part ?? post.data.seriesOrder,
+      totalParts: post.data.totalParts,
       readingMinutes: Math.max(1, Math.round(words / 200)),
     };
   })

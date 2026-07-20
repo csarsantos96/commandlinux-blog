@@ -289,6 +289,8 @@ async function main() {
       translationOf: sourceSlug,
       sourceHash: hash,
       ...(source.data.series ? { series: source.data.series } : {}),
+      ...(source.data.part ? { part: source.data.part } : {}),
+      ...(source.data.totalParts ? { totalParts: source.data.totalParts } : {}),
       ...(source.data.seriesOrder ? { seriesOrder: source.data.seriesOrder } : {}),
     });
 

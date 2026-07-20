@@ -21,6 +21,9 @@ const posts = defineCollection({
 
     // Optional grouping used to render previous/next navigation in a series.
     series: z.string().optional(),
+    part: z.number().int().positive().optional(),
+    totalParts: z.number().int().positive().optional(),
+    // Kept for compatibility with posts using the previous field name.
     seriesOrder: z.number().int().positive().optional(),
   }),
 });

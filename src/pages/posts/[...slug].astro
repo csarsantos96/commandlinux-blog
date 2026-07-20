@@ -96,7 +96,7 @@ const related = [
 const seriesPosts = post.data.series
   ? [...all, post]
       .filter((item) => item.data.series === post.data.series)
-      .sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0))
+      .sort((a, b) => (a.data.part ?? a.data.seriesOrder ?? 0) - (b.data.part ?? b.data.seriesOrder ?? 0))
   : [];
 const seriesIndex = seriesPosts.findIndex((item) => item.id === post.id);
 const previousInSeries = seriesIndex > 0 ? seriesPosts[seriesIndex - 1] : undefined;
@@ -165,7 +165,7 @@ const nextInSeries = seriesIndex >= 0 ? seriesPosts[seriesIndex + 1] : undefined
         <div class="series-heading">
           <span>// série</span>
           <strong>{post.data.series}</strong>
-          <small>Parte {post.data.seriesOrder ?? seriesIndex + 1} de {seriesPosts.length}</small>
+          <small>Parte {post.data.part ?? post.data.seriesOrder ?? seriesIndex + 1} de {post.data.totalParts ?? seriesPosts.length}</small>
         </div>
         <div class="series-links">
           {previousInSeries ? <a href={`/posts/${previousInSeries.id}/`}>← {previousInSeries.data.title}</a> : <span />}

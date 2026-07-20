@@ -11,6 +11,9 @@ type Post = {
   date: string
   category: string
   tags: string[]
+  series?: string
+  part?: number
+  totalParts?: number
   readingMinutes: number
 }
 
@@ -60,6 +63,7 @@ const copy = {
     found: (count: number) =>
       `${count} ${count === 1 ? 'post encontrado' : 'posts encontrados'}`,
     readingTime: 'min de leitura',
+    series: 'Série',
     emptyCommand: '$ grep: nenhum resultado',
     emptyText: 'Tente outro termo ou remova o filtro de categoria.',
   },
@@ -69,6 +73,7 @@ const copy = {
     found: (count: number) =>
       `${count} ${count === 1 ? 'post found' : 'posts found'}`,
     readingTime: 'min read',
+    series: 'Series',
     emptyCommand: '$ grep: no results found',
     emptyText: 'Try another term or remove the category filter.',
   },
@@ -210,6 +215,35 @@ export default function PostFilter({
 
               <h3 className="post-name">{post.title}</h3>
               <p className="post-desc">{post.description}</p>
+
+              {post.series && post.part && (
+                <div className="post-series">
+                  <span className="post-series-label">// {text.series}</span>
+                  <div className="post-series-info">
+                    <strong>{post.series}</strong>
+                    <span>
+                      {post.part}
+                      {post.totalParts ? ` / ${post.totalParts}` : ''}
+                    </span>
+                  </div>
+                  {post.totalParts && (
+                    <div
+                      className="post-series-progress"
+                      role="progressbar"
+                      aria-label={`${text.series}: ${post.series}`}
+                      aria-valuemin={1}
+                      aria-valuemax={post.totalParts}
+                      aria-valuenow={post.part}
+                    >
+                      <span
+                        style={{
+                          width: `${Math.min(100, (post.part / post.totalParts) * 100)}%`,
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className="post-tags">
                 {post.tags.map((tag) => (
