@@ -60,3 +60,9 @@ No Docker, isso são as **configurações**:
 - Arquivos de configuração.  
 
 Ou seja: temos a mesma base, mas com comportamentos adaptados.
+
+## Referências
+
+- [Docker Docs — O que é uma imagem?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/) — explica imagens, camadas e Dockerfiles.
+- [Docker Docs — O que é um container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/) — apresenta a relação entre imagens e containers.
+- [LINUXtips — Docker Essentials](https://linuxtips.io/treinamento/docker-essentials/) — curso utilizado como base dos meus estudos e destas anotações.

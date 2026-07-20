@@ -274,20 +274,9 @@ Embora todos pareçam apenas "variáveis", cada um possui um propósito específ
 
 ## Referências
 
-- GitHub Actions Contexts  
-  https://docs.github.com/en/actions/learn-github-actions/contexts
-
-- Expressions  
-  https://docs.github.com/en/actions/learn-github-actions/expressions
-
-- Variables  
-  https://docs.github.com/en/actions/learn-github-actions/variables
-
-- Environment Variables  
-  https://docs.github.com/en/actions/learn-github-actions/environment-variables
-
-- Secrets  
-  https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions
-
-- Workflow Syntax  
-  https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+- [GitHub Docs — Contextos](https://docs.github.com/pt/actions/learn-github-actions/contexts) — documenta os contextos disponíveis nos workflows.
+- [GitHub Docs — Expressões](https://docs.github.com/pt/actions/learn-github-actions/expressions) — explica a sintaxe e as funções das expressões.
+- [GitHub Docs — Variáveis](https://docs.github.com/pt/actions/learn-github-actions/variables) — documenta variáveis padrão e de configuração.
+- [GitHub Docs — Uso de secrets](https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) — orienta o armazenamento e o uso seguro de credenciais.
+- [GitHub Docs — Sintaxe de workflow](https://docs.github.com/pt/actions/using-workflows/workflow-syntax-for-github-actions) — referência completa da estrutura de workflows.
+- [LINUXtips — Treinamentos](https://linuxtips.io/treinamentos/) — cursos que utilizo como base dos meus estudos em DevOps, pipelines e GitHub Actions.

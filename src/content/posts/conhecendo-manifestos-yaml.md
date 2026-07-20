@@ -597,3 +597,10 @@ kubectl delete
 Esse fluxo representa a base do trabalho com Kubernetes e será utilizado em praticamente todos os próximos recursos que estudaremos, como Deployments, Services, ConfigMaps e Ingress.
 
 Nos próximos artigos vamos evoluir para recursos declarativos mais complexos e entender como aplicações reais são executadas dentro de um cluster Kubernetes.
+
+## Referências
+
+- [Kubernetes — Gerenciamento declarativo de objetos](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/declarative-config/) — explica o uso de arquivos de configuração e do `kubectl apply`.
+- [Kubernetes — Referência do kubectl](https://kubernetes.io/docs/reference/kubectl/) — documenta os comandos utilizados para criar, inspecionar e remover recursos.
+- [Kubernetes — Pods](https://kubernetes.io/pt-br/docs/concepts/workloads/pods/) — documenta a estrutura e o ciclo de vida dos Pods.
+- [LINUXtips — Kubernetes Essentials](https://linuxtips.io/treinamento/kubernetes-essentials/) — curso utilizado como base dos meus estudos e desta série de anotações.

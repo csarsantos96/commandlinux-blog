@@ -842,3 +842,10 @@ O principal é guardar estas ideias:
 > A VPN cria um túnel criptografado entre o computador e o servidor da VPN.
 
 > Em DevOps, entender redes é essencial para investigar falhas entre aplicações, containers, pipelines, servidores e serviços em nuvem.
+
+## Referências
+
+- [Wireshark User's Guide](https://www.wireshark.org/docs/wsug_html_chunked/) — documenta a captura, a visualização e a análise de pacotes.
+- [Cloudflare Learning Center — O que é DNS?](https://www.cloudflare.com/pt-br/learning/dns/what-is-dns/) — explica o processo de resolução de nomes.
+- [MDN — Visão geral do HTTP](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Guides/Overview) — apresenta o funcionamento das comunicações HTTP na web.
+- [LINUXtips — Linux para Cloud Native](https://linuxtips.io/linux-para-cloud-native/) — curso utilizado como base dos meus estudos em Linux, redes e troubleshooting.

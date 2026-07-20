@@ -935,3 +935,9 @@ on:
 ```
 
 Assim, o pipeline deixa de executar por qualquer mudança e passa a responder apenas aos eventos importantes para o projeto.
+
+## Referências
+
+- [GitHub Docs — Eventos que disparam workflows](https://docs.github.com/pt/actions/reference/workflows-and-actions/events-that-trigger-workflows) — documenta os triggers disponíveis no GitHub Actions.
+- [GitHub Docs — Sintaxe de workflow para `on`](https://docs.github.com/pt/actions/writing-workflows/workflow-syntax-for-github-actions#on) — explica eventos, filtros de branches e filtros de caminhos.
+- [LINUXtips — Treinamentos](https://linuxtips.io/treinamentos/) — cursos que utilizo como base dos meus estudos em DevOps, pipelines e GitHub Actions.

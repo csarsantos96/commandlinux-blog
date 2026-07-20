@@ -785,3 +785,10 @@ Quando precisamos filtrar informações, o `grep` pode ser combinado com outros 
 Por fim, o `diff` permite comparar versões e descobrir exatamente o que foi alterado, algo essencial ao trabalhar com arquivos de configuração.
 
 Dominar esses comandos não significa apenas decorar opções. Significa aprender a investigar o sistema, encontrar informações e entender o que está acontecendo sem depender de uma interface gráfica.
+
+## Referências
+
+- [GNU Coreutils Manual](https://www.gnu.org/software/coreutils/manual/coreutils.html) — documenta comandos como `ln`, `cat`, `head`, `tail` e `wc`.
+- [GNU Grep Manual](https://www.gnu.org/software/grep/manual/grep.html) — documenta a busca e a filtragem de texto com `grep`.
+- [GNU Diffutils Manual](https://www.gnu.org/software/diffutils/manual/diffutils.html) — documenta a comparação de arquivos com `diff`.
+- [LINUXtips — Linux para Cloud Native](https://linuxtips.io/linux-para-cloud-native/) — curso utilizado como base dos meus estudos e destas anotações sobre Linux.

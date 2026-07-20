@@ -47,3 +47,9 @@ docker images | grep app
 ```
 
 Em um projeto FastAPI real, isso derrubou a imagem de 1.1 GB para menos de 180 MB — deploy mais rápido, menos superfície de ataque, menos custo de registry.
+
+## Referências
+
+- [Docker Docs — Multi-stage builds](https://docs.docker.com/build/building/multi-stage/) — documenta a criação de imagens com múltiplos estágios.
+- [Docker Docs — Boas práticas para Dockerfiles](https://docs.docker.com/build/building/best-practices/) — recomendações oficiais para imagens menores e mais seguras.
+- [LINUXtips — Descomplicando o Docker](https://linuxtips.io/treinamento/descomplicando-o-docker/) — curso utilizado como base dos meus estudos sobre Dockerfiles e otimização de imagens.

@@ -114,3 +114,9 @@ Responsável por prover o isolamento do hostname, do nome de domínio, da versã
    ## User namespace:  
    É o namespace mais recente adicionado ao Kernel Linux, disponível desde a versão `3.8`. Ele é responsável por manter o mapeamento de identificação de usuários em cada container.
 
+## Referências
+
+- [Docker Docs — O que é um container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/) — introdução oficial ao funcionamento dos containers.
+- [Linux Kernel — Control Groups v2](https://docs.kernel.org/admin-guide/cgroup-v2.html) — documenta o controle e a contabilização de recursos pelo kernel.
+- [Linux manual pages — namespaces(7)](https://man7.org/linux/man-pages/man7/namespaces.7.html) — visão geral dos namespaces do Linux.
+- [LINUXtips — Docker Essentials](https://linuxtips.io/treinamento/docker-essentials/) — curso utilizado como base dos meus estudos e destas anotações.

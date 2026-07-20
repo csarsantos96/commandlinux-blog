@@ -116,3 +116,9 @@ O importante é guardar esta ideia:
 > GitHub Actions automatiza tarefas.  
 > Pipeline é o processo automatizado.  
 > Workflow é o arquivo que descreve esse processo no GitHub.
+
+## Referências
+
+- [GitHub Docs — Entendendo o GitHub Actions](https://docs.github.com/pt/actions/about-github-actions/understanding-github-actions) — apresenta workflows, eventos, jobs, runners e steps.
+- [GitHub Docs — Sintaxe de workflow](https://docs.github.com/pt/actions/writing-workflows/workflow-syntax-for-github-actions) — referência oficial para arquivos de workflow.
+- [LINUXtips — Treinamentos](https://linuxtips.io/treinamentos/) — cursos que utilizo como base dos meus estudos em DevOps, pipelines e GitHub Actions.

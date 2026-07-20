@@ -590,3 +590,11 @@ E passa a seguir um processo controlado:
 ```text
 branch → commit → Pull Request → revisão → testes → aprovação → merge
 ```
+
+## Referências
+
+- [Git — Git Branching](https://git-scm.com/book/pt-br/v2/Branches-no-Git-Branches-em-poucas-palavras) — apresenta os fundamentos de branches no Git.
+- [GitHub Docs — Sobre pull requests](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) — documenta o fluxo de revisão e merge.
+- [GitHub Docs — Sobre branches protegidos](https://docs.github.com/pt/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) — explica regras e requisitos de proteção.
+- [GitHub Docs — Sobre proprietários de código](https://docs.github.com/pt/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) — referência oficial do arquivo `CODEOWNERS`.
+- [LINUXtips — GitHub Essentials](https://linuxtips.io/treinamento/github-essentials/) — curso utilizado como base dos meus estudos em Git e GitHub.

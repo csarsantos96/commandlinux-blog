@@ -55,3 +55,9 @@ Pods são efêmeros. Se o node morre, o Pod morre junto e ninguém o recria. Por
 | --- | --- |
 | Pod | rede, volumes, ciclo de vida |
 | Container | filesystem próprio, processo próprio |
+
+## Referências
+
+- [Kubernetes — Pods](https://kubernetes.io/pt-br/docs/concepts/workloads/pods/) — documenta o modelo, a rede e o ciclo de vida dos Pods.
+- [Kubernetes — Workloads](https://kubernetes.io/docs/concepts/workloads/) — apresenta os controladores utilizados para gerenciar Pods.
+- [LINUXtips — PICK](https://linuxtips.io/pick/) — Programa Intensivo de Containers e Kubernetes utilizado como base dos meus estudos e destas anotações.

@@ -234,3 +234,10 @@ kubectl describe pod corinthians
 Esses dois comandos já fornecem informações suficientes para identificar boa parte dos problemas encontrados durante o gerenciamento de Pods.
 
 No próximo artigo da série vamos aprender como gerar manifestos YAML utilizando `kubectl run --dry-run=client`, entender a estrutura de um arquivo YAML e descobrir por que praticamente todos os ambientes de produção utilizam recursos declarativos em vez de comandos imperativos.
+
+## Referências
+
+- [Kubernetes — Pods](https://kubernetes.io/pt-br/docs/concepts/workloads/pods/) — documenta o principal objeto abordado neste artigo.
+- [Kubernetes — Referência do kubectl](https://kubernetes.io/docs/reference/kubectl/) — documenta os comandos de gerenciamento e inspeção do cluster.
+- [Kubernetes — kubectl run](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_run/) — referência oficial para a criação imperativa de Pods.
+- [LINUXtips — Kubernetes Essentials](https://linuxtips.io/treinamento/kubernetes-essentials/) — curso utilizado como base dos meus estudos e desta série de anotações.

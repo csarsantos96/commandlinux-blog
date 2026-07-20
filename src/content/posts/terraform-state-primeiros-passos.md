@@ -44,3 +44,10 @@ terraform plan
 1. State sempre remoto, versionado e criptografado
 2. Nunca edite o state na mão — use `terraform state mv` e afins
 3. Um state por ambiente (dev/staging/prod separados)
+
+## Referências
+
+- [HashiCorp Developer — Terraform state](https://developer.hashicorp.com/terraform/language/state) — documenta a finalidade e o funcionamento do state.
+- [HashiCorp Developer — Backend S3](https://developer.hashicorp.com/terraform/language/backend/s3) — referência oficial para armazenamento remoto e locking no S3.
+- [HashiCorp Developer — Gerenciamento do state](https://developer.hashicorp.com/terraform/cli/state) — apresenta os comandos seguros para manipular recursos no state.
+- [LINUXtips — Treinamentos Essentials](https://linuxtips.io/treinamentos-essentials/) — página do Terraform Essentials, curso utilizado como base dos meus estudos e destas anotações.

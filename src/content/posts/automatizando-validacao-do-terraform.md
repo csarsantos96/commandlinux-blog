@@ -230,10 +230,11 @@ Essa organização torna o código mais limpo, facilita testes locais e permite 
 Quanto maior o projeto, maior tende a ser o benefício dessa separação.
 
 
-## Documentação oficial
+## Referências
 
-- GitHub Actions: https://docs.github.com/actions
-- Terraform Validate: https://developer.hashicorp.com/terraform/cli/commands/validate
-- Terraform Init: https://developer.hashicorp.com/terraform/cli/commands/init
-- Terraform Providers: https://developer.hashicorp.com/terraform/language/providers
-- Bash Manual: https://www.gnu.org/software/bash/manual/bash.html
+- [GitHub Docs — GitHub Actions](https://docs.github.com/pt/actions) — documentação oficial da plataforma de automação.
+- [HashiCorp Developer — `terraform validate`](https://developer.hashicorp.com/terraform/cli/commands/validate) — referência oficial do comando de validação.
+- [HashiCorp Developer — `terraform init`](https://developer.hashicorp.com/terraform/cli/commands/init) — referência oficial da inicialização do diretório de trabalho.
+- [HashiCorp Developer — Providers](https://developer.hashicorp.com/terraform/language/providers) — documenta a configuração de providers.
+- [GNU Bash Manual](https://www.gnu.org/software/bash/manual/bash.html) — documentação oficial da linguagem e do shell Bash.
+- [LINUXtips — Treinamentos](https://linuxtips.io/treinamentos/) — cursos que utilizo como base dos meus estudos em Terraform, pipelines e GitHub Actions.

@@ -556,5 +556,5 @@ Deixo essa página aberta como referência, e sugiro que você monte a sua.
 - [Filesystem Hierarchy Standard (FHS 3.0)](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html) — a especificação oficial mantida pela Linux Foundation. É a fonte canônica para a estrutura de diretórios.
 - [The Linux Kernel Documentation — `/proc` filesystem](https://docs.kernel.org/filesystems/proc.html) — documentação oficial do kernel sobre o `/proc`.
 - [GNU Coreutils Manual](https://www.gnu.org/software/coreutils/manual/coreutils.html) — o manual oficial de praticamente todos os comandos citados aqui (`ls`, `cp`, `mv`, `rm`, `cat`, `head`, `tail`, `wc`, `df`, `sort`).
-- [LINUXtips — Linux para Cloud Native](https://www.linuxtips.io/) — o curso que originou essas anotações, dentro da trilha PICK.
+- [LINUXtips — Linux para Cloud Native](https://linuxtips.io/linux-para-cloud-native/) — o curso que originou meus estudos e estas anotações, dentro da trilha PICK.
 - E, claro: `man <comando>`. A melhor documentação já está instalada na sua máquina.

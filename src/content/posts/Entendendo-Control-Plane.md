@@ -91,3 +91,9 @@ Todo nó (node) vai ter um `kube proxy`. É ele que vai fazer a comunicação do
 | Service do tipo NodePort | 30000–32767 | TCP ou UDP |   
 
 <br>
+
+## Referências
+
+- [Kubernetes — Componentes do Kubernetes](https://kubernetes.io/pt-br/docs/concepts/overview/components/) — documenta os componentes do control plane e dos nodes.
+- [Kubernetes — Portas e protocolos](https://kubernetes.io/docs/reference/networking/ports-and-protocols/) — lista as portas padrão utilizadas pelo cluster.
+- [LINUXtips — Kubernetes Essentials](https://linuxtips.io/treinamento/kubernetes-essentials/) — curso utilizado como base dos meus estudos e destas anotações.
