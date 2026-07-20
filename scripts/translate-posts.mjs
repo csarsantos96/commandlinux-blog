@@ -9,6 +9,7 @@ const POSTS_DIR = path.resolve('src/content/posts');
 const ENGLISH_DIR = path.join(POSTS_DIR, 'en');
 const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const API_KEY = process.env.GEMINI_API_KEY;
+const TRANSLATION_VERSION = '2';
 
 
 
@@ -30,17 +31,23 @@ const translationSchema = {
       type: 'string',
       description: 'English translation of the article description.',
     },
+    series: {
+      type: 'string',
+      description: 'English translation of the series name, or an empty string when there is no series.',
+    },
     body: {
       type: 'string',
       description: 'English translation of the Markdown body only.',
     },
   },
-  required: ['title', 'description', 'body'],
+  required: ['title', 'description', 'series', 'body'],
   additionalProperties: false,
 };
 
 function sourceHash(content) {
-  return createHash('sha256').update(content).digest('hex');
+  return createHash('sha256')
+    .update(`${TRANSLATION_VERSION}\n${content}`)
+    .digest('hex');
 }
 
 function normalizeDate(value) {
@@ -67,6 +74,7 @@ function validateTranslation(data, sourceFile) {
     data.title.trim() &&
     typeof data.description === 'string' &&
     data.description.trim() &&
+    typeof data.series === 'string' &&
     typeof data.body === 'string' &&
     data.body.trim();
 
@@ -107,7 +115,15 @@ function parseModelJson(text) {
 function protectFencedCodeBlocks(markdown) {
   const blocks = [];
 
-  const text = markdown.replace(/```[\s\S]*?```/g, (block) => {
+  const text = markdown.replace(/```([^\n]*)\n[\s\S]*?```/g, (block, infoString) => {
+    const language = infoString.trim().split(/\s+/)[0].toLowerCase();
+
+    // Prose diagrams need translation, but their Markdown fences and spacing
+    // must remain intact.
+    if (['text', 'txt', 'plaintext'].includes(language)) {
+      return block;
+    }
+
     const token = `@@CODE_BLOCK_${blocks.length}@@`;
 
     blocks.push({
@@ -139,7 +155,7 @@ function restoreFencedCodeBlocks(markdown, blocks, sourceFile) {
   return restored;
 }
 
-async function requestTranslation({ title, description, body, sourceFile }) {
+async function requestTranslation({ title, description, series, body, sourceFile }) {
   const { text: protectedBody, blocks } = protectFencedCodeBlocks(body);
 
   const prompt = `
@@ -150,18 +166,21 @@ Return only one valid JSON object with exactly these keys:
 {
   "title": "translated title",
   "description": "translated description",
+  "series": "translated series name or empty string",
   "body": "translated Markdown body"
 }
 
 Rules:
-- All three keys are mandatory and must contain non-empty strings.
-- Translate titles, descriptions, headings, paragraphs, lists, tables, and image alt text.
+- All four keys are mandatory. Title, description, and body must contain non-empty strings.
+- Translate the series name when provided. If Series is empty, return an empty string for "series".
+- Translate titles, descriptions, headings, paragraphs, lists, tables, image alt text, and natural-language labels inside text/txt/plaintext fenced blocks.
+- Preserve the spacing, borders, arrows, tree characters, and alignment of text diagrams.
 - Preserve Markdown structure.
 - Do not add frontmatter.
 - Do not add explanations, notes, apologies, or text outside the JSON object.
 - Placeholder tokens such as @@CODE_BLOCK_0@@ represent protected code blocks.
 - Copy every placeholder exactly once, unchanged, and do not wrap it in backticks.
-- Do not translate fenced code blocks, inline code, commands, file paths, URLs, identifiers, API names, YAML keys, JSON keys, Dockerfiles, Kubernetes manifests, Mermaid code, or code comments.
+- Except for text/txt/plaintext diagrams, do not translate fenced code blocks, inline code, commands, file paths, URLs, identifiers, API names, YAML keys, JSON keys, Dockerfiles, Kubernetes manifests, Mermaid code, or code comments.
 - Keep technical terms such as Docker, Kubernetes, Pod, cgroup, namespace, inode, Terraform, Linux, GitHub Actions, and CI/CD when appropriate.
 - Keep the author's practical and direct tone.
 
@@ -172,6 +191,9 @@ ${title}
 
 Description:
 ${description}
+
+Series:
+${series ?? ''}
 
 Markdown body:
 ${protectedBody}
@@ -260,7 +282,10 @@ async function main() {
     if (await fileExists(targetPath)) {
       const existing = matter(await fs.readFile(targetPath, 'utf8'));
 
-      if (existing.data.sourceHash === hash) {
+      const hasCopiedPortugueseSeries =
+        source.data.series && existing.data.series === source.data.series;
+
+      if (existing.data.sourceHash === hash && !hasCopiedPortugueseSeries) {
         console.log(`Skipped: ${entry.name} is already up to date.`);
         skippedCount += 1;
         continue;
@@ -272,6 +297,7 @@ async function main() {
     const translation = await requestTranslation({
       title: source.data.title,
       description: source.data.description,
+      series: source.data.series,
       body: source.content,
       sourceFile: entry.name,
     });
@@ -288,7 +314,7 @@ async function main() {
       language: 'en',
       translationOf: sourceSlug,
       sourceHash: hash,
-      ...(source.data.series ? { series: source.data.series } : {}),
+      ...(source.data.series ? { series: translation.series.trim() } : {}),
       ...(source.data.part ? { part: source.data.part } : {}),
       ...(source.data.totalParts ? { totalParts: source.data.totalParts } : {}),
       ...(source.data.seriesOrder ? { seriesOrder: source.data.seriesOrder } : {}),

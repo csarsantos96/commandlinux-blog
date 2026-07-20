@@ -16,7 +16,7 @@ draft: true
 language: en
 translationOf: gerenciando-recursos-CPU-e-mempria-em-Pods
 sourceHash: d7d4bc2f6cdad800f410396a53bf857d8964e04f7fc26472be18c4809307d503
-series: Fundamentos de Kubernetes
+series: Kubernetes Fundamentals
 part: 3
 totalParts: 4
 ---

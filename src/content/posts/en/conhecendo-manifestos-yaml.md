@@ -16,7 +16,7 @@ draft: false
 language: en
 translationOf: conhecendo-manifestos-yaml
 sourceHash: 00fa635715619ed7dbcfc1db346be108cd47e3c11e7b3728663ccd9bc712c735
-series: Fundamentos de Kubernetes
+series: Kubernetes Fundamentals
 part: 2
 totalParts: 4
 ---

@@ -19,7 +19,7 @@ Embora esse comando seja extremamente útil para estudos e testes rápidos, ele 
 
 Na prática, a maioria das aplicações é criada através de **manifestos YAML** que ficam versionados em um repositório Git.
 
-Neste artigo vamos aprender como gerar esses manifestos automaticamente utilizando o `kubectl`, entender sua estrutura e conhecer alguns dos comandos mais utilizados para administrar Pods.
+Neste artigo vamos aprender como gerar esses manifestos automaticamente utilizando o `kubectl`, entender sua estrutura, criar um Pod com múltiplos containers e conhecer alguns dos comandos mais utilizados para administrar Pods.
 
 
 
@@ -277,7 +277,165 @@ pod/corinthians created
 
 Agora o Kubernetes enviará esse manifesto para o API Server e iniciará o processo de criação do Pod.
 
+# Criando um Pod com múltiplos containers
 
+Até agora trabalhamos com um Pod contendo apenas um container.
+
+Entretanto, um Pod também pode executar dois ou mais containers ao mesmo tempo.
+
+No exemplo abaixo, criaremos um Pod chamado `corinthians` com dois containers:
+
+- um container utilizando a imagem do Nginx;
+- um container utilizando a imagem do BusyBox.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: corinthians
+  name: corinthians
+spec:
+  containers:
+  - image: nginx
+    name: corinthians
+    resources: {}
+
+  - image: busybox
+    name: busybox
+    args:
+    - sleep
+    - "700"
+
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+```
+
+O primeiro container executa o Nginx.
+
+O segundo utiliza a imagem do BusyBox e executa o comando:
+
+```bash
+sleep 700
+```
+
+Esse comando mantém o container ativo durante 700 segundos. Sem um processo em execução, o container BusyBox seria encerrado logo após iniciar.
+
+Depois de aplicar o manifesto:
+
+```bash
+kubectl apply -f pod.yaml
+```
+
+Podemos consultar o Pod com informações adicionais:
+
+```bash
+kubectl get pods -o wide
+```
+
+Resultado:
+
+```text
+NAME          READY   STATUS    RESTARTS        AGE    IP           NODE
+corinthians   2/2     Running   9 (2m18s ago)   4h5m   10.244.2.5   giropops-worker
+```
+
+A coluna `READY` apresenta:
+
+```text
+2/2
+```
+
+Isso significa que o Pod possui dois containers e ambos estão prontos.
+
+A coluna `NODE` mostra que o Pod está sendo executado no Node:
+
+```text
+giropops-worker
+```
+
+Podemos representar essa estrutura da seguinte forma:
+
+```text
+Cluster Kubernetes
+└── Node: giropops-worker
+    └── Pod: corinthians
+        ├── Container: corinthians
+        │   └── Imagem: nginx
+        └── Container: busybox
+            └── Comando: sleep 700
+```
+
+É importante entender que os containers não são executados diretamente pelo Node como recursos separados.
+
+Os dois containers estão dentro do mesmo Pod, e o Pod é que está sendo executado no Node.
+
+Eles também compartilham:
+
+- o mesmo endereço IP;
+- a mesma interface de rede;
+- o mesmo ciclo de vida;
+- os volumes definidos no Pod.
+
+Nesse exemplo, o endereço IP `10.244.2.5` pertence ao Pod.
+
+## Entendendo os reinícios do BusyBox
+
+Na saída do comando, a coluna `RESTARTS` mostra que os containers já foram reiniciados:
+
+```text
+9 (2m18s ago)
+```
+
+Isso acontece porque o BusyBox executa:
+
+```bash
+sleep 700
+```
+
+Depois de 700 segundos, esse processo termina.
+
+Como o manifesto utiliza:
+
+```yaml
+restartPolicy: Always
+```
+
+o Kubernetes inicia o container novamente.
+
+Por isso o número de reinicializações aumenta ao longo do tempo.
+
+## Administrando containers específicos
+
+Quando um Pod possui múltiplos containers, precisamos informar qual container queremos acessar.
+
+Para visualizar os logs do Nginx:
+
+```bash
+kubectl logs corinthians -c corinthians
+```
+
+Para consultar o BusyBox:
+
+```bash
+kubectl logs corinthians -c busybox
+```
+
+Também podemos executar comandos dentro de um container específico.
+
+No container do Nginx:
+
+```bash
+kubectl exec -it corinthians -c corinthians -- sh
+```
+
+No container BusyBox:
+
+```bash
+kubectl exec -it corinthians -c busybox -- sh
+```
+
+A opção `-c` informa o nome do container que será utilizado.
 
 # Consultando os Pods
 

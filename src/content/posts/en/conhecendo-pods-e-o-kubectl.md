@@ -16,7 +16,7 @@ draft: false
 language: en
 translationOf: conhecendo-pods-e-o-kubectl
 sourceHash: 6dca0cefeb1f33f383b65ed5582726b25aa70952c36168a24a28cddf6791c958
-series: Fundamentos de Kubernetes
+series: Kubernetes Fundamentals
 part: 1
 totalParts: 4
 ---
@@ -88,7 +88,7 @@ Imagine the following scenario:
 |                                |
 |  +-----------+  +-----------+  |
 |  |  Nginx    |  | BusyBox   |  |
-|  | Porta 80  |  | curl      |  |
+|  | Port 80   |  | curl      |  |
 |  +-----------+  +-----------+  |
 +--------------------------------+
 ```
@@ -112,9 +112,9 @@ Imagine a main application and a container solely responsible for sending logs t
 ```text
 Pod
 │
-├── Aplicação
+├── Application
 │
-└── Agente de Logs
+└── Log Agent
 ```
 
 The two containers work together.

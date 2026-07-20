@@ -16,7 +16,7 @@ draft: true
 language: en
 translationOf: compartilhando-dados-entre-pods-com-volumes-emptydir
 sourceHash: 47f680575c73d0c39658ac72dea07c22becbb51e7ddfa06b1eefd29889c4cc07
-series: Fundamentos de Kubernetes
+series: Kubernetes Fundamentals
 part: 4
 totalParts: 4
 ---
