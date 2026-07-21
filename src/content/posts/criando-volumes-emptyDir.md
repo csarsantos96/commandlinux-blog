@@ -8,7 +8,7 @@ tags: [kubernetes, volumes, emptydir, pods, kubectl, yaml]
 series: Fundamentos de Kubernetes
 part: 4
 totalParts: 4
----------------------------------
+___
 
 # Configurando volumes emptyDir em Pods no Kubernetes
 
