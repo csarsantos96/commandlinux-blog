@@ -1,8 +1,8 @@
 ---
-title: How containers work under the hood
+title: How Containers Work Under the Hood
 description: >-
   Understand how Docker and the Linux kernel use cgroups and namespaces to
-  isolate processes, network, users, file system, and resources within
+  isolate processes, network, users, filesystems, and resources within
   containers.
 date: '2026-01-15'
 category: DOCKER
@@ -16,11 +16,11 @@ tags:
 draft: false
 language: en
 translationOf: O-Que-e-containers
-sourceHash: 2445b4d21e889c507fdb0f603f4ab5f0602c831c49cc540bc04ee0fd1556b57a
+sourceHash: b26518a103b5add3f7963ae06ac666c319bf6982e2c7ff419f616ee8f7f88b77
 ---
 # **What is a Container?**  
 
-A `container` is a way to isolate processes and resources to run an application. It is a grouping of an application along with its dependencies, which share the host operating system's kernel.  
+A `container` is a way to isolate processes and resources to run an application. It's a grouping of an application along with its dependencies, which share the host operating system's kernel.  
   
   ```mermaid
 flowchart LR
@@ -91,37 +91,44 @@ flowchart LR
   
 Another interesting point about using containers is portability. It doesn't matter what environment you created your container in. It can be run in any other environment that has Docker installed. But portability is only part of what makes containers so useful. When multiple containers are running on the same machine, it's necessary to prevent one of them from consuming all available resources and harming the others.
 
-This is where **`cgroups`** (*control groups*) come in. They are Linux kernel features responsible for controlling and accounting for resource usage by groups of processes, such as CPU, memory, disk I/O, and the number of processes.
+This is where **`cgroups`** (*control groups*) come in. They are Linux kernel features responsible for controlling and accounting for resource usage by process groups, such as CPU, memory, disk I/O, and the number of processes.
 
-In practice, cgroups allow you to define limits for each container. This way, an application with an error or consumption spike does not use all the host's memory or processing, leaving other containers without resources.
+In practice, cgroups allow you to define limits for each container. This way, an application with an error or consumption spike doesn't use all the host's memory or processing, leaving other containers without resources.
 
-Despite this, cgroups do not provide isolation between containers. Their function is to control and limit the amount of resources each process group can consume. The actual isolation is performed by namespaces, which give each container its own view of the operating system.
+Despite this, cgroups do not perform isolation between containers. Their function is to control and limit the amount of resources each process group can consume. The isolation itself is performed by namespaces, which ensure that each container has its own view of the operating system.
 
 
 
 While cgroups control **how much** resource a container can use, **`namespaces`** control **what it can see** in the system.
 
-It is through namespaces that each container has its own view of processes, network, users, hostname, and file system, even while sharing the same Linux kernel with other containers.  
+It's through namespaces that each container has its own view of processes, network, users, hostname, and filesystem, even while sharing the same Linux kernel with other containers.  
   
   ## Namespace:  
   Namespaces were added to the Linux kernel in version `2.6.24`, and they are what enable process isolation when we use **Docker**. They are responsible for ensuring that each container has its own environment. That is, each container will have its own process tree, mount points, etc., preventing one container from interfering with the execution of another.  
     
   ## PID namespace:  
-  The PID namespace allows each container to have its own process identifiers. This means the container will have a PID for a running process, and when you look for that process on the host machine, it will be found, but with a different identification, i.e., with a different PID.  
+  The PID namespace allows each container to have its own process identifiers. This means the container has a PID for a running process, and when you look for that process on the host machine, it will be found, but with a different identification, i.e., a different PID.  
 
   ## Net namespace:  
-  The Net namespace allows each container to have its own network interface and its own ports. To enable communication between containers, a pair of virtual interfaces is created: one responsible for the container's interface (normally using the name `eth0`) and another responsible for an interface on the host, normally called `veth` (`veth` + a random identifier). These two interfaces are linked via the Docker bridge on the host, allowing communication between containers through packet routing.  
+  The Net namespace allows each container to have its own network interface and its own ports. For communication between containers to be possible, a pair of virtual interfaces is created: one responsible for the container's interface (usually named `eth0`) and another responsible for an interface on the host, usually called `veth` (`veth` + a random identifier). These two interfaces are connected via the Docker bridge on the host, allowing communication between containers through packet routing.  
 
   ## Mnt namespace:  
-  It is the evolution of `chroot`. With the Mnt namespace, each container can own its own mount point, as well as its root file system. It ensures that a process executing in one file system cannot access another file system mounted by a different Mnt namespace.
+  It's the evolution of `chroot`. With the Mnt namespace, each container can own its own mount point, as well as its root filesystem. It ensures that a process running in one filesystem cannot access another filesystem mounted by a different Mnt namespace.
 
     
 
  ## IPC namespace:  
-It provides an isolated System V IPC, as well as its own POSIX message queue.
+It provides isolated System V IPC, in addition to its own POSIX message queue.
 
   ## UTS namespace:  
 Responsible for providing isolation for the hostname, domain name, operating system version, among other system information.
 
    ## User namespace:  
-   It is the most recent namespace added to the Linux Kernel, available since version `3.8`. It is responsible for maintaining user ID mapping within each container.
+   It is the most recent namespace added to the Linux Kernel, available since version `3.8`. It is responsible for maintaining user ID mapping in each container.
+
+## References
+
+- [Docker Docs — What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/) — official introduction to how containers work.
+- [Linux Kernel — Control Groups v2](https://docs.kernel.org/admin-guide/cgroup-v2.html) — documents resource control and accounting by the kernel.
+- [Linux manual pages — namespaces(7)](https://man7.org/linux/man-pages/man7/namespaces.7.html) — overview of Linux namespaces.
+- [LINUXtips — Docker Essentials](https://linuxtips.io/treinamento/docker-essentials/) — course used as the basis for my studies and these notes.
