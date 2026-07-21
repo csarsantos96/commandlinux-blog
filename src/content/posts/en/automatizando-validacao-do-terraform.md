@@ -1,9 +1,9 @@
 ---
-title: Automating Terraform Validation using Scripts within GitHub Actions Workflows
+title: Automating Terraform validation using scripts within GitHub Actions workflows
 description: >-
   Learn how to use Bash scripts within GitHub Actions workflows to better
-  organize your pipelines, reuse commands, and automate tasks such as validating
-  Terraform projects.
+  organize your pipelines, reuse commands, and automate tasks like Terraform
+  project validation.
 date: '2026-07-16'
 category: CI/CD
 tags:
@@ -17,20 +17,20 @@ tags:
 draft: false
 language: en
 translationOf: automatizando-validacao-do-terraform
-sourceHash: 308b4e5aa307976df45ad2c343ca9108eacc5347884f34861db0b0943906907a
+sourceHash: 509efcf4dce97d4141b3f4e7f521d0ed78200e01841505e128493e030f927f1a
 ---
-# Automating Terraform Validation using Scripts within GitHub Actions Workflows
+# Automating Terraform validation using scripts within GitHub Actions workflows
 
 When we start creating pipelines in GitHub Actions, it's common to put all commands directly inside the YAML file.
 
-Although it works, as the pipeline grows, it becomes difficult to maintain.
+While this works, as the pipeline grows, it becomes difficult to maintain.
 
-A widely used alternative is to move all the logic to a **Shell Script**, leaving the workflow solely responsible for executing that script.
+A commonly used alternative is to move all the logic into a **Shell Script**, leaving the workflow solely responsible for executing that script.
 
 This pattern improves project organization and facilitates reuse across different pipelines.
 
 
-# Project Structure
+# Project structure
 
 A simple example would be:
 
@@ -50,7 +50,7 @@ A simple example would be:
 Each file has a specific responsibility.
 
 - **provider.tf** configures the AWS provider.
-- **variables.tf** declares the variables.
+- **variables.tf** declares variables.
 - **ec2.tf** creates the resources.
 - **valida-tf.sh** performs all validation.
 - **testa-terraform.yml** calls the script during the pipeline.
@@ -77,7 +77,7 @@ provider "aws" {
 ```
 
 
-# Creating an Instance
+# Creating an instance
 
 Then we can declare a simple resource.
 
@@ -93,7 +93,7 @@ resource "aws_instance" "web" {
 ```
 
 
-# Declaring Variables
+# Declaring variables
 
 Separating variables greatly facilitates code reuse.
 
@@ -110,7 +110,7 @@ variable "instance_type" {
 ```
 
 
-# Creating the Validation Script
+# Creating the validation script
 
 Instead of putting all commands inside the workflow, we can create a Bash file.
 
@@ -137,7 +137,7 @@ is an excellent practice because:
 - correctly handles errors in command pipelines.
 
 
-# Installing Terraform during the Pipeline
+# Installing Terraform during the pipeline
 
 If the runner does not have Terraform installed, we can download it automatically.
 
@@ -151,10 +151,10 @@ unzip terraform.zip
 export PATH="$HOME/bin:$PATH"
 ```
 
-This way, we don't depend on a previous installation.
+This way, we don't depend on a prior installation.
 
 
-# Executing the Validation
+# Running the validation
 
 After initializing the project, simply validate the syntax.
 
@@ -170,10 +170,10 @@ The parameter
 -backend=false
 ```
 
-is very useful during testing because it avoids configuring a remote backend just to validate the project structure.
+is very useful during tests because it avoids configuring a remote backend just to validate the project structure.
 
 
-# Returning the Result to GitHub Actions
+# Returning the result to GitHub Actions
 
 Another interesting practice is to report the execution result using the special GitHub Actions file.
 
@@ -194,7 +194,7 @@ exit 1
 This way, other pipeline steps can use this information.
 
 
-# Simplified Workflow
+# Simplified workflow
 
 The YAML becomes extremely small.
 
@@ -218,16 +218,16 @@ jobs:
         run: ./scripts/valida-tf.sh
 ```
 
-Note that virtually all the logic has moved out of the workflow.
+Notice that virtually all logic has moved out of the workflow.
 
 
-# Advantages of this Approach
+# Advantages of this approach
 
 Among the main benefits are:
 
 - Smaller and more readable workflows;
 - Reusable scripts;
-- Easier local testing;
+- Ease of local testing;
 - Separation between infrastructure and automation;
 - Much simpler maintenance.
 
@@ -236,17 +236,18 @@ Among the main benefits are:
 
 Separating pipeline logic into Bash scripts is a common practice in DevOps projects.
 
-GitHub Actions remains responsible for pipeline orchestration, while the Shell Script concentrates all the execution logic.
+GitHub Actions remains responsible for pipeline orchestration, while the Shell Script concentrates all execution logic.
 
-This organization makes the code cleaner, facilitates local testing, and allows the same script to be reused across different pipelines without duplicating commands.
+This organization makes the code cleaner, facilitates local testing, and allows reusing the same script in different pipelines without duplicating commands.
 
 The larger the project, the greater the benefit of this separation tends to be.
 
 
-## Official Documentation
+## References
 
-- GitHub Actions: https://docs.github.com/actions
-- Terraform Validate: https://developer.hashicorp.com/terraform/cli/commands/validate
-- Terraform Init: https://developer.hashicorp.com/terraform/cli/commands/init
-- Terraform Providers: https://developer.hashicorp.com/terraform/language/providers
-- Bash Manual: https://www.gnu.org/software/bash/manual/bash.html
+- [GitHub Docs — GitHub Actions](https://docs.github.com/pt/actions) — official documentation for the automation platform.
+- [HashiCorp Developer — `terraform validate`](https://developer.hashicorp.com/terraform/cli/commands/validate) — official reference for the validation command.
+- [HashiCorp Developer — `terraform init`](https://developer.hashicorp.com/terraform/cli/commands/init) — official reference for initializing the working directory.
+- [HashiCorp Developer — Providers](https://developer.hashicorp.com/terraform/language/providers) — documents provider configuration.
+- [GNU Bash Manual](https://www.gnu.org/software/bash/manual/bash.html) — official documentation for the Bash language and shell.
+- [LINUXtips — Treinamentos](https://linuxtips.io/treinamentos/) — courses I use as a basis for my studies in Terraform, pipelines, and GitHub Actions.
