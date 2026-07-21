@@ -14,11 +14,11 @@ tags:
 draft: false
 language: en
 translationOf: entendendo-conceitos-github-actions
-sourceHash: 588dcb07ab853469f075d4ac1f117cbc3513235cb268a06ef16fe26d23418b9e
+sourceHash: 4c54a653450d1846a76155854ef83f2b5248f73347ceee8b1d809ebfa8223e38
 ---
 # Understanding Contexts in GitHub Actions: github, env, vars, and secrets
 
-If you've started studying GitHub Actions, you've probably encountered expressions like these:
+If you've started studying GitHub Actions, you've probably come across expressions like these:
 
 ```yaml
 ${{ github.repository }}
@@ -30,7 +30,7 @@ ${{ vars.AWS_REGION }}
 ${{ secrets.GEMINI_API_KEY }}
 ```
 
-At first glance, they seem like just different ways to access variables.
+At first glance, they just look like different ways to access variables.
 
 But there's an important difference: **each belongs to a different context**, has a specific purpose, and is interpreted at distinct moments during workflow execution.
 
@@ -81,7 +81,7 @@ If the workflow is being executed in this repository:
 csarsantos96/commandlinux-blog
 ```
 
-that will be the output of the expression.
+this will be the output of the expression.
 
 In practice, it works like accessing a property of an object in JavaScript.
 
@@ -91,7 +91,7 @@ github.repository
 
 
 
-## How GitHub processes an expression
+## How GitHub Processes an Expression
 
 A very important characteristic is that expressions like:
 
@@ -103,21 +103,21 @@ are not interpreted by Bash.
 
 GitHub Actions itself resolves this expression **before** sending the Job to the Runner.
 
-This allows for conditions such as:
+This allows using conditions like:
 
 ```yaml
 if: ${{ github.ref_name == 'main' }}
 ```
 
-In this case, GitHub decides whether the Job will be executed even before the Runner starts.
+In this case, GitHub decides whether the Job will run even before the Runner starts.
 
 
 
 ## The `github` context
 
-The `github` context contains almost all information about the Workflow execution.
+The `github` context contains practically all information about the Workflow execution.
 
-Some frequently used properties are:
+Some commonly used properties are:
 
 ```yaml
 ${{ github.repository }}
@@ -157,7 +157,7 @@ First:
 run: echo "${{ github.ref_name }}"
 ```
 
-Here GitHub replaces the expression before execution.
+Here GitHub substitutes the expression before execution.
 
 Now:
 
@@ -165,9 +165,9 @@ Now:
 run: echo "$GITHUB_REF_NAME"
 ```
 
-In this case, it's Bash inside the Runner that interprets the variable.
+In this case, Bash inside the Runner interprets the variable.
 
-The result may be similar, but the moment each value is resolved is completely different.
+The result might be similar, but the moment each value is resolved is completely different.
 
 
 
@@ -201,7 +201,7 @@ The `env` context can be defined at three levels:
 - Job
 - Step
 
-Each level can override the previous one.
+Each level can overwrite the previous one.
 
 
 ## The `vars` context
@@ -214,7 +214,7 @@ They can exist at the:
 - Repository
 - Environment
 
-levels. They are ideal for non-sensitive configurations.
+They are ideal for non-sensitive configurations.
 
 Examples:
 
@@ -246,11 +246,11 @@ steps:
   - run: node scripts/translate-post.mjs
 ```
 
-The secret is never written directly into the code.
+The secret is never written directly in the code.
 
 
 
-## What never to do
+## What Never to Do
 
 Even if GitHub tries to mask sensitive values in logs, the recommendation is never to print Secrets.
 
@@ -266,12 +266,12 @@ The best practice is to pass the Secret directly to the application that will us
 
 ## Summary
 
-| Context   | Usage                                 |
-|-----------|---------------------------------------|
-| `github`  | Workflow execution information        |
-| `env`     | Variables defined in the workflow     |
-| `vars`    | Non-sensitive GitHub configurations   |
-| `secrets` | Confidential information              |
+| Context   | Usage                         |
+|-----------|-------------------------------|
+| `github`  | Workflow execution information|
+| `env`     | Variables defined in the workflow |
+| `vars`    | Non-sensitive GitHub configurations |
+| `secrets` | Confidential information      |
 
 
 
@@ -279,25 +279,14 @@ The best practice is to pass the Secret directly to the application that will us
 
 Contexts are one of the most important features of GitHub Actions. Understanding when to use `github`, `env`, `vars`, and `secrets` helps create more organized, reusable, and secure workflows.
 
-Although they all seem like just "variables," each has a specific purpose and is interpreted at different times during execution. Mastering this difference avoids common errors and makes your pipelines much more predictable.
+Although they all seem like just "variables", each has a specific purpose and is interpreted at different moments during execution. Mastering this difference avoids common errors and makes your pipelines much more predictable.
 
 
 ## References
 
-- GitHub Actions Contexts  
-  https://docs.github.com/en/actions/learn-github-actions/contexts
-
-- Expressions  
-  https://docs.github.com/en/actions/learn-github-actions/expressions
-
-- Variables  
-  https://docs.github.com/en/actions/learn-github-actions/variables
-
-- Environment Variables  
-  https://docs.github.com/en/actions/learn-github-actions/environment-variables
-
-- Secrets  
-  https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions
-
-- Workflow Syntax  
-  https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+- [GitHub Docs — Contexts](https://docs.github.com/pt/actions/learn-github-actions/contexts) — documents the contexts available in workflows.
+- [GitHub Docs — Expressions](https://docs.github.com/pt/actions/learn-github-actions/expressions) — explains the syntax and functions of expressions.
+- [GitHub Docs — Variables](https://docs.github.com/pt/actions/learn-github-actions/variables) — documents standard and configuration variables.
+- [GitHub Docs — Using secrets](https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) — guides secure storage and use of credentials.
+- [GitHub Docs — Workflow syntax](https://docs.github.com/pt/actions/using-workflows/workflow-syntax-for-github-actions) — complete reference for workflow structure.
+- [LINUXtips — Trainings](https://linuxtips.io/treinamentos/) — courses I use as a basis for my studies in DevOps, pipelines, and GitHub Actions.

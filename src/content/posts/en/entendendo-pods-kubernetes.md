@@ -13,11 +13,11 @@ tags:
 draft: false
 language: en
 translationOf: entendendo-pods-kubernetes
-sourceHash: dcea3ea654f0fdae15c82bb44787d64ad125496c784971c5725ecfb2d3c3aeca
+sourceHash: 8b4799dbb19972e86aac5a5875eddc2186419da4186c1c3ef5f10f0dfb4fe8b2
 ---
-Everyone starting with Kubernetes hears that "the Pod is the smallest unit of deployment." But what does that mean in practice?
+Everyone who starts with Kubernetes hears that "the Pod is the smallest unit of deployment". But what does that mean in practice?
 
-## What a Pod Really Is
+## What a Pod actually is
 
 A Pod is a group of one or more containers that share:
 
@@ -27,7 +27,7 @@ A Pod is a group of one or more containers that share:
 
 In other words: two containers in the same Pod communicate via `localhost`. This is possible because the kubelet creates a pause container (`pause`) that holds the namespaces, and the other containers join these namespaces.
 
-## Creating a Pod in Practice
+## Creating a Pod in practice
 
 ```yaml
 apiVersion: v1
@@ -52,11 +52,11 @@ kubectl get pods -o wide
 kubectl describe pod nginx-demo
 ```
 
-## Why You Almost Never Create Pods Directly
+## Why you almost never create Pods directly
 
-Pods are ephemeral. If the node dies, the Pod dies with it and no one recreates it. That's why, in daily operations, we use controllers like **Deployment** and **StatefulSet**, which ensure the desired state.
+Pods are ephemeral. If the node dies, the Pod dies with it, and no one recreates it. That's why, in daily operations, we use controllers like **Deployment** and **StatefulSet**, which ensure the desired state.
 
-> For the CKA: know how to imperatively create Pods with `kubectl run nginx --image=nginx --dry-run=client -o yaml` — it saves a lot of exam time.
+> For the CKA: know how to create Pods imperatively with `kubectl run nginx --image=nginx --dry-run=client -o yaml` — it saves a lot of exam time.
 
 ## Summary
 
@@ -64,3 +64,9 @@ Pods are ephemeral. If the node dies, the Pod dies with it and no one recreates 
 | --- | --- |
 | Pod | network, volumes, lifecycle |
 | Container | own filesystem, own process |
+
+## References
+
+- [Kubernetes — Pods](https://kubernetes.io/pt-br/docs/concepts/workloads/pods/) — documents the Pod model, networking, and lifecycle.
+- [Kubernetes — Workloads](https://kubernetes.io/docs/concepts/workloads/) — presents the controllers used to manage Pods.
+- [LINUXtips — PICK](https://linuxtips.io/pick/) — Intensive Containers and Kubernetes Program used as the basis for my studies and these notes.

@@ -2,7 +2,7 @@
 title: Multi-stage builds — much smaller Docker images
 description: >-
   How to use multi-stage builds to separate build from runtime and drastically
-  reduce your image size.
+  reduce the size of your images.
 date: '2026-06-24'
 category: DOCKER
 tags:
@@ -12,9 +12,9 @@ tags:
 draft: false
 language: en
 translationOf: multi-stage-builds-docker
-sourceHash: 6e79203fb48b28f882ee721808560e7c330596db89a650822c08cf15f2d929dd
+sourceHash: e6696eaa4197f13e2d6a41e9a1c50c0ff7e403c107b4df67351abea5e2f8c511
 ---
-A Python application image weighing 1.2 GB is not normal — it's a lack of multi-stage builds.
+A Python application image that weighs 1.2 GB is not normal — it's a lack of multi-stage builds.
 
 ## The Problem
 
@@ -54,4 +54,10 @@ docker build -t app:depois .
 docker images | grep app
 ```
 
-In a real FastAPI project, this brought the image down from 1.1 GB to less than 180 MB — faster deployment, smaller attack surface, lower registry costs.
+In a real FastAPI project, this brought the image down from 1.1 GB to less than 180 MB — faster deployments, smaller attack surface, lower registry costs.
+
+## References
+
+- [Docker Docs — Multi-stage builds](https://docs.docker.com/build/building/multi-stage/) — documents the creation of images with multiple stages.
+- [Docker Docs — Best practices for Dockerfiles](https://docs.docker.com/build/building/best-practices/) — official recommendations for smaller and more secure images.
+- [LINUXtips — Demystifying Docker](https://linuxtips.io/treinamento/descomplicando-o-docker/) — course used as the basis for my studies on Dockerfiles and image optimization.

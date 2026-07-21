@@ -1,7 +1,7 @@
 ---
 title: Creating and Managing Pods with kubectl and YAML Manifests
 description: >-
-  Learn to generate YAML manifests, create Pods, and use the main kubectl
+  Learn how to generate YAML manifests, create Pods, and use the main kubectl
   commands to manage resources in Kubernetes.
 date: '2026-07-20'
 category: Kubernetes
@@ -15,22 +15,22 @@ tags:
 draft: false
 language: en
 translationOf: conhecendo-manifestos-yaml
-sourceHash: 3e768dbc8e9c24065513e8113627f76c7a1276cb421be62d9f4355e83b84da17
+sourceHash: 7a1fcf27ee9bd7e6e2e1450bfad439520d9f898c1453d22db1101bc8dd2dc79c
 series: Kubernetes Fundamentals
 part: 2
 totalParts: 4
 ---
-> This article is a continuation of the post **Understanding Pods and kubectl**. If you haven't read the first part yet, I recommend starting there to understand the fundamental concepts before moving on to YAML manifests.
+> This article is a continuation of the post **Understanding Pods and kubectl**. If you haven't read the first part yet, I recommend starting there to grasp the fundamental concepts before moving on to YAML manifests.
 
 # Understanding YAML Manifests and Managing Pods with kubectl
 
 In the previous article, we learned about Pods and how to create our first resource using the `kubectl run` command.
 
-Although this command is extremely useful for studies and quick tests, it does not represent the most common way to work with Kubernetes in production environments.
+While this command is extremely useful for studies and quick tests, it doesn't represent the most common way to work with Kubernetes in production environments.
 
-In practice, most applications are created through **YAML manifests** that are versioned in a Git repository.
+In practice, most applications are created via **YAML manifests** that are versioned in a Git repository.
 
-In this article, we will learn how to automatically generate these manifests using `kubectl`, understand their structure, create a Pod with multiple containers, and get acquainted with some of the most used commands for managing Pods.
+In this article, we will learn how to automatically generate these manifests using `kubectl`, understand their structure, create a Pod with multiple containers, and explore some of the most used commands for managing Pods.
 
 
 
@@ -54,15 +54,15 @@ kubectl run corinthians \
   -o yaml > pod.yaml
 ```
 
-This command does not create any resource.
+This command doesn't create any resources.
 
-It only generates the YAML manifest and saves its content into the `pod.yaml` file.
+It merely generates the YAML manifest and saves its content into the `pod.yaml` file.
 
 Let's understand each option.
 
 
 
-# The `--image` parameter
+# The `--image` Parameter
 
 ```bash
 --image=nginx
@@ -76,7 +76,7 @@ If it doesn't exist locally, it will be downloaded automatically.
 
 
 
-# The `--port` parameter
+# The `--port` Parameter
 
 ```bash
 --port=80
@@ -97,7 +97,7 @@ For that, it will still be necessary to create a Service.
 
 
 
-# The `--dry-run=client` parameter
+# The `--dry-run=client` Parameter
 
 This is one of the most useful options during studies.
 
@@ -128,15 +128,15 @@ Since the entire simulation happens within `kubectl` itself, we use the `client`
 
 
 
-# The `-o yaml` parameter
+# The `-o yaml` Parameter
 
-The `-o` option means **output**.
+The `-o` option stands for **output**.
 
 ```bash
 -o yaml
 ```
 
-It informs `kubectl` that we want to view the resource in YAML format.
+It tells `kubectl` that we want to view the resource in YAML format.
 
 The result will be similar to the following:
 
@@ -162,7 +162,7 @@ spec:
 
 
 
-# The `>` operator
+# The `>` Operator
 
 The final part of the command often causes confusion.
 
@@ -221,7 +221,7 @@ metadata:
 
 ## spec
 
-It is the most important part of the manifest.
+This is the most important part of the manifest.
 
 It describes the desired state of the resource.
 
@@ -256,7 +256,7 @@ If Sidecars exist, they will also appear in this list.
 restartPolicy: Always
 ```
 
-Defines the behavior of Kubernetes if the container is terminated.
+Defines Kubernetes' behavior if the container terminates.
 
 By default, Pods created this way use `Always`.
 
@@ -286,11 +286,11 @@ Expected result:
 pod/corinthians created
 ```
 
-Now Kubernetes will send this manifest to the API Server and begin the Pod creation process.
+Now Kubernetes will send this manifest to the API Server and initiate the Pod creation process.
 
 # Creating a Pod with Multiple Containers
 
-Up until now, we've worked with a Pod containing only one container.
+Until now, we have worked with a Pod containing only one container.
 
 However, a Pod can also run two or more containers simultaneously.
 
@@ -379,7 +379,7 @@ Kubernetes Cluster
 
 It's important to understand that containers are not run directly by the Node as separate resources.
 
-The two containers are within the same Pod, and it is the Pod that is running on the Node.
+Both containers are inside the same Pod, and the Pod itself is running on the Node.
 
 They also share:
 
@@ -392,7 +392,7 @@ In this example, the IP address `10.244.2.5` belongs to the Pod.
 
 ## Understanding BusyBox Restarts
 
-In the command's output, the `RESTARTS` column shows that the containers have been restarted:
+In the command output, the `RESTARTS` column shows that the containers have already restarted:
 
 ```text
 9 (2m18s ago)
@@ -412,15 +412,15 @@ Since the manifest uses:
 restartPolicy: Always
 ```
 
-Kubernetes starts the container again.
+Kubernetes restarts the container.
 
-This is why the number of restarts increases over time.
+That's why the number of restarts increases over time.
 
 ## Managing Specific Containers
 
 When a Pod has multiple containers, we need to specify which container we want to access.
 
-To view the Nginx logs:
+To view Nginx logs:
 
 ```bash
 kubectl logs corinthians -c corinthians
@@ -432,7 +432,7 @@ To query BusyBox:
 kubectl logs corinthians -c busybox
 ```
 
-We can also execute commands within a specific container.
+We can also execute commands inside a specific container.
 
 In the Nginx container:
 
@@ -450,7 +450,7 @@ The `-c` option specifies the name of the container to be used.
 
 # Querying Pods
 
-The first command we typically run is:
+The first command we usually execute is:
 
 ```bash
 kubectl get pods
@@ -471,7 +471,7 @@ This option shows information such as:
 
 # Getting Details
 
-If it is necessary to investigate a specific resource:
+If it's necessary to investigate a specific resource:
 
 ```bash
 kubectl describe pod corinthians
@@ -488,7 +488,7 @@ This command displays:
 - Node;
 - status.
 
-It is one of the most used commands during troubleshooting processes.
+It's one of the most used commands during troubleshooting processes.
 
 
 
@@ -500,7 +500,7 @@ To view a container's logs, we use:
 kubectl logs corinthians
 ```
 
-If we want to follow the logs in real time:
+If we want to follow the logs in real-time:
 
 ```bash
 kubectl logs -f corinthians
@@ -538,11 +538,11 @@ hostname
 cat /etc/os-release
 ```
 
-In practice, `kubectl exec` is much more commonly used than `kubectl attach`.
+In practice, `kubectl exec` is much more used than `kubectl attach`.
 
 
 
-# Understanding `kubectl attach`
+# Understanding kubectl attach
 
 The `attach` command has a different behavior.
 
@@ -572,7 +572,7 @@ After a few seconds, it will cease to exist in the cluster.
 
 # Summary
 
-During this article, we learned a frequently used daily workflow.
+Throughout this article, we learned a commonly used daily workflow.
 
 ```text
 kubectl run
@@ -605,6 +605,13 @@ kubectl exec
 kubectl delete
 ```
 
-This workflow represents the foundation of working with Kubernetes and will be used for practically all upcoming resources we study, such as Deployments, Services, ConfigMaps, and Ingress.
+This workflow represents the foundation of working with Kubernetes and will be used for almost all subsequent resources we study, such as Deployments, Services, ConfigMaps, and Ingress.
 
-In future articles, we will move on to more complex declarative resources and understand how real applications are run within a Kubernetes cluster.
+In future articles, we will move on to more complex declarative resources and understand how real applications run within a Kubernetes cluster.
+
+## References
+
+- [Kubernetes — Declarative Management of Kubernetes Objects](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/declarative-config/) — explains the use of configuration files and `kubectl apply`.
+- [Kubernetes — kubectl Reference](https://kubernetes.io/docs/reference/kubectl/) — documents the commands used to create, inspect, and remove resources.
+- [Kubernetes — Pods](https://kubernetes.io/pt-br/docs/concepts/workloads/pods/) — documents the structure and lifecycle of Pods.
+- [LINUXtips — Kubernetes Essentials](https://linuxtips.io/treinamento/kubernetes-essentials/) — course used as the basis for my studies and this series of notes.
