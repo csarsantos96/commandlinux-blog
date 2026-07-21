@@ -13,7 +13,7 @@ const {
 ---
 
 <nav class="navbar">
-  <a href="/" class="nav-logo">
+  <a href={language === 'pt' ? '/' : '/en/'} class="nav-logo">
     <span class="nav-prefix">~/ </span>
     <span class="nav-icon">&gt;_ </span>
     commandlinux.dev<span class="nav-cursor"></span>
@@ -53,6 +53,7 @@ const {
     <div class="lang-switcher" aria-label="Selecionar idioma">
       <a
         href={ptHref}
+        data-language="pt"
         class:list={['lang-btn', { active: language === 'pt' }]}
         aria-current={language === 'pt' ? 'page' : undefined}
       >
@@ -63,6 +64,7 @@ const {
         enHref ? (
           <a
             href={enHref}
+            data-language="en"
             class:list={['lang-btn', { active: language === 'en' }]}
             aria-current={language === 'en' ? 'page' : undefined}
           >
@@ -109,6 +111,16 @@ const {
 </nav>
 
 <script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-language]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const language = link.dataset.language;
+
+      if (language) {
+        document.cookie = `preferred-language=${language}; Path=/; Max-Age=31536000; SameSite=Lax`;
+      }
+    });
+  });
+
   const menus = document.querySelectorAll<HTMLDetailsElement>('.mobile-menu');
 
   menus.forEach((menu) => {
