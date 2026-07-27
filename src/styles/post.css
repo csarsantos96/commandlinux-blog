@@ -186,6 +186,28 @@
   color: var(--text2);
 }
 
+/* Imagens dos artigos: fluidas em telas menores e sem distorção. */
+.post-body picture {
+  display: block;
+  margin: 1.5rem 0;
+}
+
+.post-body picture img,
+.post-body > p > img,
+.post-body > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.post-body p:has(> img:only-child) {
+  margin: 1.5rem 0;
+}
+
 .post-body table {
   width: 100%;
   border-collapse: collapse;

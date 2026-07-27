@@ -1,5 +1,4 @@
 ---
-
 title: Configurando volumes emptyDir em Pods no Kubernetes
 description: Aprenda a criar e montar um volume temporário emptyDir em um Pod do Kubernetes, definir seu limite de armazenamento e testar seu funcionamento.
 date: 2026-07-21
@@ -8,7 +7,7 @@ tags: [kubernetes, volumes, emptydir, pods, kubectl, yaml]
 series: Fundamentos de Kubernetes
 part: 4
 totalParts: 4
-___
+---
 
 # Configurando volumes emptyDir em Pods no Kubernetes
 
