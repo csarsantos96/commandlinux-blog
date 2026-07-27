@@ -155,6 +155,13 @@ function restoreFencedCodeBlocks(markdown, blocks, sourceFile) {
   return restored;
 }
 
+function rebaseMarkdownImagePaths(markdown) {
+  return markdown.replace(
+    /(!\[[^\]]*\]\()\.\/images\//g,
+    '$1../images/',
+  );
+}
+
 async function requestTranslation({ title, description, series, body, sourceFile }) {
   const { text: protectedBody, blocks } = protectFencedCodeBlocks(body);
 
@@ -223,6 +230,8 @@ ${protectedBody}
         sourceFile,
       );
 
+      translation.body = rebaseMarkdownImagePaths(translation.body);
+
       return translation;
     } catch (error) {
       lastError = error;
@@ -279,17 +288,12 @@ async function main() {
       );
     }
 
+    // A translation is generated only once. Existing English posts may be
+    // reviewed or edited manually without being overwritten by automation.
     if (await fileExists(targetPath)) {
-      const existing = matter(await fs.readFile(targetPath, 'utf8'));
-
-      const hasCopiedPortugueseSeries =
-        source.data.series && existing.data.series === source.data.series;
-
-      if (existing.data.sourceHash === hash && !hasCopiedPortugueseSeries) {
-        console.log(`Skipped: ${entry.name} is already up to date.`);
-        skippedCount += 1;
-        continue;
-      }
+      console.log(`Skipped: en/${entry.name} already exists.`);
+      skippedCount += 1;
+      continue;
     }
 
     console.log(`Translating: ${entry.name}`);
@@ -327,7 +331,7 @@ async function main() {
   }
 
   console.log(
-    `Done. ${translatedCount} translated, ${skippedCount} already current.`,
+    `Done. ${translatedCount} translated, ${skippedCount} already translated.`,
   );
 }
 
