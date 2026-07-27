@@ -19,7 +19,9 @@
         {
           "type": "header",
           "key": "x-vercel-ip-country",
-          "value": "^(?!(BR|PT|CV|AO)$).*$"
+          "value": {
+            "ninc": ["BR", "PT", "AO", "CV", "GW", "MZ", "ST", "TL", "GQ"]
+          }
         }
       ],
       "missing": [
