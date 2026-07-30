@@ -20,7 +20,7 @@ if (!API_KEY) {
 
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 
-const translationSchema = {
+const metadataSchema = {
   type: 'object',
   properties: {
     title: {
@@ -35,12 +35,8 @@ const translationSchema = {
       type: 'string',
       description: 'English translation of the series name, or an empty string when there is no series.',
     },
-    body: {
-      type: 'string',
-      description: 'English translation of the Markdown body only.',
-    },
   },
-  required: ['title', 'description', 'series', 'body'],
+  required: ['title', 'description', 'series'],
   additionalProperties: false,
 };
 
@@ -165,29 +161,21 @@ function rebaseMarkdownImagePaths(markdown) {
 async function requestTranslation({ title, description, series, body, sourceFile }) {
   const { text: protectedBody, blocks } = protectFencedCodeBlocks(body);
 
-  const prompt = `
-Translate this Brazilian Portuguese technical blog post into natural English.
+  const metadataPrompt = `
+Translate this Brazilian Portuguese technical blog post metadata into natural English.
 
 Return only one valid JSON object with exactly these keys:
 
 {
   "title": "translated title",
   "description": "translated description",
-  "series": "translated series name or empty string",
-  "body": "translated Markdown body"
+  "series": "translated series name or empty string"
 }
 
 Rules:
-- All four keys are mandatory. Title, description, and body must contain non-empty strings.
+- All three keys are mandatory. Title and description must contain non-empty strings.
 - Translate the series name when provided. If Series is empty, return an empty string for "series".
-- Translate titles, descriptions, headings, paragraphs, lists, tables, image alt text, and natural-language labels inside text/txt/plaintext fenced blocks.
-- Preserve the spacing, borders, arrows, tree characters, and alignment of text diagrams.
-- Preserve Markdown structure.
-- Do not add frontmatter.
 - Do not add explanations, notes, apologies, or text outside the JSON object.
-- Placeholder tokens such as @@CODE_BLOCK_0@@ represent protected code blocks.
-- Copy every placeholder exactly once, unchanged, and do not wrap it in backticks.
-- Except for text/txt/plaintext diagrams, do not translate fenced code blocks, inline code, commands, file paths, URLs, identifiers, API names, YAML keys, JSON keys, Dockerfiles, Kubernetes manifests, Mermaid code, or code comments.
 - Keep technical terms such as Docker, Kubernetes, Pod, cgroup, namespace, inode, Terraform, Linux, GitHub Actions, and CI/CD when appropriate.
 - Keep the author's practical and direct tone.
 
@@ -201,6 +189,26 @@ ${description}
 
 Series:
 ${series ?? ''}
+`.trim();
+
+  const bodyPrompt = `
+Translate this Brazilian Portuguese technical blog post body into natural English.
+
+Return only the translated Markdown body. Do not wrap the response in a JSON object or a Markdown code fence.
+
+Rules:
+- Translate headings, paragraphs, lists, tables, image alt text, and natural-language labels inside text/txt/plaintext fenced blocks.
+- Preserve the spacing, borders, arrows, tree characters, and alignment of text diagrams.
+- Preserve Markdown structure.
+- Do not add frontmatter.
+- Do not add explanations, notes, or apologies.
+- Placeholder tokens such as @@CODE_BLOCK_0@@ represent protected code blocks.
+- Copy every placeholder exactly once, unchanged, and do not wrap it in backticks.
+- Except for text/txt/plaintext diagrams, do not translate fenced code blocks, inline code, commands, file paths, URLs, identifiers, API names, YAML keys, JSON keys, Dockerfiles, Kubernetes manifests, Mermaid code, or code comments.
+- Keep technical terms such as Docker, Kubernetes, Pod, cgroup, namespace, inode, Terraform, Linux, GitHub Actions, and CI/CD when appropriate.
+- Keep the author's practical and direct tone.
+
+Source file: ${sourceFile}
 
 Markdown body:
 ${protectedBody}
@@ -210,17 +218,24 @@ ${protectedBody}
 
   for (let attempt = 1; attempt <= 3; attempt += 1) {
     try {
-      const response = await ai.interactions.create({
+      const metadataResponse = await ai.interactions.create({
         model: MODEL,
-        input: prompt,
+        input: metadataPrompt,
         response_format: {
           type: 'text',
           mime_type: 'application/json',
-          schema: translationSchema,
+          schema: metadataSchema,
         },
       });
 
-      const translation = parseModelJson(response.output_text);
+      const translation = parseModelJson(metadataResponse.output_text);
+
+      const bodyResponse = await ai.interactions.create({
+        model: MODEL,
+        input: bodyPrompt,
+      });
+
+      translation.body = bodyResponse.output_text?.trim();
 
       validateTranslation(translation, sourceFile);
 
@@ -312,6 +327,9 @@ async function main() {
       title: translation.title.trim(),
       description: translation.description.trim(),
       date: normalizeDate(source.data.date),
+      ...(source.data.updatedDate
+        ? { updatedDate: normalizeDate(source.data.updatedDate) }
+        : {}),
       category: source.data.category,
       tags: source.data.tags ?? [],
       draft: Boolean(source.data.draft),

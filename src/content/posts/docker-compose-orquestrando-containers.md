@@ -2,6 +2,7 @@
 title: "Docker Compose: orquestrando múltiplos containers"
 description: Aprenda a descrever serviços, redes, volumes e limites de recursos em um único arquivo com o Docker Compose, em vez de repetir comandos docker run.
 date: 2026-06-27
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, docker-compose, yaml, devops]
 draft: false

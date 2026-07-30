@@ -2,6 +2,7 @@
 title: "HEALTHCHECK: ensinando o Docker a desconfiar do próprio container"
 description: Entenda por que um container pode estar em execução e mesmo assim não estar saudável, e como a instrução HEALTHCHECK resolve esse ponto cego.
 date: 2026-06-19
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, dockerfile, healthcheck, devops]
 draft: false

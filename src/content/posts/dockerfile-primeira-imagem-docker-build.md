@@ -2,6 +2,7 @@
 title: "Dockerfile na prática: da primeira imagem ao docker build"
 description: Entenda o que é um Dockerfile, como suas instruções viram camadas de uma imagem e construa sua primeira imagem Docker do zero com docker build.
 date: 2026-06-15
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, dockerfile, imagens, devops]
 draft: false

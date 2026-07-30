@@ -2,6 +2,7 @@
 title: "Todas as instruções do Dockerfile e a diferença entre ENTRYPOINT e CMD"
 description: Um guia de referência para as principais instruções do Dockerfile e uma explicação prática de como ENTRYPOINT e CMD trabalham juntos.
 date: 2026-06-17
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, dockerfile, entrypoint, devops]
 draft: false

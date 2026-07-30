@@ -2,6 +2,7 @@
 title: "Gerenciando containers no dia a dia com Docker"
 description: Anotações práticas sobre o ciclo de vida de um container Docker, do docker run ao docker stats, passando por logs, pause e prune.
 date: 2026-06-10
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, containers, cli, devops]
 draft: false

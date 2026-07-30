@@ -4,6 +4,7 @@ description: >-
   Practical notes on the lifecycle of a Docker container, from docker run to
   docker stats, including logs, pause, and prune.
 date: '2026-06-10'
+updatedDate: '2026-07-30'
 category: DOCKER
 tags:
   - docker

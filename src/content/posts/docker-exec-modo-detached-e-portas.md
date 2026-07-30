@@ -2,6 +2,7 @@
 title: "Modo detached, docker exec e testando containers por dentro"
 description: Aprenda a rodar containers em segundo plano com -d, entrar neles com docker exec, publicar portas com -p e investigar o que está acontecendo lá dentro.
 date: 2026-06-12
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, containers, cli, networking, devops]
 draft: false

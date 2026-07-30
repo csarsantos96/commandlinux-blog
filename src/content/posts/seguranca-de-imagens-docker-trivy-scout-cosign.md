@@ -2,6 +2,7 @@
 title: "Segurança de imagens Docker: Trivy, Docker Scout, distroless e assinatura com cosign"
 description: Feche o ciclo de aprendizado de Docker aprendendo a escanear vulnerabilidades com Trivy e Docker Scout, reduzir a superfície de ataque com imagens distroless e assinar imagens com cosign.
 date: 2026-06-29
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, security, trivy, sbom, distroless, cosign, devops]
 draft: false

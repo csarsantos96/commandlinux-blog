@@ -2,6 +2,7 @@
 title: "Volumes, bind mounts e tmpfs no Docker"
 description: Entenda por que containers precisam de volumes para persistir dados e conheça as diferenças entre bind mounts, named volumes e tmpfs.
 date: 2026-06-22
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, volumes, bind-mount, tmpfs, devops]
 draft: false

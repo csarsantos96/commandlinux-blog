@@ -2,6 +2,7 @@
 title: "Redes no Docker: conectando containers e limitando recursos"
 description: Aprenda a criar redes no Docker para que containers se enxerguem pelo nome, e a limitar CPU e memória com --cpus e --memory.
 date: 2026-06-25
+updatedDate: 2026-07-30
 category: DOCKER
 tags: [docker, networking, cpu, memory, devops]
 draft: false
