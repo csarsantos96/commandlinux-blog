@@ -1,7 +1,7 @@
 ---
-title: Multi-stage builds — imagens Docker muito menores
+title: Multi-stage builds, imagens Docker muito menores
 description: Como usar multi-stage builds para separar build de runtime e reduzir drasticamente o tamanho das suas imagens.
-date: 2026-06-24
+date: 2026-06-23
 category: DOCKER
 tags: [dockerfile, multi-stage, otimização]
 ---

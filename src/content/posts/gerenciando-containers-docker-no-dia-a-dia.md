@@ -6,6 +6,9 @@ category: DOCKER
 tags: [docker, containers, cli, devops]
 draft: false
 language: pt
+series: Docker na Prática
+part: 1
+totalParts: 9
 ---
 
 # Gerenciando containers no dia a dia com Docker
