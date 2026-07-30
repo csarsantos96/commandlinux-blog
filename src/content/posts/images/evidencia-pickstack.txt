@@ -1,0 +1,29 @@
+=== ARQUIVOS DA MAIN ===
+projetos/pick-2026/fase-1-mes-01-docker/web/src/app.css
+projetos/pick-2026/fase-1-mes-01-docker/web/src/app.d.ts
+projetos/pick-2026/fase-1-mes-01-docker/web/src/app.html
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/api/auth.ts
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/api/cards.ts
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/api/client.ts
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/api/focus.ts
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/api/trilha.ts
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/Button.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/CardReview.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/Empty.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/Heatmap.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/Input.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/Modal.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/PomodoroTimer.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/RoadmapGraph.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/Sidebar.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/StatCard.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/components/Topbar.svelte
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/stores/auth.ts
+projetos/pick-2026/fase-1-mes-01-docker/web/src/lib/stores/ui.ts
+
+=== COMPARAÇÃO ENTRE BRANCHES ===
+M	projetos/pick-2026/fase-1-mes-01-docker/infra/docker-compose.dev.yml
+M	projetos/pick-2026/fase-1-mes-01-docker/services/auth-svc/src/db/client.ts
+D	projetos/pick-2026/fase-1-mes-01-docker/web/svelte.config.js
+D	projetos/pick-2026/fase-1-mes-01-docker/web/tsconfig.json
+D	projetos/pick-2026/fase-1-mes-01-docker/web/vite.config.ts
