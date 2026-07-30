@@ -32,11 +32,11 @@ const posts = raw
     const byDate = b.date.localeCompare(a.date);
     if (byDate !== 0) return byDate;
 
-    const bySeries = (a.series ?? '\uffff').localeCompare(b.series ?? '\uffff');
-    if (bySeries !== 0) return bySeries;
-
     const byPart = (b.part ?? Number.MIN_SAFE_INTEGER) - (a.part ?? Number.MIN_SAFE_INTEGER);
     if (byPart !== 0) return byPart;
+
+    const bySeries = (a.series ?? '\uffff').localeCompare(b.series ?? '\uffff');
+    if (bySeries !== 0) return bySeries;
 
     return a.title.localeCompare(b.title, 'pt-BR');
   });
