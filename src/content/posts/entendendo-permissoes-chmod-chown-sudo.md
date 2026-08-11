@@ -3,7 +3,7 @@ title: "Entendendo permissões no Linux: chmod, chown e sudo na prática"
 description: "Anotações sobre permissões no Linux: como ler o ls -l, chmod simbólico e octal, chown para trocar dono e grupo, e como configurar o sudo com visudo com segurança."
 date: 2026-08-11
 category: LINUX
-tags: [linux, permissoes, chmod, chown, sudo, sudoers, visudo, seguranca. vim]
+tags: [linux, permissoes, chmod, chown, sudo, sudoers, visudo, seguranca, vim]
 ---
 
 Essas são minhas anotações de caderno sobre permissões no Linux, parte do curso **Linux para Cloud Native** da LINUXtips, dentro da trilha do PICK 2026. No post anterior, sobre [administração de usuários](/posts/administrando-usuarios-no-linux), eu tinha deixado combinado que a próxima parada seria grupos e permissões. Chegou a hora.
