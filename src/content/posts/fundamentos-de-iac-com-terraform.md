@@ -56,6 +56,20 @@ Você envia os dados do usuário → a API processa → o backend salva no banco
 
 **Backend + API + Banco de Dados** formam uma combinação extremamente comum no desenvolvimento moderno — e é exatamente essa combinação que existe do outro lado quando o Terraform "conversa" com uma cloud.
 
+
+```mermaid
+flowchart LR
+    Cliente(["Cliente"]) --> API["API"]
+    API --> EC2
+
+    subgraph Cloud["Servidor / Cloud"]
+        EC2["VM — EC2"]
+        VM2["VM"]
+        IAM["IAM"]
+        S3["Object Store — S3"]
+    end
+```
+
 # O que é Cloud, na prática
 
 **Cloud** é, de forma simplificada, uma série de datacenters disponíveis para uso, com uma infraestrutura acessível por meio de uma API. Esses recursos podem incluir:
@@ -132,6 +146,19 @@ O **Terraform** é uma ferramenta de infraestrutura como código (*Infrastructur
 Na prática, ele funciona como um binário executado na linha de comando. Esse binário lê arquivos de configuração escritos em **HCL** (*HashiCorp Configuration Language*) e, por meio de *providers*, se comunica com as APIs dos serviços para criar, modificar ou remover recursos.
 
 Em vez de executar passos manuais dizendo exatamente como cada ação deve acontecer, você descreve o **estado desejado** da infraestrutura. Por exemplo: você informa que deseja uma máquina virtual com determinadas características, e o Terraform interpreta essa configuração para criar ou ajustar esse recurso no provider escolhido.
+
+O Terraform lê o arquivo HCL da pasta onde foi chamado — todo arquivo com extensão `.tf` — usa o **state file** para saber o que já existe, e usa esse conteúdo para falar com a API da cloud.
+
+```mermaid
+flowchart LR
+    Terraform["Terraform"] --> API["API"] --> Cloud["Cloud"]
+    Terraform --> HCL
+    Terraform <--> State[("State File")]
+
+    subgraph HCL["Arquivo .tf (HCL)"]
+        Resource["quero uma VM de 2gb"]
+    end
+```
 
 > Código-fonte do Terraform: [github.com/hashicorp/terraform](https://github.com/hashicorp/terraform)
 
@@ -291,7 +318,7 @@ Entender API e Cloud antes do Terraform em si evitou que os próximos passos (st
 * [HashiCorp Developer — HCL Syntax](https://developer.hashicorp.com/terraform/language/syntax/configuration) — referência da sintaxe da linguagem de configuração.
 * [HashiCorp Developer — Terraform state](https://developer.hashicorp.com/terraform/language/state) — documenta a finalidade e o funcionamento do state, aprofundado em [Terraform state: o arquivo que pode derrubar sua infra](/posts/terraform-state-primeiros-passos).
 * [Terraform Registry](https://registry.terraform.io/) — catálogo público de providers e módulos mantidos pela HashiCorp e pela comunidade.
-* [github.com/hashicorp/terraform](https://github.com/hashicorp/terraform) — código-fonte do Terraform Core.
+* [github.com/hashicorp/terraform](https://github.com/hashicorp/terraform) — código fonte do Terraform Core.
 * [AWS — O que é o Amazon EC2?](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/concepts.html) — documentação oficial do serviço de máquinas virtuais.
 * [AWS — O que é o Amazon S3?](https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/Welcome.html) — documentação oficial do serviço de armazenamento de objetos.
 * [AWS — O que é o IAM?](https://docs.aws.amazon.com/pt_br/IAM/latest/UserGuide/introduction.html) — documentação oficial do serviço de identidade e acesso.
