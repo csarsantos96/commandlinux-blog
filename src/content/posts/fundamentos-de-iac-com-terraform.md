@@ -54,7 +54,7 @@ POST /usuarios
 
 Você envia os dados do usuário → a API processa → o backend salva no banco → a API retorna o resultado.
 
-**Backend + API + Banco de Dados** formam uma combinação extremamente comum no desenvolvimento moderno — e é exatamente essa combinação que existe do outro lado quando o Terraform "conversa" com uma cloud.
+**Backend + API + Banco de Dados** formam uma combinação extremamente comum no desenvolvimento moderno  e é exatamente essa combinação que existe do outro lado quando o Terraform "conversa" com uma cloud.
 
 
 ```mermaid
@@ -131,7 +131,7 @@ As **regiões** representam localizações geográficas onde a cloud possui infr
 
 Ao criar recursos numa cloud, normalmente é necessário escolher em qual região eles serão criados. Essa escolha pode influenciar fatores como latência, disponibilidade, custo e proximidade com os usuários da aplicação.
 
-Dentro de uma região existem as **zonas de disponibilidade**. As zonas são divisões menores dentro de uma região. Uma forma simples de entender é imaginar uma zona como algo próximo da ideia de um datacenter — não é totalmente correto dizer que uma zona é sempre um único datacenter, mas essa analogia ajuda a entender o conceito. Por exemplo, dentro de uma região podem existir as zonas A, B e C.
+Dentro de uma região existem as **zonas de disponibilidade**. As zonas são divisões menores dentro de uma região. Uma forma simples de entender é imaginar uma zona como algo próximo da ideia de um datacenter  não é totalmente correto dizer que uma zona é sempre um único datacenter, mas essa analogia ajuda a entender o conceito. Por exemplo, dentro de uma região podem existir as zonas A, B e C.
 
 Ao criar determinados recursos, como máquinas virtuais, pode ser necessário definir em qual região **e** em qual zona eles serão criados.
 
@@ -147,7 +147,7 @@ Na prática, ele funciona como um binário executado na linha de comando. Esse b
 
 Em vez de executar passos manuais dizendo exatamente como cada ação deve acontecer, você descreve o **estado desejado** da infraestrutura. Por exemplo: você informa que deseja uma máquina virtual com determinadas características, e o Terraform interpreta essa configuração para criar ou ajustar esse recurso no provider escolhido.
 
-O Terraform lê o arquivo HCL da pasta onde foi chamado — todo arquivo com extensão `.tf` — usa o **state file** para saber o que já existe, e usa esse conteúdo para falar com a API da cloud.
+O Terraform lê o arquivo HCL da pasta onde foi chamado  todo arquivo com extensão `.tf` usa o **state file** para saber o que já existe, e usa esse conteúdo para falar com a API da cloud.
 
 ```mermaid
 flowchart LR
@@ -176,7 +176,7 @@ O Terraform Core é um binário compilado, escrito em Go. Suas principais respon
 
 ### Terraform Plugins (providers)
 
-Os *providers* são binários executáveis que o Core invoca via RPC (*Remote Procedure Call*). Cada plugin implementa a lógica para interagir com um serviço específico — AWS, Azure, GCP, Kubernetes, GitHub, Datadog e muitos outros.
+Os *providers* são binários executáveis que o Core invoca via RPC (*Remote Procedure Call*). Cada plugin implementa a lógica para interagir com um serviço específico como: AWS, Azure, GCP, Kubernetes, GitHub, Datadog e muitos outros.
 
 As responsabilidades dos providers são:
 
@@ -226,7 +226,7 @@ O Terraform também precisa rastrear a dependência entre recursos. Quando você
 
 O Terraform armazena um cache dos valores dos atributos de todos os recursos no state, o que melhora a performance durante o planejamento.
 
-O state file é uma peça importante para que o Terraform consiga acompanhar o estado da infraestrutura ao longo do tempo — e é justamente por isso que ele não deve ficar apenas na máquina local de uma pessoa, e sim num local remoto e compartilhado, como um bucket S3.
+O state file é uma peça importante para que o Terraform consiga acompanhar o estado da infraestrutura ao longo do tempo  e é justamente por isso que ele não deve ficar apenas na máquina local de uma pessoa, e sim num local remoto e compartilhado, como um bucket S3.
 
 # O workflow do Terraform
 
@@ -248,7 +248,7 @@ resource "aws_vpc" "minha-vpc" {
 
 > **VPC** (*Virtual Private Cloud*) é uma rede virtual privada criada dentro de uma nuvem, como a AWS. Resumindo: a VPC é como a rede local da sua casa ou empresa, só que dentro da AWS.
 >
-> O Terraform não é a VPC — ele é a ferramenta que descreve e cria essa infraestrutura automaticamente.
+> O Terraform não é a VPC  ele é a ferramenta que descreve e cria essa infraestrutura automaticamente.
 
 ## 2. Plan (planejar)
 
@@ -276,7 +276,7 @@ Embora o uso em cloud seja um dos exemplos mais comuns, o Terraform não se limi
 
 ## Infraestrutura mutável vs. imutável
 
-**Mutável**: o mesmo servidor é alterado ao longo do tempo, podendo virar um *snowflake* — único e difícil de reproduzir.
+**Mutável**: o mesmo servidor é alterado ao longo do tempo, podendo virar um *snowflake*  único e difícil de reproduzir.
 
 **Imutável**: em vez de alterar o servidor, cria-se outro já atualizado e substitui-se o antigo. É mais seguro e fácil de reproduzir.
 
@@ -298,7 +298,7 @@ O objetivo é sair de um modelo baseado em alterações manuais e avançar para 
 * **Região / Zona de disponibilidade**: onde a infraestrutura é criada geograficamente e em qual subdivisão
 * **Terraform**: ferramenta de IaC dividida em Core (lê configuração, gerencia state, executa o plano) e Plugins/providers (falam com a API de cada serviço via RPC)
 * **HCL**: linguagem declarativa do Terraform, baseada em argumentos e blocos
-* **State file**: mapeia código ↔ recurso real, rastreia dependências e melhora performance — deve viver remoto e compartilhado
+* **State file**: mapeia código ↔ recurso real, rastreia dependências e melhora performance  deve viver remoto e compartilhado
 * **Workflow**: Write → Plan → Apply
 * **Infraestrutura imutável**: substituir em vez de alterar, mais fácil de reproduzir
 
@@ -308,18 +308,18 @@ O curso segue com a parte prática: criar conta na AWS → criar um usuário no 
 
 # Conclusão
 
-O que fica dessas duas semanas de anotações é que o Terraform não é mágica: ele é só mais um cliente conversando com a API de uma cloud, do mesmo jeito que o console web ou uma chamada `GET /weather` conversam com uma API. A diferença é que, em vez de clicar em botões, você descreve o estado desejado em HCL, e o Core faz a ponte com o provider certo para chegar lá — guardando esse mapeamento no state file para saber, da próxima vez, o que já existe e o que ainda falta mudar.
+O que fica dessas duas semanas de anotações é que o Terraform não é mágica: ele é só mais um cliente conversando com a API de uma cloud, do mesmo jeito que o console web ou uma chamada `GET /weather` conversam com uma API. A diferença é que, em vez de clicar em botões, você descreve o estado desejado em HCL, e o Core faz a ponte com o provider certo para chegar lá  guardando esse mapeamento no state file para saber, da próxima vez, o que já existe e o que ainda falta mudar.
 
-Entender API e Cloud antes do Terraform em si evitou que os próximos passos (state remoto, providers, workflow `plan`/`apply`) virassem só "comandos que eu decorei" — agora tem um motivo claro por trás de cada peça.
+Entender API e Cloud antes do Terraform em si evitou que os próximos passos (state remoto, providers, workflow `plan`/`apply`) virassem só "comandos que eu decorei"  agora tem um motivo claro por trás de cada peça.
 
 ## Referências
 
-* [HashiCorp Developer — What is Terraform?](https://developer.hashicorp.com/terraform/intro) — visão geral oficial sobre o que o Terraform é e para que serve.
-* [HashiCorp Developer — HCL Syntax](https://developer.hashicorp.com/terraform/language/syntax/configuration) — referência da sintaxe da linguagem de configuração.
-* [HashiCorp Developer — Terraform state](https://developer.hashicorp.com/terraform/language/state) — documenta a finalidade e o funcionamento do state, aprofundado em [Terraform state: o arquivo que pode derrubar sua infra](/posts/terraform-state-primeiros-passos).
-* [Terraform Registry](https://registry.terraform.io/) — catálogo público de providers e módulos mantidos pela HashiCorp e pela comunidade.
-* [github.com/hashicorp/terraform](https://github.com/hashicorp/terraform) — código fonte do Terraform Core.
-* [AWS — O que é o Amazon EC2?](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/concepts.html) — documentação oficial do serviço de máquinas virtuais.
-* [AWS — O que é o Amazon S3?](https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/Welcome.html) — documentação oficial do serviço de armazenamento de objetos.
-* [AWS — O que é o IAM?](https://docs.aws.amazon.com/pt_br/IAM/latest/UserGuide/introduction.html) — documentação oficial do serviço de identidade e acesso.
-* [LINUXtips — Treinamentos Essentials](https://linuxtips.io/treinamentos-essentials/) — página do curso de IaC/Terraform utilizado como base dos meus estudos e destas anotações.
+* [HashiCorp Developer  What is Terraform?](https://developer.hashicorp.com/terraform/intro)  visão geral oficial sobre o que o Terraform é e para que serve.
+* [HashiCorp Developer  HCL Syntax](https://developer.hashicorp.com/terraform/language/syntax/configuration) referência da sintaxe da linguagem de configuração.
+* [HashiCorp Developer  Terraform state](https://developer.hashicorp.com/terraform/language/state)  documenta a finalidade e o funcionamento do state, aprofundado em [Terraform state: o arquivo que pode derrubar sua infra](/posts/terraform-state-primeiros-passos).
+* [Terraform Registry](https://registry.terraform.io/)  catálogo público de providers e módulos mantidos pela HashiCorp e pela comunidade.
+* [github.com/hashicorp/terraform](https://github.com/hashicorp/terraform)  código fonte do Terraform Core.
+* [AWS O que é o Amazon EC2?](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/concepts.html)  documentação oficial do serviço de máquinas virtuais.
+* [AWS O que é o Amazon S3?](https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/Welcome.html)  documentação oficial do serviço de armazenamento de objetos.
+* [AWS O que é o IAM?](https://docs.aws.amazon.com/pt_br/IAM/latest/UserGuide/introduction.html)  documentação oficial do serviço de identidade e acesso.
+* [LINUXtips Treinamentos Essentials](https://linuxtips.io/treinamentos-essentials/) página do curso de IaC/Terraform utilizado como base dos meus estudos e destas anotações.
