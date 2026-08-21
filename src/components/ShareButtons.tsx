@@ -218,11 +218,27 @@ export default function ShareButtons({ title, description, category, locale = 'p
           {storyStatus === 'creating' ? (
             <span className="story-spinner" aria-hidden="true" />
           ) : storyStatus === 'ready' ? '✓' : (
-            <svg viewBox="0 0 24 24" fill="none" width="19" height="19" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="2" />
-              <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
-              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
-            </svg>
+            <>
+              <svg className="ig-mono" viewBox="0 0 24 24" fill="none" width="19" height="19" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="2" />
+                <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
+              </svg>
+              <svg className="ig-color" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+                <defs>
+                  <radialGradient id="ig-gradient" cx="30%" cy="107%" r="150%">
+                    <stop offset="0%" stopColor="#fdf497" />
+                    <stop offset="5%" stopColor="#fdf497" />
+                    <stop offset="45%" stopColor="#fd5949" />
+                    <stop offset="60%" stopColor="#d6249f" />
+                    <stop offset="90%" stopColor="#285AEB" />
+                  </radialGradient>
+                </defs>
+                <rect x="3" y="3" width="18" height="18" rx="5" fill="url(#ig-gradient)" />
+                <circle cx="12" cy="12" r="4" fill="none" stroke="#fff" strokeWidth="1.5" />
+                <circle cx="17.5" cy="6.5" r="1.1" fill="#fff" />
+              </svg>
+            </>
           )}
         </button>
         {shareLinks.slice(2).map((s) => (

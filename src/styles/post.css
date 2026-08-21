@@ -162,13 +162,16 @@
   -webkit-box-decoration-break: clone;
 }
 
+/* Blocos de código e diagramas Mermaid permanecem escuros nos dois temas,
+   já que a paleta do highlight.js abaixo foi calibrada para um fundo escuro. */
 .post-body pre {
-  background: var(--bg2);
-  border: 1px solid var(--border);
+  background: #0d0d0d;
+  border: 1px solid #282828;
   border-radius: 12px;
   padding: 1.25rem;
   overflow-x: auto;
   margin: 1.25rem 0;
+  color: #f5f5f5;
 }
 
 .post-body pre code {
@@ -244,7 +247,7 @@
 }
 
 .hljs-comment {
-  color: var(--text3);
+  color: #6b6b6b;
   font-style: italic;
 }
 

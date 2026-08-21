@@ -2,6 +2,7 @@
 
 :root {
   --bg: #080808;
+  --bg-rgb: 8, 8, 8;
   --bg2: #0d0d0d;
   --surface: #161616;
   --surface2: #1c1c1c;
@@ -29,6 +30,34 @@
   --c-cyber-security: #39ff14;
 }
 
+/* tema claro — ativado via data-theme="light" na <html> */
+:root[data-theme='light'] {
+  --bg: #ffffff;
+  --bg-rgb: 255, 255, 255;
+  --bg2: #f7f7f9;
+  --surface: #f2f2f4;
+  --surface2: #ebebef;
+  --border: #e3e3e7;
+  --border2: #cfcfd4;
+  --accent: #0a0a0a;
+  --accent-hover: #006f94;
+  --muted: #3a3a3a;
+  --text: #111111;
+  --text2: #6b6b6b;
+  --text3: #9a9a9a;
+  --green: #16a34a;
+
+  --c-kubernetes: #0284c7;
+  --c-docker: #b45309;
+  --c-terraform: #7c3aed;
+  --c-linux: #15803d;
+  --c-cicd: #be185d;
+  --c-sysdesign: #b91c1c;
+  --c-cloud: #c2410c;
+  --c-networking: #1d4ed8;
+  --c-cyber-security: #0f766e;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
@@ -39,6 +68,7 @@ body {
   font-family: var(--sans);
   line-height: 1.6;
   overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* grid background — same signature as the portfolio */

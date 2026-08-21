@@ -7,7 +7,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 2.5rem;
-  background: rgba(8, 8, 8, 0.88);
+  background: rgba(var(--bg-rgb), 0.88);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
 }
@@ -107,6 +107,42 @@
 .lang-btn.disabled {
   cursor: not-allowed;
   opacity: 0.45;
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover {
+  border-color: var(--border2);
+  color: var(--accent);
+}
+
+.theme-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+
+:root[data-theme='light'] .theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme='light'] .theme-toggle .icon-moon {
+  display: block;
 }
 
 .mobile-menu {
@@ -212,7 +248,7 @@
     padding: 0.5rem;
     border: 1px solid var(--border);
     border-radius: 4px;
-    background: rgba(8, 8, 8, 0.98);
+    background: rgba(var(--bg-rgb), 0.98);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
     list-style: none;
   }
@@ -228,7 +264,7 @@
 
   .mobile-menu-links a:hover {
     color: var(--accent);
-    background: rgba(255, 255, 255, 0.03);
+    background: color-mix(in srgb, var(--text) 6%, transparent);
   }
 }
 

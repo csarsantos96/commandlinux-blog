@@ -48,9 +48,25 @@
   color: #fff;
 }
 
+:root[data-theme='light'] .share-story {
+  color: var(--text2);
+}
+
 .share-story:disabled {
   cursor: wait;
   opacity: 0.7;
+}
+
+.share-story .ig-color {
+  display: none;
+}
+
+:root[data-theme='light'] .share-story .ig-mono {
+  display: none;
+}
+
+:root[data-theme='light'] .share-story .ig-color {
+  display: block;
 }
 
 .story-spinner {
