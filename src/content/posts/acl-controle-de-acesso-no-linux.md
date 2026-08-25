@@ -1,6 +1,6 @@
 ---
 title: "ACLs no Linux: controle de acesso além do dono, grupo e outros"
-description: "Anotações sobre Access Control Lists (ACLs) no Linux: como instalar, ler com getfacl, conceder permissão a um usuário ou grupo específico com setfacl e quando isso realmente vale a pena."
+description: "Access Control Lists (ACLs) no Linux: como instalar, ler com getfacl, conceder permissão a um usuário ou grupo específico com setfacl e quando isso realmente vale a pena."
 date: 2026-08-11
 category: LINUX
 tags: [linux, permissoes, acl, getfacl, setfacl, seguranca]

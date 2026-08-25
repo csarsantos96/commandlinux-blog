@@ -1,6 +1,6 @@
 ---
 title: "Fundamentos de IaC: de API e Cloud ao workflow do Terraform"
-description: "Anotações do curso de IaC da LINUXtips: o que é uma API, o que é Cloud na prática, os serviços EC2/S3/IAM da AWS, regiões e zonas de disponibilidade, e como tudo isso se conecta com a arquitetura, o state e o workflow do Terraform."
+description: "O que é uma API, o que é Cloud na prática, os serviços EC2/S3/IAM da AWS, regiões e zonas de disponibilidade, e como tudo isso se conecta com a arquitetura, o state e o workflow do Terraform."
 date: 2026-08-20
 category: TERRAFORM
 tags: [terraform, iac, api, cloud, aws, ec2, s3, iam, hcl, state]

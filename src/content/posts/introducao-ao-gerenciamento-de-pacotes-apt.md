@@ -1,6 +1,6 @@
 ---
 title: "Do .exe ao apt install: entendendo o gerenciamento de pacotes no Linux"
-description: "Anotações sobre o que é um gerenciador de pacotes, a diferença para o modelo de instalação do Windows, e como o APT resolve dependências e verifica assinatura GPG antes de instalar qualquer coisa."
+description: "O que é um gerenciador de pacotes, a diferença para o modelo de instalação do Windows, e como o APT resolve dependências e verifica assinatura GPG antes de instalar qualquer coisa."
 date: 2026-08-12
 category: LINUX
 tags: [linux, apt, gerenciamento-de-pacotes, gpg, debian, ubuntu]

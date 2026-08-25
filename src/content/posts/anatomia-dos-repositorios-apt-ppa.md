@@ -1,6 +1,6 @@
 ---
 title: "Anatomia dos repositórios do APT: sources.list, componentes e PPAs"
-description: "Anotações sobre de onde o APT baixa os pacotes, os quatro componentes de um repositório Ubuntu (main, restricted, universe, multiverse) e os cuidados ao adicionar um PPA de terceiros."
+description: "De onde o APT baixa os pacotes, os quatro componentes de um repositório Ubuntu (main, restricted, universe, multiverse) e os cuidados ao adicionar um PPA de terceiros."
 date: 2026-08-13
 category: LINUX
 tags: [linux, apt, sources.list, ppa, ubuntu, repositorios]

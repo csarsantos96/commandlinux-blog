@@ -1,6 +1,6 @@
 ---
 title: "umask, /etc/login.defs e permissões especiais: SUID, SGID e sticky bit"
-description: "Anotações sobre umask, o arquivo /etc/login.defs e as permissões especiais SUID, SGID e sticky bit no Linux, com exemplos práticos de chmod."
+description: "Umask, o arquivo /etc/login.defs e as permissões especiais SUID, SGID e sticky bit no Linux, com exemplos práticos de chmod."
 date: 2026-08-11
 category: LINUX
 tags: [linux, permissoes, umask, suid, sgid, stickybit, logindefs]

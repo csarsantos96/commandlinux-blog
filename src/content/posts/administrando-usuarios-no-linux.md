@@ -1,6 +1,6 @@
 ---
 title: "Administrando usuários no Linux: passwd, shadow, useradd e chage"
-description: "Anotações sobre gerenciamento de usuários no Linux: estrutura do /etc/passwd e /etc/shadow, useradd vs adduser, /etc/skel, bloqueio de contas e política de expiração de senha com chage."
+description: "Gerenciamento de usuários no Linux: estrutura do /etc/passwd e /etc/shadow, useradd vs adduser, /etc/skel, bloqueio de contas e política de expiração de senha com chage."
 date: 2026-08-06
 category: LINUX
 tags: [linux, usuarios, useradd, adduser, passwd, shadow, chage, sysadmin]
