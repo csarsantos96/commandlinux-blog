@@ -19,6 +19,22 @@ sourceHash: 51240e31a75031cef6dec3e6028a829f1635900b2da231859b1e1602f49f2368
 ---
 After [putting `init`, `plan`, and `apply` into practice](/posts/terraform-init-plan-apply-na-pratica), the last piece of the cycle was missing: undoing what Terraform created. These are notes on `terraform destroy`, including a detail that has confused me before: the provider region.
 
+```mermaid
+flowchart LR
+    Terraform["terraform"] -- init --> Init
+
+    subgraph Init[".terraform"]
+        Provider["provider"]
+    end
+
+    Terraform -- "plan or apply" --> State[("state file")]
+    Terraform -- "plan or apply" --> HCL["HCL"]
+    Terraform -- "plan or apply" --> API["API"] --> Cloud
+
+    subgraph Cloud["Cloud"]
+    end
+```
+
 # A reminder about the provider region
 
 When working with AWS, the region is important information in any operation, including when destroying resources. If the region is not explicitly configured in the code, Terraform might end up using a default region defined in the environment, rather than the one you expect.

@@ -34,6 +34,22 @@ Before running any command, it's worth remembering the elements involved in this
 
 The binary reads the HCL, uses the necessary provider to communicate with the provider's API, and records the result in the state file. It's this cycle that the commands below set in motion.
 
+```mermaid
+flowchart LR
+    Terraform["terraform"] -- init --> Init
+
+    subgraph Init[".terraform"]
+        Provider["provider"]
+    end
+
+    Terraform -- "plan or apply" --> State[("state file")]
+    Terraform -- "plan or apply" --> HCL["HCL"]
+    Terraform -- "plan or apply" --> API["API"] --> Cloud
+
+    subgraph Cloud["Cloud"]
+    end
+```
+
 # Terraform Init
 
 The first basic command is:
