@@ -8,6 +8,22 @@ tags: [terraform, destroy, plan, aws, state]
 
 Depois de [colocar `init`, `plan` e `apply` em prática](/posts/terraform-init-plan-apply-na-pratica), faltava a última peça do ciclo: desfazer o que o Terraform criou. Essas são as anotações sobre o `terraform destroy`, incluindo um detalhe que já me confundiu antes: a região do provider.
 
+```mermaid
+flowchart LR
+    Terraform["terraform"] -- init --> Init
+
+    subgraph Init[".terraform"]
+        Provider["provider"]
+    end
+
+    Terraform -- "plan ou apply" --> State[("state file")]
+    Terraform -- "plan ou apply" --> HCL["HCL"]
+    Terraform -- "plan ou apply" --> API["API"] --> Cloud
+
+    subgraph Cloud["Cloud"]
+    end
+```
+
 # Um lembrete sobre a região do provider
 
 Ao trabalhar com AWS, a região é uma informação importante em qualquer operação, inclusive na hora de destruir recursos. Se a região não estiver configurada explicitamente no código, o Terraform pode acabar usando uma região padrão definida no ambiente, e não a que você imagina.
