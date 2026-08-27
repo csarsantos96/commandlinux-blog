@@ -223,4 +223,4 @@ What becomes clear when putting `init`, `plan`, and `apply` into practice is tha
 *   [HashiCorp Developer, Providers](https://developer.hashicorp.com/terraform/language/providers): explains the role of providers in Terraform's architecture.
 *   [Terraform Registry, AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs): authentication and configuration documentation for the AWS provider.
 *   [Terraform Registry, `aws_ami` data source](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami): reference for the data source used to fetch the Ubuntu AMI.
-*   [LINUXtips, Essentials Training](https://linuxtips.io/treinamentos-essentials/): page for the IaC/Terraform course used as the basis for my studies and these notes.
+*   [LINUXtips, IaC and Pipeline Specialist Training](https://linuxtips.io/iac-pipeline-specialist/): IaC and Terraform training used as the basis for my studies and these notes.

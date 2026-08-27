@@ -337,4 +337,4 @@ Understanding API and Cloud before Terraform itself prevented the next steps (re
 *   [AWS — O que é o Amazon EC2?](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/concepts.html) — official documentation for the virtual machine service.
 *   [AWS — O que é o Amazon S3?](https://docs.aws.amazon.com/pt_br/AmazonS3/latest/userguide/Welcome.html) — official documentation for the object storage service.
 *   [AWS — O que é o IAM?](https://docs.aws.amazon.com/pt_br/IAM/latest/UserGuide/introduction.html) — official documentation for the identity and access service.
-*   [LINUXtips — Treinamentos Essentials](https://linuxtips.io/treinamentos-essentials/) — page for the IaC/Terraform course used as the basis for my studies and these notes.
+*   [LINUXtips — IaC and Pipeline Specialist Training](https://linuxtips.io/iac-pipeline-specialist/) — IaC and Terraform training used as the basis for my studies and these notes.

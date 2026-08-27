@@ -59,4 +59,4 @@ terraform plan
 - [HashiCorp Developer — Terraform state](https://developer.hashicorp.com/terraform/language/state) — documents the purpose and functioning of the state.
 - [HashiCorp Developer — Backend S3](https://developer.hashicorp.com/terraform/language/backend/s3) — official reference for remote storage and locking in S3.
 - [HashiCorp Developer — State Management](https://developer.hashicorp.com/terraform/cli/state) — presents the safe commands for manipulating resources in the state.
-- [LINUXtips — Essentials Training](https://linuxtips.io/treinamentos-essentials/) — Terraform Essentials page, the course used as the basis for my studies and these notes.
+- [LINUXtips — IaC and Pipeline Specialist Training](https://linuxtips.io/iac-pipeline-specialist/) — IaC and Terraform training used as the basis for my studies and these notes.

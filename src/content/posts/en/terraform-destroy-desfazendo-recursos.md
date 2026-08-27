@@ -89,4 +89,4 @@ The `terraform destroy` command closes the cycle that starts with `write` and go
 * [HashiCorp Developer, `terraform plan` command](https://developer.hashicorp.com/terraform/cli/commands/plan): documents the `destroy` option, used to generate a removal plan.
 * [HashiCorp Developer, `terraform apply` command](https://developer.hashicorp.com/terraform/cli/commands/apply): explains how to apply a saved plan file, whether for creation or destruction.
 * [HashiCorp Developer, Terraform state](https://developer.hashicorp.com/terraform/language/state): documents why destroy only affects what is registered in the state.
-* [LINUXtips, Essentials Trainings](https://linuxtips.io/treinamentos-essentials/): page for the IaC/Terraform course used as the basis for my studies and these notes.
+* [LINUXtips, IaC and Pipeline Specialist Training](https://linuxtips.io/iac-pipeline-specialist/): IaC and Terraform training used as the basis for my studies and these notes.

@@ -237,4 +237,4 @@ Quanto maior o projeto, maior tende a ser o benefício dessa separação.
 - [HashiCorp Developer — `terraform init`](https://developer.hashicorp.com/terraform/cli/commands/init) — referência oficial da inicialização do diretório de trabalho.
 - [HashiCorp Developer — Providers](https://developer.hashicorp.com/terraform/language/providers) — documenta a configuração de providers.
 - [GNU Bash Manual](https://www.gnu.org/software/bash/manual/bash.html) — documentação oficial da linguagem e do shell Bash.
-- [LINUXtips — Treinamentos](https://linuxtips.io/treinamentos/) — cursos que utilizo como base dos meus estudos em Terraform, pipelines e GitHub Actions.
+- [LINUXtips — Treinamento IaC e Pipeline Specialist](https://linuxtips.io/iac-pipeline-specialist/) — treinamento utilizado como base dos meus estudos em Terraform, pipelines e GitHub Actions.

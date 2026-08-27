@@ -78,4 +78,4 @@ O `terraform destroy` fecha o ciclo que começa no `write` e passa pelo `plan` e
 * [HashiCorp Developer, comando `terraform plan`](https://developer.hashicorp.com/terraform/cli/commands/plan): documenta a opção `destroy`, usada para gerar um plano de remoção.
 * [HashiCorp Developer, comando `terraform apply`](https://developer.hashicorp.com/terraform/cli/commands/apply): explica como aplicar um arquivo de plano salvo, seja de criação ou de destruição.
 * [HashiCorp Developer, Terraform state](https://developer.hashicorp.com/terraform/language/state): documenta por que o destroy só alcança o que está registrado no state.
-* [LINUXtips, Treinamentos Essentials](https://linuxtips.io/treinamentos-essentials/): página do curso de IaC/Terraform utilizado como base dos meus estudos e destas anotações.
+* [LINUXtips, Treinamento IaC e Pipeline Specialist](https://linuxtips.io/iac-pipeline-specialist/): treinamento de IaC com Terraform utilizado como base dos meus estudos e destas anotações.

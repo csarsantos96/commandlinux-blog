@@ -209,4 +209,4 @@ O que fica claro colocando `init`, `plan` e `apply` em prática é que cada coma
 * [HashiCorp Developer, Providers](https://developer.hashicorp.com/terraform/language/providers): explica o papel dos providers na arquitetura do Terraform.
 * [Terraform Registry, provider AWS](https://registry.terraform.io/providers/hashicorp/aws/latest/docs): documentação de autenticação e configuração do provider da AWS.
 * [Terraform Registry, data source `aws_ami`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami): referência do data source usado para buscar a AMI da Ubuntu.
-* [LINUXtips, Treinamentos Essentials](https://linuxtips.io/treinamentos-essentials/): página do curso de IaC/Terraform utilizado como base dos meus estudos e destas anotações.
+* [LINUXtips, Treinamento IaC e Pipeline Specialist](https://linuxtips.io/iac-pipeline-specialist/): treinamento de IaC com Terraform utilizado como base dos meus estudos e destas anotações.
