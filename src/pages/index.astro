@@ -12,7 +12,7 @@ const raw = await getCollection(
 
 const posts = raw
   .map((post) => {
-    const words = post.body.split(/\s+/).filter(Boolean).length;
+    const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
 
     return {
       id: post.id,
