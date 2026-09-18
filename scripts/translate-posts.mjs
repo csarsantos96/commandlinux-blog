@@ -10,6 +10,16 @@ const ENGLISH_DIR = path.join(POSTS_DIR, 'en');
 const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const API_KEY = process.env.GEMINI_API_KEY;
 const TRANSLATION_VERSION = '2';
+const MAX_POSTS = Number(process.env.MAX_POSTS ?? 10);
+
+if (!Number.isSafeInteger(MAX_POSTS) || MAX_POSTS < 1) {
+  throw new Error('MAX_POSTS must be a positive integer.');
+}
+
+function isDailyQuotaError(error) {
+  return /429/.test(String(error.status ?? error.message)) &&
+    /per day|per_day|daily|PerDay/i.test(error.message ?? '');
+}
 
 
 
@@ -249,6 +259,7 @@ ${protectedBody}
 
       return translation;
     } catch (error) {
+      if (isDailyQuotaError(error)) throw error;
       lastError = error;
 
       console.log(
@@ -311,15 +322,27 @@ async function main() {
       continue;
     }
 
+    if (translatedCount >= MAX_POSTS) {
+      console.log(`Batch limit reached (${MAX_POSTS}). Run again later for remaining posts.`);
+      break;
+    }
+
     console.log(`Translating: ${entry.name}`);
 
-    const translation = await requestTranslation({
-      title: source.data.title,
-      description: source.data.description,
-      series: source.data.series,
-      body: source.content,
-      sourceFile: entry.name,
-    });
+    let translation;
+    try {
+      translation = await requestTranslation({
+        title: source.data.title,
+        description: source.data.description,
+        series: source.data.series,
+        body: source.content,
+        sourceFile: entry.name,
+      });
+    } catch (error) {
+      if (!isDailyQuotaError(error)) throw error;
+      console.warn('Daily API quota reached. Keeping completed translations; run again after the quota resets.');
+      break;
+    }
 
     const sourceSlug = entry.name.replace(/\.md$/, '');
 

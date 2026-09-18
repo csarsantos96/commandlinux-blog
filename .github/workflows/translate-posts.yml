@@ -2,6 +2,12 @@ name: Translate posts to English
 
 on:
   workflow_dispatch:
+    inputs:
+      max_posts:
+        description: 'Maximum posts to translate in this run'
+        required: true
+        default: '10'
+        type: string
 
   push:
     branches: [main]
@@ -39,6 +45,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-flash
+          MAX_POSTS: ${{ inputs.max_posts || '10' }}
         run: npm run translate:posts
 
       - name: Validate production build
