@@ -1,6 +1,11 @@
 name: Translate posts to English
 
 on:
+  # One-time translation run after the Pacific quota reset on September 19, 2026.
+  # GitHub cron uses UTC: 07:10 UTC = 00:10 PDT = 02:10 in Acre.
+  schedule:
+    - cron: '10 7 19 9 *'
+
   workflow_dispatch:
     inputs:
       max_posts:
@@ -23,7 +28,25 @@ permissions:
   contents: write
 
 jobs:
+  translation-window:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.window.outputs.should_run }}
+    steps:
+      - name: Allow scheduled translations only on September 19, 2026
+        id: window
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT_NAME" != "schedule" || "$(date -u +%F)" == "2026-09-19" ]]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          fi
+
   translate:
+    needs: translation-window
+    if: needs.translation-window.outputs.should_run == 'true'
     runs-on: ubuntu-latest
 
     steps:
