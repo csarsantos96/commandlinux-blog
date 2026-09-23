@@ -1,34 +1,158 @@
 ---
-const BUTTONDOWN_USER = 'commandlinux';
+interface Props {
+  language?: 'pt' | 'en';
+}
+
+const { language = 'pt' } = Astro.props;
+const english = language === 'en';
+
+const text = english
+  ? {
+      title: 'Get new posts by email',
+      description:
+        'Linux, DevOps and Cloud. No spam, unsubscribe anytime.',
+      button: 'Subscribe',
+      emailLabel: 'Your email',
+      placeholder: 'you@email.com',
+      loading: 'Subscribing...',
+      success:
+        'Subscription saved. Check your inbox if confirmation is required.',
+      error:
+        'Could not subscribe right now. Please try again.',
+    }
+  : {
+      title: 'Receba novos posts por email',
+      description:
+        'Linux, DevOps e Cloud. Sem spam, cancele quando quiser.',
+      button: 'Assinar',
+      emailLabel: 'Seu email',
+      placeholder: 'seu@email.com',
+      loading: 'Inscrevendo...',
+      success:
+        'Inscrição salva. Confira sua caixa de entrada se houver confirmação.',
+      error:
+        'Não foi possível assinar agora. Tente novamente.',
+    };
 ---
 
-<section class="newsletter">
+<section
+  class="newsletter"
+  data-newsletter
+  data-loading={text.loading}
+  data-success={text.success}
+  data-error={text.error}
+>
   <p class="newsletter-label">// newsletter</p>
 
   <div class="newsletter-box">
-    <h2 class="newsletter-title">Receba novos posts por email</h2>
+    <h2 class="newsletter-title">{text.title}</h2>
     <p class="newsletter-desc">
-      Linux, DevOps e Cloud. Sem spam, cancele quando quiser.
+      {text.description}
     </p>
 
     <form
-      action={`https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USER}`}
+      action="/api/newsletter-subscribe"
       method="post"
-      target="popupwindow"
       class="newsletter-form"
+      data-newsletter-form
     >
       <input
         type="email"
         name="email"
-        id="bd-email"
-        placeholder="seu@email.com"
+        placeholder={text.placeholder}
         required
-        aria-label="Seu email"
+        autocomplete="email"
+        aria-label={text.emailLabel}
       />
-      <button type="submit">Assinar</button>
+      <input
+        type="hidden"
+        name="language"
+        value={language}
+      />
+      <label class="newsletter-honeypot" aria-hidden="true">
+        Website
+        <input
+          type="text"
+          name="website"
+          tabindex="-1"
+          autocomplete="off"
+        />
+      </label>
+      <button type="submit">{text.button}</button>
     </form>
+
+    <p
+      class="newsletter-status"
+      data-newsletter-status
+      role="status"
+      aria-live="polite"
+    ></p>
   </div>
 </section>
+
+<script>
+  document
+    .querySelectorAll('[data-newsletter]')
+    .forEach((container) => {
+      if (!(container instanceof HTMLElement)) return;
+
+      const form = container.querySelector(
+        '[data-newsletter-form]',
+      );
+      const status = container.querySelector(
+        '[data-newsletter-status]',
+      );
+
+      if (
+        !(form instanceof HTMLFormElement) ||
+        !(status instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const button = form.querySelector('button');
+        const data = Object.fromEntries(
+          new FormData(form).entries(),
+        );
+
+        if (button) button.disabled = true;
+        status.dataset.state = 'loading';
+        status.textContent =
+          container.dataset.loading ?? '';
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (!response.ok) {
+            throw new Error(
+              `Subscription returned ${response.status}`,
+            );
+          }
+
+          form.reset();
+
+          status.dataset.state = 'success';
+          status.textContent =
+            container.dataset.success ?? '';
+        } catch {
+          status.dataset.state = 'error';
+          status.textContent =
+            container.dataset.error ?? '';
+        } finally {
+          if (button) button.disabled = false;
+        }
+      });
+    });
+</script>
 
 <style>
   .newsletter {
@@ -66,7 +190,7 @@ const BUTTONDOWN_USER = 'commandlinux';
     gap: 0.5rem;
   }
 
-  .newsletter-form input {
+  .newsletter-form > input[type='email'] {
     flex: 1;
     padding: 0.625rem 0.875rem;
     border: 1px solid var(--border);
@@ -77,7 +201,7 @@ const BUTTONDOWN_USER = 'commandlinux';
     font-size: 0.9375rem;
   }
 
-  .newsletter-form input:focus {
+  .newsletter-form > input[type='email']:focus {
     outline: none;
     border-color: var(--post-color, var(--accent-hover));
   }
@@ -97,6 +221,39 @@ const BUTTONDOWN_USER = 'commandlinux';
 
   .newsletter-form button:hover {
     background: color-mix(in srgb, var(--post-color, var(--accent-hover)) 15%, transparent);
+  }
+
+  .newsletter-form button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+  .newsletter-honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .newsletter-status {
+    min-height: 1.25rem;
+    margin: 0.75rem 0 0;
+    color: var(--text2);
+    font-size: 0.8125rem;
+  }
+
+  .newsletter-status:empty {
+    min-height: 0;
+    margin-top: 0;
+  }
+
+  .newsletter-status[data-state='success'] {
+    color: var(--post-color, var(--accent-hover));
+  }
+
+  .newsletter-status[data-state='error'] {
+    color: #f87171;
   }
 
   @media (max-width: 520px) {

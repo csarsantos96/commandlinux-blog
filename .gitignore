@@ -28,3 +28,6 @@ pnpm-debug.log*
 core.*
 .vercel
 .env*
+
+# local newsletter previews
+.newsletter-preview/

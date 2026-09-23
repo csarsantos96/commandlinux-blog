@@ -5,6 +5,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Navbar from '../../../components/Navbar.astro';
 import ShareButtons from '../../../components/ShareButtons.tsx';
 import CopyCode from '../../../components/CopyCode.astro';
+import Newsletter from '../../../components/Newsletter.astro';
 import ReadingProgress from '../../../components/ReadingProgress.astro';
 import Reactions from '../../../components/Reactions.tsx';
 
@@ -157,6 +158,7 @@ const nextInSeries = seriesIndex >= 0 ? seriesPosts[seriesIndex + 1] : undefined
     <ShareButtons client:load title={post.data.title} description={post.data.description} category={post.data.category} locale="en" />
     <Reactions client:load postId={`en:${englishSlug}`} locale="en" />
     <CopyCode />
+    <Newsletter language="en" />
 
     {
       related.length > 0 && (

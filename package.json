@@ -10,7 +10,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "translate:posts": "node scripts/translate-posts.mjs"
+    "translate:posts": "node scripts/translate-posts.mjs",
+    "newsletter:preview": "node scripts/newsletter.mjs preview",
+    "newsletter:profiles": "node scripts/newsletter.mjs profiles",
+    "test:newsletter": "node --test scripts/newsletter/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",
@@ -26,6 +29,7 @@
     "astro": "^7.0.6",
     "astro-og-canvas": "^0.13.0",
     "canvaskit-wasm": "^0.41.1",
+    "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "mermaid": "^11.16.0",
     "playwright": "^1.61.1",
