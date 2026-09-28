@@ -14,12 +14,12 @@ const pages = Object.fromEntries(
 
 const categoryColors: Record<string, [number, number, number]> = {
   KUBERNETES: [0, 212, 255],
-  DOCKER: [251, 191, 36],
+  DOCKER: [230, 207, 69],
   TERRAFORM: [167, 139, 250],
   LINUX: [34, 197, 94],
   'CI/CD': [244, 114, 182],
   CLOUD: [249, 115, 22],
-  NETWORKING: [255, 255, 255],
+  NETWORKING: [184, 188, 197],
   'SEGURANÇA CIBERNÉTICA': [57, 255, 20],
   'CYBER SECURITY': [57, 255, 20],
 };

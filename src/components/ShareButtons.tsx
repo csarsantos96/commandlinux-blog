@@ -9,12 +9,12 @@ type Props = {
 
 const categoryColors: Record<string, string> = {
   KUBERNETES: '#00d4ff',
-  DOCKER: '#fbbf24',
+  DOCKER: '#e6cf45',
   TERRAFORM: '#a78bfa',
   LINUX: '#22c55e',
   'CI/CD': '#f472b6',
   CLOUD: '#f97316',
-  NETWORKING: '#ffffff',
+  NETWORKING: '#b8bcc5',
   'SEGURANÇA CIBERNÉTICA': '#39ff14',
   'CYBER SECURITY': '#39ff14',
 };

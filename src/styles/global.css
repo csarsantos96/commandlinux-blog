@@ -20,13 +20,13 @@
 
   /* category colors — same palette family as cesarsantos.dev */
   --c-kubernetes: #00d4ff;
-  --c-docker: #fbbf24;
+  --c-docker: #e6cf45;
   --c-terraform: #a78bfa;
   --c-linux: #22c55e;
   --c-cicd: #f472b6;
   --c-sysdesign: #df0606;
   --c-cloud: #f97316;   /* laranja AWS, cobre AWS/GCP/Azure via tags */
-  --c-networking: #ffffff;
+  --c-networking: #b8bcc5;
   --c-cyber-security: #39ff14;
 }
 
@@ -48,13 +48,13 @@
   --green: #16a34a;
 
   --c-kubernetes: #0284c7;
-  --c-docker: #b45309;
+  --c-docker: #786600;
   --c-terraform: #7c3aed;
   --c-linux: #15803d;
   --c-cicd: #be185d;
   --c-sysdesign: #b91c1c;
   --c-cloud: #c2410c;
-  --c-networking: #1d4ed8;
+  --c-networking: #555b66;
   --c-cyber-security: #0f766e;
 }
 
