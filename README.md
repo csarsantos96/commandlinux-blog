@@ -33,7 +33,11 @@ Topics currently covered include:
 
 ## How This Project Was Built
 
-The frontend was built with [Astro](https://astro.build/), and AI tools were used along the way to help with styling, layout, and content.
+The frontend was built with [Astro](https://astro.build/), with AI assistance for styling and layout.
+
+The posts come from my own notebook entries, based on my studies and practical experience. I use AI to correct Portuguese, help structure those notes into posts, and review the text for clarity and consistency. The content originates in my notes; AI supports the editing process rather than creating the posts.
+
+English translations are generated automatically through the Gemini API in a GitHub Actions workflow, reducing the manual work needed to maintain the blog in both languages.
 
 The automation side was designed and implemented by me, and includes two GitHub Actions workflows:
 
