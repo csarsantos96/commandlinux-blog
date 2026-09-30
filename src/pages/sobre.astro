@@ -17,13 +17,18 @@ import Navbar from '../components/Navbar.astro';
       <div class="section-tag">sobre</div>
       <h1 class="section-title">Olá, eu sou Cesar Santos.</h1>
       <p class="about-intro">
-        Sou formado em Sistemas de Informação e atuo como desenvolvedor
-        back-end. Atualmente, estou direcionando minha carreira para DevOps e
-        Cloud Native, aprofundando meus conhecimentos em Linux, containers,
-        Kubernetes, infraestrutura como código, automação e observabilidade.
-        Também estudo computação em nuvem, com foco em AWS, Oracle Cloud e
-        Google Cloud, e curso uma pós-graduação em Cyber Security — Red Team na
-        FIAP.
+        Sou formado em Sistemas de Informação e atuo como desenvolvedor back-end,
+        com foco atual na transição para DevOps e Cloud Native.
+      </p>
+      <p class="about-intro">
+        Tenho aprofundado meus conhecimentos em Linux, containers, Kubernetes, infraestrutura como
+        código, automação e observabilidade, além de estudar computação em nuvem
+        com AWS, Oracle Cloud e Google Cloud. Curso uma pós-graduação em Cyber
+        Security com foco em Red Team na FIAP.
+      </p>
+      <p class="about-intro">
+        Sou embaixador da LINUXtips no Acre, contribuindo para fortalecer a
+        comunidade local de tecnologia e compartilhar conhecimento.
       </p>
     </header>
 
@@ -125,6 +130,10 @@ import Navbar from '../components/Navbar.astro';
     color: var(--text2);
     font-size: clamp(1rem, 2vw, 1.15rem);
     line-height: 1.8;
+  }
+
+  .about-intro + .about-intro {
+    margin-top: 1rem;
   }
 
   .about-content {
