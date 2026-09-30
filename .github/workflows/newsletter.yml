@@ -36,8 +36,8 @@ jobs:
         env:
           HOSTINGER_REACH_API_TOKEN: ${{ secrets.HOSTINGER_REACH_API_TOKEN }}
           HOSTINGER_REACH_PROFILE_UUID: ${{ secrets.HOSTINGER_REACH_PROFILE_UUID }}
-          HOSTINGER_REACH_SENDER_EMAIL: ${{ secrets.HOSTINGER_REACH_SENDER_EMAIL }}
-          HOSTINGER_REACH_SENDER_NAME: ${{ secrets.HOSTINGER_REACH_SENDER_NAME }}
+          HOSTINGER_REACH_SENDER_EMAIL: "newsletter@commandlinux.dev"
+          HOSTINGER_REACH_SENDER_NAME: "CommandLinux"
           PUSH_BEFORE: ${{ github.event.before }}
           PUSH_AFTER: ${{ github.sha }}
         run: >-
