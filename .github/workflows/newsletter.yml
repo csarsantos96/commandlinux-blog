@@ -31,6 +31,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      
+      - name: Check sender configuration
+        run: |
+          git rev-parse HEAD
+          git grep -n 'HOSTINGER_REACH_SENDER_' -- .github/workflows
+
 
       - name: Create Hostinger Reach drafts
         env:
