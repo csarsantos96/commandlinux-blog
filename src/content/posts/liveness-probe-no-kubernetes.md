@@ -210,6 +210,8 @@ Neste laboratório configuramos uma liveness TCP na porta 80, conferimos seus pa
 
 Os eventos e o contador de reinícios mostraram a reação do Kubernetes. O teste também evidenciou que uma configuração incorreta da probe pode provocar reinícios contínuos, mesmo quando o processo da aplicação está em execução.
 
+1. **Liveness:** “A aplicação está funcionando?” Se falhar repetidamente, o container é reiniciado.
+
 ---
 
 ## Referências
