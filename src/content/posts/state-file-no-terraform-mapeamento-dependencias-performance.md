@@ -6,7 +6,7 @@ category: TERRAFORM
 tags: [terraform, state, backend, s3, locking, iac]
 ---
 
-Durante meus estudos de Terraform no curso da LINUXtips, uma pergunta ajudou a entender o papel do state: **como o Terraform sabe qual recurso na nuvem corresponde ao que escrevi no código?**
+Durante meus estudos de Terraform no [Treinamento IaC e Pipeline Specialist da LINUXtips](https://linuxtips.io/iac-pipeline-specialist/), uma pergunta ajudou a entender o papel do state: **como o Terraform sabe qual recurso na nuvem corresponde ao que escrevi no código?**
 
 O nome que aparece no HCL não é necessariamente o identificador usado pela AWS. Entre a configuração e a infraestrutura existe um registro dessa relação: o **state**.
 
@@ -36,7 +36,7 @@ O Terraform lê o HCL e o state e consulta a infraestrutura pelo provider. No `p
 
 ## O papel do state file
 
-O Terraform armazena o state em formato JSON. Por padrão, no backend local, o arquivo se chama `terraform.tfstate`. Ele registra os vínculos entre recursos da configuração e objetos reais, além de atributos e metadados. Para inspecioná-lo ou modificá-lo, prefira os comandos do Terraform à edição manual do JSON. [Documentação de state](https://developer.hashicorp.com/terraform/language/state).
+O Terraform armazena o state em formato JSON. Por padrão, no backend local, o arquivo se chama `terraform.tfstate`. Ele registra os vínculos entre recursos da configuração e objetos reais, além de atributos e metadados. Para inspecioná-lo ou modificá-lo, prefira os comandos do Terraform à edição manual do JSON.
 
 Nas anotações da aula, organizei sua importância em três pontos: mapeamento, dependências e performance.
 
@@ -51,7 +51,7 @@ resource "aws_instance" "example" {
 }
 ```
 
-O endereço `aws_instance.example` identifica o recurso na configuração. O state associa esse endereço ao ID da instância na AWS. Essa relação permite acompanhar o mesmo objeto nas próximas execuções. [Documentação de state](https://developer.hashicorp.com/terraform/language/state).
+O endereço `aws_instance.example` identifica o recurso na configuração. O state associa esse endereço ao ID da instância na AWS. Essa relação permite acompanhar o mesmo objeto nas próximas execuções.
 
 Um recorte simplificado e fictício do registro seria:
 
@@ -87,13 +87,13 @@ Esse exemplo é apenas um fragmento do state, com atributos omitidos para facili
 | `ami = data.aws_ami.ubuntu.id` | AMI usada pela instância |
 | `instance_type = "t3.micro"` | Tipo de instância registrado |
 
-Cada objeto remoto deve estar associado a uma única instância de recurso na configuração. Importar o mesmo objeto em endereços diferentes torna esse vínculo ambíguo. [Finalidade do state](https://developer.hashicorp.com/terraform/language/state/purpose).
+Cada objeto remoto deve estar associado a uma única instância de recurso na configuração. Importar o mesmo objeto em endereços diferentes torna esse vínculo ambíguo.
 
-Essa regra também exige atenção ao usar `terraform import` ou `terraform state rm`. O primeiro associa um objeto existente a um endereço no state; o segundo remove esse vínculo sem destruir o objeto remoto. Se o recurso continuar no HCL depois de um `state rm`, um próximo plano pode propor sua criação novamente. [Documentação de `terraform state rm`](https://developer.hashicorp.com/terraform/cli/commands/state/rm).
+Essa regra também exige atenção ao usar `terraform import` ou `terraform state rm`. O primeiro associa um objeto existente a um endereço no state; o segundo remove esse vínculo sem destruir o objeto remoto. Se o recurso continuar no HCL depois de um `state rm`, um próximo plano pode propor sua criação novamente.
 
 ### 2. Metadados e dependências
 
-O state preserva as dependências mais recentes. Isso ajuda a determinar a ordem de destruição quando um recurso foi removido do HCL e sua configuração já não está disponível. [Metadados do state](https://developer.hashicorp.com/terraform/language/state/purpose#metadata).
+O state preserva as dependências mais recentes. Isso ajuda a determinar a ordem de destruição quando um recurso foi removido do HCL e sua configuração já não está disponível.
 
 No exemplo das anotações:
 
@@ -115,13 +115,13 @@ flowchart LR
     Profile -- "referencia" --> Role["Role IAM"]
 ```
 
-Quando esses recursos são gerenciados no mesmo projeto e as referências estão no HCL, o Terraform considera as dependências para criar a role e o instance profile antes da instância. Na destruição, considera a ordem inversa. Se os recursos forem retirados da configuração, as relações preservadas no state ajudam a organizar sua remoção. [Metadados do state](https://developer.hashicorp.com/terraform/language/state/purpose#metadata).
+Quando esses recursos são gerenciados no mesmo projeto e as referências estão no HCL, o Terraform considera as dependências para criar a role e o instance profile antes da instância. Na destruição, considera a ordem inversa. Se os recursos forem retirados da configuração, as relações preservadas no state ajudam a organizar sua remoção.
 
 ### 3. Performance
 
-O state também mantém um cache dos atributos conhecidos. Isso é útil em infraestruturas grandes, nas quais consultar cada recurso envolve latência e limites das APIs. Entretanto, **ter esse cache não elimina o refresh padrão**. [Performance do state](https://developer.hashicorp.com/terraform/language/state/purpose#performance).
+O state também mantém um cache dos atributos conhecidos. Isso é útil em infraestruturas grandes, nas quais consultar cada recurso envolve latência e limites das APIs. Entretanto, **ter esse cache não elimina o refresh padrão**.
 
-Normalmente, o `terraform plan` consulta os objetos existentes pelos providers antes de calcular as mudanças. É possível desabilitar essa etapa com `-refresh=false`, mas o plano pode ficar incompleto ou incorreto por ignorar alterações externas. [Documentação de `terraform plan`](https://developer.hashicorp.com/terraform/cli/commands/plan).
+Normalmente, o `terraform plan` consulta os objetos existentes pelos providers antes de calcular as mudanças. É possível desabilitar essa etapa com `-refresh=false`, mas o plano pode ficar incompleto ou incorreto por ignorar alterações externas.
 
 # Como o Terraform utiliza o state no plan
 
@@ -132,7 +132,7 @@ O fluxo normal de planejamento pode ser organizado assim:
 3. Compara os dados obtidos com a configuração dos arquivos `.tf`.
 4. Propõe as ações necessárias, como criar, atualizar, substituir ou destruir recursos.
 
-O `plan` apresenta essas ações para revisão. O `apply` executa o plano e registra os resultados no state. [Documentação de `terraform plan`](https://developer.hashicorp.com/terraform/cli/commands/plan).
+O `plan` apresenta essas ações para revisão. O `apply` executa o plano e registra os resultados no state.
 
 ## O que existe dentro do state
 
@@ -158,7 +158,7 @@ O `schema_version` dentro de uma instância se refere ao schema daquele recurso 
 
 O **backend** define onde o Terraform armazena o state. Por padrão, o backend local guarda o arquivo JSON no disco. Um backend remoto, como o S3, permite manter esse registro fora da máquina de quem executa o Terraform.
 
-Se cada pessoa trabalha com uma cópia independente do state, o time perde uma referência comum. Um backend remoto centraliza esse registro para desenvolvedores e pipelines. A proteção contra escrita concorrente depende do suporte e da configuração de locking do backend. [State remoto](https://developer.hashicorp.com/terraform/language/state/remote).
+Se cada pessoa trabalha com uma cópia independente do state, o time perde uma referência comum. Um backend remoto centraliza esse registro para desenvolvedores e pipelines. A proteção contra escrita concorrente depende do suporte e da configuração de locking do backend.
 
 ### Vantagens do backend remoto
 
@@ -169,13 +169,13 @@ Nas anotações, separei quatro vantagens:
 * **Segurança:** com um backend remoto, o Terraform normalmente mantém o state em memória durante a execução, sem persistir uma cópia local. Uma falha ao gravar no backend pode gerar um arquivo local de recuperação; comandos como `state pull` também permitem criar cópias.
 * **Versionamento:** depende do serviço e da configuração. No S3, habilitar o versionamento do bucket permite manter versões anteriores do objeto para recuperação.
 
-O backend remoto compartilha o state; o locking coordena quem pode alterá-lo por vez. [Armazenamento e locking](https://developer.hashicorp.com/terraform/language/state/backends), [Backend S3](https://developer.hashicorp.com/terraform/language/backend/s3).
+O backend remoto compartilha o state; o locking coordena quem pode alterá-lo por vez.
 
 Para aprofundar a configuração e a migração, veja também o post [Backend Remoto no Terraform: State no S3](/posts/backend-remoto-s3-no-terraform/).
 
 ## State locking no S3
 
-Quando o backend oferece locking, o Terraform adquire uma trava nas operações que podem escrever no state. Se não conseguir obtê-la, não continua a operação. Isso protege contra execuções concorrentes sobre o mesmo estado. [Documentação de state locking](https://developer.hashicorp.com/terraform/language/state/locking).
+Quando o backend oferece locking, o Terraform adquire uma trava nas operações que podem escrever no state. Se não conseguir obtê-la, não continua a operação. Isso protege contra execuções concorrentes sobre o mesmo estado.
 
 Por exemplo: duas pessoas executam `terraform apply` sobre o mesmo state remoto. Uma execução adquire a trava; a outra precisa aguardar sua liberação, se houver um tempo de espera configurado, ou falha ao obter o bloqueio. States locais independentes não oferecem essa coordenação entre as máquinas.
 
@@ -204,7 +204,7 @@ Cada campo tem um papel na configuração:
 | `encrypt` | Solicita criptografia do state no armazenamento |
 | `use_lockfile` | Habilita o arquivo de bloqueio para evitar escritas simultâneas |
 
-O bucket precisa existir antes do `init`. O lock nativo do S3 é desabilitado por padrão. A HashiCorp recomenda habilitar o versionamento do bucket para recuperação. [Backend S3](https://developer.hashicorp.com/terraform/language/backend/s3).
+O bucket precisa existir antes do `init`. O lock nativo do S3 é desabilitado por padrão. A HashiCorp recomenda habilitar o versionamento do bucket para recuperação.
 
 No workspace `default`, o objeto de bloqueio desse exemplo fica em `aula/backend.tfstate.tflock`. A identidade AWS precisa das permissões:
 
@@ -212,7 +212,7 @@ No workspace `default`, o objeto de bloqueio desse exemplo fica em `aula/backend
 * `s3:GetObject` e `s3:PutObject` no objeto do state.
 * `s3:GetObject`, `s3:PutObject` e `s3:DeleteObject` no objeto `.tflock`.
 
-O locking via DynamoDB está depreciado na documentação atual. [Permissões e locking do backend S3](https://developer.hashicorp.com/terraform/language/backend/s3#permissions-required).
+O locking via DynamoDB está depreciado na documentação atual.
 
 Para permitir novas tentativas de aquisição da trava por até cinco minutos:
 
@@ -220,7 +220,7 @@ Para permitir novas tentativas de aquisição da trava por até cinco minutos:
 terraform apply -lock-timeout=5m
 ```
 
-Esse tempo limita a espera pela trava, não a duração do `apply`. [Opções de locking](https://developer.hashicorp.com/terraform/cli/commands/plan).
+Esse tempo limita a espera pela trava, não a duração do `apply`.
 
 ## Inicialização e migração do backend
 
@@ -230,7 +230,7 @@ Ao transferir um state local existente para o S3, use:
 terraform init -migrate-state
 ```
 
-Já `terraform init -reconfigure` descarta a configuração anterior do backend e inicializa a nova sem migrar o state. A escolha depende de haver um estado a transferir. [Documentação de `terraform init`](https://developer.hashicorp.com/terraform/cli/commands/init).
+Já `terraform init -reconfigure` descarta a configuração anterior do backend e inicializa a nova sem migrar o state. A escolha depende de haver um estado a transferir.
 
 ### Comandos para inspecionar o state
 
@@ -256,9 +256,9 @@ O `state pull` funciona com backends locais e remotos. Para salvar uma cópia de
 terraform state pull > state-inspecao.json
 ```
 
-Esse comando cria uma cópia local, mesmo quando o backend é remoto. Trate esse arquivo como sensível. [Documentação de `terraform state pull`](https://developer.hashicorp.com/terraform/cli/commands/state/pull).
+Esse comando cria uma cópia local, mesmo quando o backend é remoto. Trate esse arquivo como sensível.
 
-O state pode conter segredos e não deve ser commitado no Git. Controle o acesso ao backend e às cópias locais. [Armazenamento do state](https://developer.hashicorp.com/terraform/language/state#storing-state).
+O state pode conter segredos e não deve ser commitado no Git. Controle o acesso ao backend e às cópias locais.
 
 ## Conclusão
 
