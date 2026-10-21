@@ -31,6 +31,27 @@ test('confirmation stores only token hash and creates no contact before consent;
 test('expired confirmation never touches Resend', async () => {
   assert.equal(await confirm('expired',store(),()=>assert.fail()),null);
 });
+test('failed confirmation email allows an immediate retry', async () => {
+  const db = store();
+  await assert.rejects(requestConfirmation('retry@example.com', 'pt', db, async () => {
+    throw Object.assign(new Error('provider unavailable'), { status: 503 });
+  }));
+  let sent = false;
+  await requestConfirmation('retry@example.com', 'pt', db, async () => { sent = true; });
+  assert.equal(sent, true);
+});
+test('provider failure during enrollment preserves the token for retry', async () => {
+  const db = store();
+  const token = 'c'.repeat(64);
+  const key = `newsletter:confirm:${hash(token)}`;
+  await db.set(key, { email: 'retry@example.com', language: 'pt' });
+  await assert.rejects(confirm(token, db, async () => {
+    throw Object.assign(new Error('restricted key'), { status: 401 });
+  }));
+  assert.ok(await db.get(key));
+  assert.equal(await db.get(`newsletter:enroll:${hash('retry@example.com')}`), undefined);
+  assert.deepEqual(await confirm(token, db, async () => ({ unsubscribed: false })), { language: 'pt', enrolled: true });
+});
 test('global and migrated opt-outs cannot be reactivated', async () => {
   const db = store();
   assert.equal(await enroll('x@example.com','pt',db,async()=>({unsubscribed:true})),false);

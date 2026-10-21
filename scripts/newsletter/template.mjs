@@ -91,7 +91,7 @@ export function renderNewsletter(post) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#080808" style="width:100%;background-color:#080808;">
 <tr><td align="center" style="padding:24px 12px;">
 <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background-color:#111111;border:1px solid #282828;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background-color:#111111;border:1px solid #282828;border-radius:16px;overflow:hidden;">
 <tr><td style="padding:28px 24px 20px;">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
 <td><img src="${escapeHtml(post.logo)}" width="48" height="48" alt="$" style="display:block;border:0;"></td>
@@ -101,13 +101,12 @@ export function renderNewsletter(post) {
 </td></tr>
 <tr><td style="padding:12px 24px 24px;">
 <p style="margin:0 0 12px;color:#39FF6A;font-family:Consolas,monospace;font-size:12px;letter-spacing:2px;">${text.label}</p>
-<h1 style="margin:0;color:#F5F5F5;font-size:28px;line-height:1.3;">${text.headline}</h1>
+<h1 style="margin:0;color:#F5F5F5;font-size:32px;line-height:1.3;">${escapeHtml(post.title)}</h1>
 </td></tr>
 ${image}
 <tr><td style="padding:24px;">
 <p style="margin:0 0 14px;color:#A3A3A3;font-family:Consolas,monospace;font-size:11px;line-height:1.7;">${context}</p>
 ${series}
-<h2 style="margin:0 0 16px;color:#F5F5F5;font-size:24px;line-height:1.4;">${escapeHtml(post.title)}</h2>
 <p style="margin:0 0 24px;color:#B5B5B5;font-size:16px;line-height:1.7;">${escapeHtml(post.description)}</p>
 <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
 <td bgcolor="#39FF6A" style="background-color:#39FF6A;border-radius:8px;mso-padding-alt:16px 24px;">

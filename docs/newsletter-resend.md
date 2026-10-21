@@ -153,6 +153,12 @@ Referências Vercel: [eventos GitHub e migração de deployment_status](https://
 
 ## Diagnóstico: formulário retorna erro
 
+Se a confirmação retorna 503 e o log do Resend mostra `GET /contacts/...` com **401**, `restricted_api_key` e **Sending access**, a chave permite enviar a confirmação, mas não consultar/cadastrar contatos. No painel Resend → API Keys → Edit, altere a permissão para **Full access**. Editar a permissão da chave existente não exige mudar seu valor. Se criar uma nova chave, substitua `RESEND_API_KEY` na Vercel Production e no secret do GitHub Actions; publique um novo deployment para aplicar o valor na Vercel. Reabra o link e confirme novamente antes da expiração: falhas no provedor não consomem o token.
+
+Se as execuções do workflow Newsletter aparecem como **skipped**, o envio não foi iniciado. Confira a repository variable `NEWSLETTER_VERCEL_PROJECT_ID` e sua correspondência com o evento, a branch `main`, o ambiente production e os aliases. As variáveis da Vercel não são copiadas para Actions. Após desbloquear o job, confirme os flags, secrets e a baseline descritos acima. Editar ou fazer redeploy do mesmo artigo não força um novo aviso.
+
+As páginas de confirmação agora exibem estados de confirmação, sucesso, link inválido/expirado, cancelamento preservado e indisponibilidade. A tela de erro mantém um botão POST para tentar novamente. Os e-mails de confirmação têm versões HTML responsiva e texto simples em PT/EN; o link inclui o idioma para a página correspondente. GET continua sem cadastrar contatos.
+
 Em Vercel → projeto Command Linux → Logs, filtre `/api/newsletter-subscribe` e reproduza a tentativa. `NEWSLETTER_CONFIG_MISSING` lista somente os **nomes** das variáveis ausentes; preencha-as no ambiente Production e faça redeploy. `NEWSLETTER_SEGMENTS_INVALID` indica IDs iguais para PT/EN. `NEWSLETTER_SERVICE_ERROR` com `providerStatus` indica erro HTTP do Resend; confira permissões da chave, domínio e limites no painel do Resend. Falhas do Redis podem aparecer como erro genérico: confira URL/token REST e disponibilidade do banco. Não copie valores de secrets nem links de confirmação para logs ou chat. A resposta pública do formulário continua genérica.
 
 ### Reutilizar Redis já conectado à Vercel
