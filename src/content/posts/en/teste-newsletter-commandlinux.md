@@ -3,16 +3,16 @@ title: CommandLinux Newsletter Test
 description: >-
   Test post to verify the layout and links of new articles in the CommandLinux
   newsletter.
-date: '2026-09-30'
+date: '2026-10-21'
 category: CI/CD
 tags:
   - newsletter
   - teste
   - commandlinux
-draft: true
+draft: false
 language: en
 translationOf: teste-newsletter-commandlinux
-sourceHash: 6fa725d8f190f890fc2c6cd922a166519658abaee07d5ebf6f1d7717bdaea135
+sourceHash: c6ce043926c420e7f967a54fccb605ec15467b7ad4197d42521c7872feafd676
 ---
 # CommandLinux Newsletter Test
 

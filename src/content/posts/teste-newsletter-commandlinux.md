@@ -1,10 +1,10 @@
 ---
 title: "Teste da newsletter do CommandLinux"
 description: "Publicação de teste para conferir a apresentação e o link dos novos artigos na newsletter do CommandLinux."
-date: 2026-09-30
+date: 2026-10-21
 category: CI/CD
 tags: [newsletter, teste, commandlinux]
-draft: true
+draft: false
 language: pt
 ---
 
