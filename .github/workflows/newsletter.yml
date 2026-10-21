@@ -1,52 +1,44 @@
 name: Newsletter
-
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'src/content/posts/**/*.md'
-
+  repository_dispatch:
+    types: [vercel.deployment.success, vercel.deployment.promoted]
 permissions:
   contents: read
-
 concurrency:
   group: commandlinux-newsletter
-  queue: max
-
+  cancel-in-progress: false
 jobs:
-  draft:
+  send:
+    if: >-
+      github.event.client_payload.environment == 'production' &&
+      vars.NEWSLETTER_VERCEL_PROJECT_ID != '' &&
+      github.event.client_payload.project.id == vars.NEWSLETTER_VERCEL_PROJECT_ID &&
+      github.event.client_payload.git.ref == 'main' &&
+      (contains(github.event.client_payload.alias, 'commandlinux.dev') ||
+       contains(github.event.client_payload.alias, 'www.commandlinux.dev'))
     runs-on: ubuntu-latest
-
+    environment: production
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.client_payload.git.sha }}
           fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22.12.0
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Check sender configuration
-        run: |
-          git rev-parse HEAD
-          git grep -n 'HOSTINGER_REACH_SENDER_' -- .github/workflows
-
-
-      - name: Create Hostinger Reach drafts
+      - run: npm ci
+      - name: Announce deployed articles
         env:
-          HOSTINGER_REACH_API_TOKEN: ${{ secrets.HOSTINGER_REACH_API_TOKEN }}
-          HOSTINGER_REACH_PROFILE_UUID: ${{ secrets.HOSTINGER_REACH_PROFILE_UUID }}
-          HOSTINGER_REACH_SENDER_EMAIL: "newsletter@commandlinux.dev"
-          HOSTINGER_REACH_SENDER_NAME: "CommandLinux"
-          PUSH_BEFORE: ${{ github.event.before }}
-          PUSH_AFTER: ${{ github.sha }}
-        run: >-
-          node scripts/newsletter.mjs publish
-          --before "$PUSH_BEFORE"
-          --after "$PUSH_AFTER"
+          NEWSLETTER_VERCEL_PROJECT_ID: ${{ vars.NEWSLETTER_VERCEL_PROJECT_ID }}
+          NEWSLETTER_FROM: ${{ vars.NEWSLETTER_FROM }}
+          NEWSLETTER_TEST_EMAIL: ${{ secrets.NEWSLETTER_TEST_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          RESEND_SEGMENT_PT: ${{ vars.RESEND_SEGMENT_PT }}
+          RESEND_SEGMENT_EN: ${{ vars.RESEND_SEGMENT_EN }}
+          NEWSLETTER_ENABLED: ${{ vars.NEWSLETTER_ENABLED }}
+          NEWSLETTER_MIGRATION_COMPLETE: ${{ vars.NEWSLETTER_MIGRATION_COMPLETE }}
+          DEPLOY_SHA: ${{ github.event.client_payload.git.sha }}
+        run: node scripts/newsletter.mjs publish --after "$DEPLOY_SHA"

@@ -29,14 +29,14 @@ export function renderNewsletter(post) {
     ? {
         label: 'NEW ON THE BLOG',
         headline: 'New article on CommandLinux.',
-        cta: 'Read the article',
+        cta: 'Read the article in full',
         motto: 'Learn. Build. Share. Evolve.',
         footer: 'Technology is learned by doing.',
       }
     : {
         label: 'NOVO NO BLOG',
         headline: 'Novo artigo no CommandLinux.',
-        cta: 'Ler o artigo',
+        cta: 'Ler artigo completo',
         motto:
           'Aprenda. Construa. Compartilhe. Evolua.',
         footer: 'Tecnologia se aprende fazendo.',
@@ -117,6 +117,7 @@ ${series}
 <tr><td style="padding:24px;border-top:1px solid #282828;">
 <p style="margin:0 0 8px;color:#F5F5F5;font-size:14px;line-height:1.6;">${text.motto}</p>
 <p style="margin:0;color:#A3A3A3;font-size:13px;line-height:1.6;">${text.footer}</p>
+<p><a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#A3A3A3;">${english ? 'Unsubscribe' : 'Cancelar inscrição'}</a></p>
 <p style="margin:16px 0 0;color:#A3A3A3;font-size:12px;">CommandLinux · <a href="${escapeHtml(homeUrl)}" style="color:#39FF6A;">commandlinux.dev</a></p>
 </td></tr>
 </table>

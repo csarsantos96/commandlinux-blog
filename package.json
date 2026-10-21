@@ -12,8 +12,7 @@
     "astro": "astro",
     "translate:posts": "node scripts/translate-posts.mjs",
     "newsletter:preview": "node scripts/newsletter.mjs preview",
-    "newsletter:profiles": "node scripts/newsletter.mjs profiles",
-    "test:newsletter": "node --test scripts/newsletter/*.test.mjs"
+    "test:newsletter": "node --experimental-strip-types --test scripts/newsletter/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",

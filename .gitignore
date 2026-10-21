@@ -31,3 +31,6 @@ core.*
 
 # local newsletter previews
 .newsletter-preview/
+
+# Safe configuration template
+!.env.example

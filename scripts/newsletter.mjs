@@ -2,13 +2,11 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 
+import { redis } from '../lib/newsletter.mjs';
+import { deliver, assertTestSegment } from './newsletter/delivery.mjs';
+import { productionDeployment } from './newsletter/vercel-event.mjs';
+import { publishProduction } from './newsletter/production.mjs';
 import {
-  createArticleDraft,
-  getReachConfig,
-  listProfiles,
-} from './newsletter/reach.mjs';
-import {
-  detectPosts,
   parsePost,
 } from './newsletter/posts.mjs';
 import {
@@ -16,7 +14,7 @@ import {
 } from './newsletter/template.mjs';
 
 const SITE =
-  process.env.SITE_URL ||
+  process.env.NEWSLETTER_SITE_URL ||
   'https://www.commandlinux.dev';
 
 function usage() {
@@ -24,8 +22,8 @@ function usage() {
     [
       'Usage:',
       '  npm run newsletter:preview -- <post.md>',
-      '  node scripts/newsletter.mjs publish --before <sha> --after <sha>',
-      '  npm run newsletter:profiles',
+      '  node scripts/newsletter.mjs test <post.md>',
+      '  node scripts/newsletter.mjs publish --after <deployed-sha>',
     ].join('\n'),
   );
 }
@@ -70,44 +68,19 @@ async function publish(args) {
   const { values } = parseArgs({
     args,
     options: {
-      before: { type: 'string' },
       after: { type: 'string' },
     },
   });
 
-  const posts = detectPosts({
-    before: values.before,
-    after: values.after,
-    site: SITE,
-  });
-
-  if (!posts.length) {
-    console.log(
-      'No newly published posts found.',
-    );
-
+  if (process.env.NEWSLETTER_ENABLED !== 'true') {
+    console.log('Newsletter disabled; no sends.');
     return;
   }
-
-  const config = getReachConfig();
-
-  for (const post of posts) {
-    console.log(
-      `Processing ${post.language.toUpperCase()}: ${post.file}`,
-    );
-
-    const result = await createArticleDraft(
-      post,
-      renderNewsletter(post),
-      config,
-    );
-
-    console.log(
-      result.created
-        ? `Draft created: ${post.title}`
-        : `Draft already exists: ${post.title}`,
-    );
-  }
+  if (process.env.NEWSLETTER_MIGRATION_COMPLETE !== 'true') throw new Error('Complete migration before enabling sends');
+  if (process.env.GITHUB_ACTIONS !== 'true' || process.env.GITHUB_EVENT_NAME !== 'repository_dispatch' || !process.env.GITHUB_EVENT_PATH) throw new Error('Vercel production deployment workflow required');
+  const event = JSON.parse(await fs.readFile(process.env.GITHUB_EVENT_PATH, 'utf8'));
+  if (productionDeployment(event, process.env.NEWSLETTER_VERCEL_PROJECT_ID) !== values.after) throw new Error('Checkout SHA does not match deployed SHA');
+  await publishProduction(values.after, redis(), { site: SITE, testMode: !!process.env.NEWSLETTER_TEST_EMAIL });
 }
 
 async function main() {
@@ -118,29 +91,19 @@ async function main() {
     return preview(args[0]);
   }
 
-  if (command === 'publish') {
-    return publish(args);
+  if (command === 'test') {
+    // Separate Redis and segments are mandatory: this command never enables production.
+    if (process.env.NEWSLETTER_ENABLED === 'true') throw new Error('Disable production sends for test');
+    const file = args[0];
+    if (!file) throw new Error('Provide a test article');
+    const post = parsePost(file, await fs.readFile(file, 'utf8'), SITE);
+    if (post.draft) throw new Error('Draft cannot be sent');
+    await assertTestSegment(post.language);
+    return deliver(post, redis());
   }
 
-  if (command === 'profiles') {
-    const token =
-      process.env.HOSTINGER_REACH_API_TOKEN;
-
-    if (!token) {
-      throw new Error(
-        'Missing HOSTINGER_REACH_API_TOKEN.',
-      );
-    }
-
-    console.log(
-      JSON.stringify(
-        await listProfiles(token),
-        null,
-        2,
-      ),
-    );
-
-    return;
+  if (command === 'publish') {
+    return publish(args);
   }
 
   usage();

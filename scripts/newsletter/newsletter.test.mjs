@@ -10,9 +10,6 @@ import {
   parsePost,
 } from './posts.mjs';
 import {
-  createArticleDraft,
-} from './reach.mjs';
-import {
   renderNewsletter,
   renderSeries,
 } from './template.mjs';
@@ -213,76 +210,4 @@ test('full push detection includes additions and draft publication only', async 
       force: true,
     });
   }
-});
-
-test('Reach campaign lookup prevents duplicate drafts', async () => {
-  const requests = [];
-  const fetchImpl = async (url, options) => {
-    requests.push({ url, options });
-
-    return new Response(
-      JSON.stringify({
-        data: [
-          {
-            uuid: 'campaign-1',
-            title:
-              'CommandLinux newsletter [pt:already-created]',
-          },
-        ],
-      }),
-      { status: 200 },
-    );
-  };
-
-  const post = parsePost(
-    'src/content/posts/idempotent.md',
-    source(),
-    SITE,
-  );
-
-  // Match the generated stable prefix without coupling
-  // the test to a hard-coded hash.
-  fetchImpl.calls = 0;
-  const crypto = await import('node:crypto');
-  const key = crypto
-    .createHash('sha256')
-    .update(`${post.language}\n${post.url}`)
-    .digest('hex')
-    .slice(0, 16);
-
-  const duplicateFetch = async (url, options) => {
-    requests.push({ url, options });
-
-    return new Response(
-      JSON.stringify({
-        data: [
-          {
-            uuid: 'campaign-1',
-            title:
-              `CommandLinux newsletter [pt:${key}] Test article`,
-          },
-        ],
-      }),
-      { status: 200 },
-    );
-  };
-
-  const result = await createArticleDraft(
-    post,
-    renderNewsletter(post),
-    {
-      token: 'not-logged',
-      profileUuid: 'profile',
-      senderEmail: 'newsletter@example.com',
-      senderName: 'CommandLinux',
-      fetchImpl: duplicateFetch,
-    },
-  );
-
-  assert.equal(result.created, false);
-  assert.equal(requests.length, 1);
-  assert.match(
-    requests[0].url,
-    /\/campaigns\?/,
-  );
 });

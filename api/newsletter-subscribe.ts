@@ -1,15 +1,4 @@
-const REACH_API =
-  'https://developers.hostinger.com/api/reach/v1';
-
-type ReachContact = {
-  uuid?: string;
-  email?: string;
-};
-
-type ReachTag = {
-  uuid?: string;
-  value?: string;
-};
+import { requestConfirmation, allowRequest } from '../lib/newsletter.mjs';
 
 function json(
   response: any,
@@ -63,158 +52,6 @@ function allowedOrigin(
   }
 }
 
-async function reach(
-  path: string,
-  token: string,
-  options: {
-    method?: string;
-    body?: unknown;
-  } = {},
-) {
-  const result = await fetch(
-    `${REACH_API}${path}`,
-    {
-      method: options.method ?? 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-        ...(options.body
-          ? { 'Content-Type': 'application/json' }
-          : {}),
-      },
-      ...(options.body
-        ? { body: JSON.stringify(options.body) }
-        : {}),
-      signal: AbortSignal.timeout(15_000),
-    },
-  );
-
-  const raw = await result.text();
-  let body: any = null;
-
-  if (raw) {
-    try {
-      body = JSON.parse(raw);
-    } catch {
-      body = raw;
-    }
-  }
-
-  if (!result.ok) {
-    const error = new Error(
-      `Reach returned ${result.status}`,
-    ) as Error & { status?: number };
-
-    error.status = result.status;
-    throw error;
-  }
-
-  return body;
-}
-
-function items<T>(response: any): T[] {
-  if (Array.isArray(response)) return response;
-
-  return Array.isArray(response?.data)
-    ? response.data
-    : [];
-}
-
-async function findContact(
-  profileUuid: string,
-  token: string,
-  email: string,
-) {
-  const response = await reach(
-    `/profiles/${encodeURIComponent(profileUuid)}/contacts?search=${encodeURIComponent(email)}&per_page=25`,
-    token,
-  );
-
-  return (
-    items<ReachContact>(response).find(
-      (contact) =>
-        contact.email?.toLowerCase() ===
-        email.toLowerCase(),
-    ) ?? null
-  );
-}
-
-async function findOrCreateContact(
-  profileUuid: string,
-  token: string,
-  email: string,
-) {
-  let contact = await findContact(
-    profileUuid,
-    token,
-    email,
-  );
-
-  if (contact?.uuid) return contact;
-
-  try {
-    await reach(
-      `/profiles/${encodeURIComponent(profileUuid)}/contacts`,
-      token,
-      {
-        method: 'POST',
-        body: { email },
-      },
-    );
-  } catch (error) {
-    // A simultaneous request may already have created it.
-    if ((error as any)?.status !== 422) {
-      throw error;
-    }
-  }
-
-  for (const delay of [100, 300, 700]) {
-    await new Promise((resolve) =>
-      setTimeout(resolve, delay),
-    );
-
-    contact = await findContact(
-      profileUuid,
-      token,
-      email,
-    );
-
-    if (contact?.uuid) return contact;
-  }
-
-  throw new Error(
-    'Reach did not return the created contact.',
-  );
-}
-
-async function findOrCreateTag(
-  profileUuid: string,
-  token: string,
-  language: 'pt' | 'en',
-) {
-  const name = `newsletter-${language}`;
-  const response = await reach(
-    `/profiles/${encodeURIComponent(profileUuid)}/tags`,
-    token,
-    {
-      method: 'POST',
-      body: { names: [name] },
-    },
-  );
-
-  const tag = items<ReachTag>(response).find(
-    (item) => item.value === name,
-  );
-
-  if (!tag?.uuid) {
-    throw new Error(
-      'Reach did not return the language tag.',
-    );
-  }
-
-  return tag;
-}
-
 export default async function handler(
   request: any,
   response: any,
@@ -255,46 +92,16 @@ export default async function handler(
     });
   }
 
-  const token =
-    process.env.HOSTINGER_REACH_API_TOKEN;
-  const profileUuid =
-    process.env.HOSTINGER_REACH_PROFILE_UUID;
-
-  if (!token || !profileUuid) {
-    console.error(
-      'Newsletter subscription is not configured.',
-    );
-
-    return json(response, 503, {
-      error: 'Newsletter is temporarily unavailable',
-    });
-  }
-
   try {
-    const [contact, tag] = await Promise.all([
-      findOrCreateContact(
-        profileUuid,
-        token,
-        email.toLowerCase(),
-      ),
-      findOrCreateTag(
-        profileUuid,
-        token,
-        language,
-      ),
-    ]);
-
-    await reach(
-      `/profiles/${encodeURIComponent(profileUuid)}/tags/${encodeURIComponent(tag.uuid!)}/contacts/${encodeURIComponent(contact.uuid!)}`,
-      token,
-      { method: 'POST' },
-    );
+    const ip = request.headers?.['x-vercel-forwarded-for'] || request.socket?.remoteAddress || 'unknown';
+    if (!await allowRequest(String(ip))) return json(response, 429, { error: 'Please retry later' });
+    await requestConfirmation(email.trim().toLowerCase(), language);
 
     return json(response, 200, { ok: true });
   } catch (error) {
     console.error(
       'Newsletter subscription failed:',
-      (error as Error).message,
+      'Service unavailable',
     );
 
     return json(response, 503, {
