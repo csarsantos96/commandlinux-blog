@@ -18,11 +18,20 @@ export async function deliver(post, db, api = resend) {
     if (!['sent', 'baseline'].includes(state?.status)) throw new Error(`Reconcile unresolved delivery: ${key}`);
     return false;
   }
-  const result = await api('/broadcasts', 'POST', {
-    segment_id: segmentId, from: sender(),
-    subject: `Command Linux — ${post.title}`, html: renderNewsletter(post),
-    name: key, send: true,
-  });
+  let result;
+  try {
+    result = await api('/broadcasts', 'POST', {
+      segment_id: segmentId, from: sender(),
+      subject: `Command Linux — ${post.title}`, html: renderNewsletter(post),
+      // Resend limits campaign names to 70 characters; retain the full digest.
+      name: hash(post.language + '\n' + post.url), send: true,
+    });
+  } catch (error) {
+    // A validation rejection did not create a campaign. Other failures may be
+    // ambiguous and must keep their permanent claim to prevent duplicate sends.
+    if (error?.status === 422) await db.del(key);
+    throw error;
+  }
   if (!result?.id) throw new Error(`Missing broadcast ID; reconcile ${key}`);
   await db.set(key, { status: 'sent', id: result.id });
   return true;
