@@ -98,7 +98,7 @@
 .story-card--light { color: #080808; background-color: #eee; background-image: linear-gradient(#ccc 1px, transparent 1px), linear-gradient(90deg, #ccc 1px, transparent 1px); }
 .story-card--gradient { color: #f5f5f5; background: linear-gradient(160deg, #071a24, #160d25); }
 .story-card > span, .story-card > small, .story-card > b { font-family: var(--mono); font-size: 0.65rem; }
-.story-card h2 { margin-top: 12%; font-size: clamp(1.25rem, 6vw, 2rem); line-height: 1.08; }
+.story-card h2 { margin-top: 12%; font-size: clamp(1.25rem, 6vw, 2rem); line-height: 1.08; overflow-wrap: anywhere; }
 .story-card p { margin-top: 8%; color: inherit; opacity: 0.75; font-size: 0.78rem; line-height: 1.5; }
 .story-card small { margin-top: auto; color: var(--post-color); }
 .story-card b { margin-top: auto; }

@@ -26,11 +26,19 @@ function wrapText(context: CanvasRenderingContext2D, text: string, maxWidth: num
 
   for (const word of words) {
     const candidate = line ? `${line} ${word}` : word;
-    if (line && context.measureText(candidate).width > maxWidth) {
-      lines.push(line);
-      line = word;
-    } else {
+    if (context.measureText(candidate).width <= maxWidth) {
       line = candidate;
+      continue;
+    }
+    if (line) lines.push(line);
+    line = '';
+    // Long names and URLs must fit too, even without spaces.
+    for (const character of word) {
+      if (line && context.measureText(line + character).width > maxWidth) {
+        lines.push(line);
+        line = '';
+      }
+      line += character;
     }
   }
 
@@ -93,6 +101,13 @@ export default function ShareButtons({ title, description, category, locale = 'p
 
     setStoryStatus('creating');
 
+    // Measure with the same fonts that will actually be drawn.
+    await Promise.all([
+      document.fonts.load('800 78px Syne'),
+      document.fonts.load('400 38px Syne'),
+      document.fonts.load('700 42px "JetBrains Mono"'),
+    ]).catch(() => undefined);
+
     const canvas = document.createElement('canvas');
     canvas.width = 1080;
     canvas.height = 1920;
@@ -135,18 +150,37 @@ export default function ShareButtons({ title, description, category, locale = 'p
     context.font = '700 34px "JetBrains Mono", monospace';
     context.fillText(`// ${normalizedCategory}`, 92, 230);
 
+    // Keep text away from the story controls and reserve a separate footer area.
+    const textWidth = 840;
+    const titleTop = 340;
+    let titleSize = 78;
+    let lines: string[] = [];
+    while (true) {
+      context.font = `800 ${titleSize}px Syne, sans-serif`;
+      lines = wrapText(context, title, textWidth);
+      if (lines.length * titleSize * 1.22 <= 700 || titleSize <= 12) break;
+      titleSize -= 2;
+    }
     context.fillStyle = theme.text;
-    context.font = '800 78px Syne, sans-serif';
-    const lines = wrapText(context, title, 896).slice(0, 8);
-    lines.forEach((line, index) => context.fillText(line, 92, 430 + index * 96));
+    context.textBaseline = 'top';
+    const titleLineHeight = titleSize * 1.22;
+    lines.forEach((line, index) => context.fillText(line, 92, titleTop + index * titleLineHeight));
 
-    const descriptionTop = 430 + lines.length * 96 + 52;
+    const descriptionTop = titleTop + lines.length * titleLineHeight + 52;
     context.fillStyle = theme.muted;
     context.font = '400 38px Syne, sans-serif';
-    const descriptionLines = wrapText(context, description, 896).slice(0, 6);
+    const allDescriptionLines = wrapText(context, description, textWidth);
+    const maxDescriptionLines = Math.max(0, Math.min(6, Math.floor((1490 - descriptionTop) / 55)));
+    const descriptionLines = allDescriptionLines.slice(0, maxDescriptionLines);
+    if (allDescriptionLines.length > maxDescriptionLines && descriptionLines.length) {
+      let last = descriptionLines[descriptionLines.length - 1];
+      while (last && context.measureText(last + '…').width > textWidth) last = last.slice(0, -1);
+      descriptionLines[descriptionLines.length - 1] = last + '…';
+    }
     descriptionLines.forEach((line, index) => {
       context.fillText(line, 92, descriptionTop + index * 55);
     });
+    context.textBaseline = 'alphabetic';
 
     context.fillStyle = '#00d4ff';
     context.font = '700 42px "JetBrains Mono", monospace';
