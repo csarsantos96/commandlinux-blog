@@ -4,7 +4,7 @@ description: "Novo teste para conferir o visual do e-mail, o resumo do artigo e 
 date: 2026-10-21
 category: CI/CD
 tags: [newsletter, teste, commandlinux]
-draft: true
+draft: false
 language: pt
 ---
 
