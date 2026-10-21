@@ -4,7 +4,7 @@ description: "Publicação de teste para conferir a apresentação e o link dos 
 date: 2026-10-21
 category: CI/CD
 tags: [newsletter, teste, commandlinux]
-draft: false
+draft: true
 language: pt
 ---
 
