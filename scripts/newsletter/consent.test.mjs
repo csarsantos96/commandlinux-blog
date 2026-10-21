@@ -59,3 +59,29 @@ test('abuse throttle rejects the eleventh request',async()=>{
   for(let i=0;i<10;i++) assert.equal(await allowRequest('ip',db),true);
   assert.equal(await allowRequest('ip',db),false);
 });
+
+test('configuration diagnostics identify missing variable names without exposing secrets', async () => {
+  const { validateServerConfig, safeFailure } = await import('../../lib/newsletter.mjs');
+  const previous = process.env.RESEND_API_KEY;
+  delete process.env.RESEND_API_KEY;
+  try {
+    assert.throws(validateServerConfig, error => {
+      const diagnostic = safeFailure(error);
+      assert.equal(diagnostic.code, 'NEWSLETTER_CONFIG_MISSING');
+      assert.ok(diagnostic.variables.includes('RESEND_API_KEY'));
+      return true;
+    });
+    assert.deepEqual(safeFailure(new Error('secret token and subscriber address')), {code:'NEWSLETTER_SERVICE_ERROR'});
+    assert.deepEqual(safeFailure({status:403,message:'private provider body'}), {code:'NEWSLETTER_SERVICE_ERROR',providerStatus:403});
+  } finally {
+    if (previous === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY=previous;
+  }
+});
+
+test('newsletter reuses Vercel integration Redis names without mixing database credentials', async () => {
+  const { redisConfig } = await import('../../lib/newsletter.mjs');
+  assert.deepEqual(redisConfig({REDIS_KV_REST_API_URL:'https://existing',REDIS_KV_REST_API_TOKEN:'write-token'}),{url:'https://existing',token:'write-token'});
+  assert.deepEqual(redisConfig({UPSTASH_REDIS_REST_URL:'https://dedicated',UPSTASH_REDIS_REST_TOKEN:'dedicated-token',REDIS_KV_REST_API_TOKEN:'other-token'}),{url:'https://dedicated',token:'dedicated-token'});
+  assert.deepEqual(redisConfig({UPSTASH_REDIS_REST_URL:'https://dedicated',REDIS_KV_REST_API_TOKEN:'other-token'}),{url:'https://dedicated',token:undefined});
+});

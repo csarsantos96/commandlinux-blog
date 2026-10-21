@@ -1,4 +1,4 @@
-import { confirm } from '../lib/newsletter.mjs';
+import { confirm, validateServerConfig, safeFailure } from '../lib/newsletter.mjs';
 export default async function handler(req: any, res: any) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Referrer-Policy', 'no-referrer');
@@ -11,9 +11,13 @@ export default async function handler(req: any, res: any) {
   // Email scanners may GET the link; only the explicit form POST enrolls.
   if (req.method === 'GET') return res.status(200).end('<!doctype html><html lang="pt"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Command Linux</title><h1>Command Linux</h1><form method="post"><button>Confirmar inscrição / Confirm subscription</button></form></html>');
   try {
+    validateServerConfig();
     const result = await confirm(token);
     if (!result) return res.status(410).end('Link expirado ou já utilizado / Link expired or already used');
     if (!result.enrolled) return res.status(200).end('Cancelamento anterior preservado / Previous unsubscribe preserved');
     return res.status(200).end(result.language === 'en' ? 'Subscription confirmed.' : 'Inscrição confirmada.');
-  } catch { return res.status(503).end('Tente novamente / Please retry'); }
+  } catch (error) {
+    console.error('Newsletter confirmation failed:', safeFailure(error));
+    return res.status(503).end('Tente novamente / Please retry');
+  }
 }

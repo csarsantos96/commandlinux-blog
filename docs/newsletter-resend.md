@@ -150,3 +150,13 @@ Em **Settings → Secrets and variables → Actions**, configure:
 Use o mesmo Redis/segmentos de produção dos endpoints. O Actions não lê automaticamente variáveis da Vercel. Depois de pausar Reach, importar/reconciliar contatos e testar com um endereço, habilite os flags. A primeira execução cria a baseline do SHA publicado e não envia o acervo. Reexecute uma execução com falha após resolver sua causa; claims ambíguas exigem a reconciliação documentada.
 
 Referências Vercel: [eventos GitHub e migração de deployment_status](https://vercel.com/docs/git/vercel-for-github#repository-dispatch-events), [payload dos eventos](https://github.com/vercel/repository-dispatch/tree/main/packages/repository-dispatch), [Vercel Functions Node.js em api/](https://vercel.com/docs/functions/runtimes/node-js).
+
+## Diagnóstico: formulário retorna erro
+
+Em Vercel → projeto Command Linux → Logs, filtre `/api/newsletter-subscribe` e reproduza a tentativa. `NEWSLETTER_CONFIG_MISSING` lista somente os **nomes** das variáveis ausentes; preencha-as no ambiente Production e faça redeploy. `NEWSLETTER_SEGMENTS_INVALID` indica IDs iguais para PT/EN. `NEWSLETTER_SERVICE_ERROR` com `providerStatus` indica erro HTTP do Resend; confira permissões da chave, domínio e limites no painel do Resend. Falhas do Redis podem aparecer como erro genérico: confira URL/token REST e disponibilidade do banco. Não copie valores de secrets nem links de confirmação para logs ou chat. A resposta pública do formulário continua genérica.
+
+### Reutilizar Redis já conectado à Vercel
+
+A newsletter aceita o par existente `REDIS_KV_REST_API_URL` + `REDIS_KV_REST_API_TOKEN` quando as duas variáveis `UPSTASH_REDIS_REST_*` estão vazias/ausentes. Usa apenas chaves com prefixo `newsletter:` e não modifica as chaves de reações. Use o token REST de escrita, nunca `REDIS_KV_REST_API_READ_ONLY_TOKEN` nem a URL TCP `REDIS_URL`/`REDIS_KV_URL`. Um par dedicado `UPSTASH_REDIS_REST_*`, quando configurado, tem preferência; os pares nunca são misturados.
+
+No GitHub Actions, os secrets `UPSTASH_REDIS_REST_URL` e `UPSTASH_REDIS_REST_TOKEN` devem apontar para o **mesmo banco** usado pela newsletter na Vercel. Se reutilizar a integração existente, copie para esses secrets os valores de `REDIS_KV_REST_API_URL` e `REDIS_KV_REST_API_TOKEN`, respectivamente. Não troque um banco de produção já inicializado sem migrar seu estado persistente. Testes continuam exigindo um banco isolado.

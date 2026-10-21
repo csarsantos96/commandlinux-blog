@@ -1,4 +1,4 @@
-import { requestConfirmation, allowRequest } from '../lib/newsletter.mjs';
+import { requestConfirmation, allowRequest, validateServerConfig, safeFailure } from '../lib/newsletter.mjs';
 
 function json(
   response: any,
@@ -93,6 +93,7 @@ export default async function handler(
   }
 
   try {
+    validateServerConfig();
     const ip = request.headers?.['x-vercel-forwarded-for'] || request.socket?.remoteAddress || 'unknown';
     if (!await allowRequest(String(ip))) return json(response, 429, { error: 'Please retry later' });
     await requestConfirmation(email.trim().toLowerCase(), language);
@@ -101,7 +102,7 @@ export default async function handler(
   } catch (error) {
     console.error(
       'Newsletter subscription failed:',
-      'Service unavailable',
+      safeFailure(error),
     );
 
     return json(response, 503, {
