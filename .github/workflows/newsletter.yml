@@ -13,9 +13,7 @@ jobs:
       github.event.client_payload.environment == 'production' &&
       vars.NEWSLETTER_VERCEL_PROJECT_ID != '' &&
       github.event.client_payload.project.id == vars.NEWSLETTER_VERCEL_PROJECT_ID &&
-      github.event.client_payload.git.ref == 'main' &&
-      (contains(github.event.client_payload.alias, 'commandlinux.dev') ||
-       contains(github.event.client_payload.alias, 'www.commandlinux.dev'))
+      github.event.client_payload.git.ref == 'main'
     runs-on: ubuntu-latest
     environment: production
     steps:

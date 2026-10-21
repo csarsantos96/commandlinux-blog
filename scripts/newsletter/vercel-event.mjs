@@ -8,7 +8,9 @@ export function productionDeployment(event, projectId) {
   if (payload?.environment !== 'production' || payload.project?.id !== projectId || payload.git?.ref !== 'main') {
     throw new Error('Deployment is not from the blog production project/branch');
   }
-  if (!Array.isArray(payload.alias) || !payload.alias.some(alias => ['commandlinux.dev', 'www.commandlinux.dev'].includes(alias))) {
+  // Vercel may omit aliases, including on production promotion events.
+  // The project, production environment and branch above remain mandatory.
+  if (payload.alias !== undefined && (!Array.isArray(payload.alias) || !payload.alias.some(alias => ['commandlinux.dev', 'www.commandlinux.dev'].includes(alias)))) {
     throw new Error('Deployment does not serve the blog production domain');
   }
   if (!/^[a-f0-9]{40}$/.test(payload.git?.sha ?? '')) throw new Error('Invalid deployed SHA');
